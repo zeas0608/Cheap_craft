@@ -288,7 +288,7 @@ const waterLevel=new Uint8Array(W*H*D);waterLevel.fill(DRY);let fluidQueue=new S
 const fluidSides=[[1,0],[-1,0],[0,1],[0,-1]];
 // Block interaction distance in world blocks, measured from the camera to the hit face.
  const GROUND_SPEED=Object.freeze({walk:4.317,sprint:5.612});
- const SPRINT_JUMP=Object.freeze({boost:4.2,airAccel:4.5,maxSpeed:10.6});
+ const SPRINT_JUMP=Object.freeze({boost:4.06,airAccel:4.5,maxSpeed:10.6});
  const FLIGHT_SPEED=Object.freeze({normal:10.8,sprint:21.6});
  const BLOCK_REACH=Object.freeze({creative:5,survival:4.5});
  let gameMode='creative';
@@ -552,7 +552,7 @@ void main(){
 }`);
 const loc={pos:gl.getAttribLocation(pr,'aPos'),uv:gl.getAttribLocation(pr,'aUV'),light:gl.getAttribLocation(pr,'aLight'),vp:gl.getUniformLocation(pr,'uVP'),eye:gl.getUniformLocation(pr,'uEye'),fog:gl.getUniformLocation(pr,'uFog'),day:gl.getUniformLocation(pr,'uDay'),water:gl.getUniformLocation(pr,'uUnderwater'),waterTime:gl.getUniformLocation(pr,'uWaterTime'),tex:gl.getUniformLocation(pr,'uTex')};
 const linePr=program(`attribute vec3 aPos;uniform mat4 uVP;void main(){gl_Position=uVP*vec4(aPos,1.0);}`,`precision mediump float;uniform vec4 uColor;void main(){gl_FragColor=uColor;}`);const lp=gl.getAttribLocation(linePr,'aPos'),lv=gl.getUniformLocation(linePr,'uVP'),lc=gl.getUniformLocation(linePr,'uColor'),lineBuffer=gl.createBuffer();
-const skyPr=program(`attribute vec2 aPos;varying vec2 v;void main(){v=aPos;gl_Position=vec4(aPos,0.9999,1.0);}`,`precision mediump float;varying vec2 v;uniform float uDay;uniform vec3 uDir;uniform vec3 uRight;uniform vec3 uUp;uniform float uAspect;void main(){vec3 d=normalize(uDir+v.x*uAspect*.72*uRight+v.y*.72*uUp);float h=max(d.y,0.0);vec3 sky=mix(vec3(.67,.81,.91),vec3(.22,.53,.82),pow(h,.65));vec3 night=mix(vec3(.105,.14,.24),vec3(.015,.025,.08),h);vec3 c=mix(night,sky,uDay);vec3 sun=normalize(vec3(-.45,.68,-.55));float q=dot(d,sun);if(uDay>.5){c+=vec3(1.,.80,.43)*pow(max(q,0.0),55.0)*.30;if(q>.9975)c=vec3(1.,.95,.70);if(d.y>.04){vec2 uv=d.xz/(d.y+.12)*1.7;vec2 cell=floor(uv*3.0);float n=fract(sin(dot(cell,vec2(12.9898,78.233)))*43758.5453);float m=fract(sin(dot(floor(uv*.85),vec2(23.14,54.31)))*18751.53);if(m>.45&&n>.22)c=mix(c,vec3(.94,.97,1.),.72*smoothstep(.04,.22,d.y));}}else{vec2 cell=floor(d.xz/(d.y+.4)*180.);float n=fract(sin(dot(cell,vec2(12.9898,78.233)))*43758.5453);if(n>.997&&d.y>.03)c+=vec3(.65);if(dot(d,-sun+vec3(0.,1.3,0.))>.9999)c+=vec3(.45);}gl_FragColor=vec4(c,1.0);}`);const skyB=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,skyB);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);const skyL={pos:gl.getAttribLocation(skyPr,'aPos'),day:gl.getUniformLocation(skyPr,'uDay'),dir:gl.getUniformLocation(skyPr,'uDir'),right:gl.getUniformLocation(skyPr,'uRight'),up:gl.getUniformLocation(skyPr,'uUp'),aspect:gl.getUniformLocation(skyPr,'uAspect')};
+const skyPr=program(`attribute vec2 aPos;varying vec2 v;void main(){v=aPos;gl_Position=vec4(aPos,0.9999,1.0);}`,`precision mediump float;varying vec2 v;uniform float uDay;uniform vec3 uDir;uniform vec3 uRight;uniform vec3 uUp;uniform float uAspect;uniform float uFovScale;void main(){vec3 d=normalize(uDir+v.x*uAspect*uFovScale*uRight+v.y*uFovScale*uUp);float h=max(d.y,0.0);vec3 sky=mix(vec3(.67,.81,.91),vec3(.22,.53,.82),pow(h,.65));vec3 night=mix(vec3(.105,.14,.24),vec3(.015,.025,.08),h);vec3 c=mix(night,sky,uDay);vec3 sun=normalize(vec3(-.45,.68,-.55));float q=dot(d,sun);if(uDay>.5){c+=vec3(1.,.80,.43)*pow(max(q,0.0),55.0)*.30;if(q>.9975)c=vec3(1.,.95,.70);if(d.y>.04){vec2 uv=d.xz/(d.y+.12)*1.7;vec2 cell=floor(uv*3.0);float n=fract(sin(dot(cell,vec2(12.9898,78.233)))*43758.5453);float m=fract(sin(dot(floor(uv*.85),vec2(23.14,54.31)))*18751.53);if(m>.45&&n>.22)c=mix(c,vec3(.94,.97,1.),.72*smoothstep(.04,.22,d.y));}}else{vec2 cell=floor(d.xz/(d.y+.4)*180.);float n=fract(sin(dot(cell,vec2(12.9898,78.233)))*43758.5453);if(n>.997&&d.y>.03)c+=vec3(.65);if(dot(d,-sun+vec3(0.,1.3,0.))>.9999)c+=vec3(.45);}gl_FragColor=vec4(c,1.0);}`);const skyB=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,skyB);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);const skyL={pos:gl.getAttribLocation(skyPr,'aPos'),day:gl.getUniformLocation(skyPr,'uDay'),dir:gl.getUniformLocation(skyPr,'uDir'),right:gl.getUniformLocation(skyPr,'uRight'),up:gl.getUniformLocation(skyPr,'uUp'),aspect:gl.getUniformLocation(skyPr,'uAspect'),fovScale:gl.getUniformLocation(skyPr,'uFovScale')};
 const faces=[{n:[1,0,0],v:[[1,0,1],[1,0,0],[1,1,0],[1,1,1]],l:.79},{n:[-1,0,0],v:[[0,0,0],[0,0,1],[0,1,1],[0,1,0]],l:.72},{n:[0,1,0],v:[[0,1,1],[1,1,1],[1,1,0],[0,1,0]],l:1},{n:[0,-1,0],v:[[0,0,0],[1,0,0],[1,0,1],[0,0,1]],l:.54},{n:[0,0,1],v:[[0,0,1],[1,0,1],[1,1,1],[0,1,1]],l:.86},{n:[0,0,-1],v:[[1,0,0],[0,0,0],[0,1,0],[1,1,0]],l:.68}];const ord=[0,1,2,0,2,3],uvs=[[0,1],[1,1],[1,0],[0,0]];
 // Block destruction: 4 x 4 x 4 camera-facing terrain fragments, using the live atlas.
 const debrisBuffer=gl.createBuffer();
@@ -760,13 +760,13 @@ function drawWaterSurfaces(visible){
  for(const c of visible)drawBuffer(c.t,c.tn);
  gl.depthMask(true);gl.depthFunc(gl.LEQUAL);
 }
-function render(){if(fallback){renderSoft();return;}resize();let e=eye(),d=direction(),{vp,right,up}=camera(e,d);let wet=underwater(e),fog=wet?waterFog():day?[.67,.81,.91]:[.105,.14,.24];gl.clearColor(...fog,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.disable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.disable(gl.BLEND);if(!wet){gl.useProgram(skyPr);gl.bindBuffer(gl.ARRAY_BUFFER,skyB);gl.enableVertexAttribArray(skyL.pos);gl.vertexAttribPointer(skyL.pos,2,gl.FLOAT,false,0,0);gl.uniform1f(skyL.day,+day);gl.uniform3fv(skyL.dir,d);gl.uniform3fv(skyL.right,right);gl.uniform3fv(skyL.up,up);gl.uniform1f(skyL.aspect,canvas.width/canvas.height);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.useProgram(pr);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);gl.uniform1i(loc.tex,0);gl.uniformMatrix4fv(loc.vp,false,vp);gl.uniform3fv(loc.eye,e);gl.uniform3fv(loc.fog,fog);gl.uniform1f(loc.day,+day);gl.uniform1f(loc.water,+wet);gl.uniform1f(loc.waterTime,(performance.now()/1000)%600);let visible=chunks.filter(c=>c&&Math.hypot(c.x-p.x,c.z-p.z)<95);for(let c of visible)drawBuffer(c.o,c.on);gl.disable(gl.CULL_FACE);gl.depthMask(true);for(let c of visible)drawBuffer(c.g,c.gn);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);drawDebris(right,up);drawDroppedItems();drawMobs();gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);if(wet)gl.disable(gl.CULL_FACE);else{gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);}
+function render(){if(fallback){renderSoft();return;}resize();let e=eye(),d=direction(),{vp,right,up}=camera(e,d);let wet=underwater(e),fog=wet?waterFog():day?[.67,.81,.91]:[.105,.14,.24];gl.clearColor(...fog,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.disable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.disable(gl.BLEND);if(!wet){gl.useProgram(skyPr);gl.bindBuffer(gl.ARRAY_BUFFER,skyB);gl.enableVertexAttribArray(skyL.pos);gl.vertexAttribPointer(skyL.pos,2,gl.FLOAT,false,0,0);gl.uniform1f(skyL.day,+day);gl.uniform3fv(skyL.dir,d);gl.uniform3fv(skyL.right,right);gl.uniform3fv(skyL.up,up);gl.uniform1f(skyL.aspect,canvas.width/canvas.height);gl.uniform1f(skyL.fovScale,Math.tan(sprintFov*PI/360));gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.useProgram(pr);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);gl.uniform1i(loc.tex,0);gl.uniformMatrix4fv(loc.vp,false,vp);gl.uniform3fv(loc.eye,e);gl.uniform3fv(loc.fog,fog);gl.uniform1f(loc.day,+day);gl.uniform1f(loc.water,+wet);gl.uniform1f(loc.waterTime,(performance.now()/1000)%600);let visible=chunks.filter(c=>c&&Math.hypot(c.x-p.x,c.z-p.z)<95);for(let c of visible)drawBuffer(c.o,c.on);gl.disable(gl.CULL_FACE);gl.depthMask(true);for(let c of visible)drawBuffer(c.g,c.gn);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);drawDebris(right,up);drawDroppedItems();drawMobs();gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);if(wet)gl.disable(gl.CULL_FACE);else{gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);}
  drawWaterSurfaces(visible);
  gl.disable(gl.CULL_FACE);gl.depthMask(true);gl.disable(gl.BLEND);
 drawMiningCracks(vp,e);
 if(playing&&target&&!aimedMob()){let [x,y,z]=target.v,q=.004;let v=[[x-q,y-q,z-q],[x+1+q,y-q,z-q],[x+1+q,y-q,z+1+q],[x-q,y-q,z+1+q],[x-q,y+1+q,z-q],[x+1+q,y+1+q,z-q],[x+1+q,y+1+q,z+1+q],[x-q,y+1+q,z+1+q]],edges=[0,1,1,2,2,3,3,0,4,5,5,6,6,7,7,4,0,4,1,5,2,6,3,7];gl.useProgram(linePr);gl.disableVertexAttribArray(loc.uv);gl.disableVertexAttribArray(loc.light);gl.bindBuffer(gl.ARRAY_BUFFER,lineBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(edges.flatMap(i=>v[i])),gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,3,gl.FLOAT,false,0,0);gl.uniformMatrix4fv(lv,false,vp);gl.uniform4f(lc,.06,.07,.05,1);gl.drawArrays(gl.LINES,0,24);}}
 function bodyHeight(){return p.swimPose?.6:p.crouch?CROUCH_HEIGHT:STAND_HEIGHT;}
-function collision(x,y,z,h=bodyHeight()){let r=.29;for(let a=Math.floor(x-r+.00001);a<=Math.floor(x+r-.00001);a++)for(let b=Math.floor(y+.00001);b<=Math.floor(y+h-.00001);b++)for(let c=Math.floor(z-r+.00001);c<=Math.floor(z+r-.00001);c++)if(solid(a,b,c))return true;return false;}
+function collision(x,y,z,h=bodyHeight()){let r=.3;for(let a=Math.floor(x-r+.00001);a<=Math.floor(x+r-.00001);a++)for(let b=Math.floor(y+.00001);b<=Math.floor(y+h-.00001);b++)for(let c=Math.floor(z-r+.00001);c<=Math.floor(z+r-.00001);c++)if(solid(a,b,c))return true;return false;}
 function supported(x=p.x,y=p.y,z=p.z){return collision(x,y-.035,z);}
 function sneakMove(k,v){if(!v)return false;const next=(f)=>supported(p.x+(k==='x'?v*f:0),p.y,p.z+(k==='z'?v*f:0));if(!next(1)){let lo=0,hi=1;for(let i=0;i<12;i++){let m=(lo+hi)/2;if(next(m))lo=m;else hi=m;}axis(k,v*lo);return true;}return axis(k,v);}
 function shiftHeld(){return keys.has('ShiftLeft')||keys.has('ShiftRight');}
@@ -789,7 +789,7 @@ function updateSprintWall(dt,hitX,hitZ,vx,vz,dx,dz,stepClear=false){
  const angle=actual<1e-7?90:Math.acos(Math.max(-1,Math.min(1,(vx*dx+vz*dz)/(want*actual))))*180/Math.PI;
  if(angle>SPRINT_RULES.wallAngle+1e-6){sprintWallTime+=dt;if(sprintWallTime+1e-8>=SPRINT_RULES.wallGrace)cancelSprint();}else sprintWallTime=0;
 }
-function swimmingActive(surface=swimSurface()){return !flying&&!riddenPig&&sprinting()&&!shiftHeld()&&Number.isFinite(surface)&&(p.swimPose||surface-p.y>=.6)&&!collision(p.x,p.y,p.z,SPRINT_RULES.swimHeight);}
+function swimmingActive(surface=swimSurface()){return !flying&&!riddenPig&&sprinting()&&!shiftHeld()&&Number.isFinite(surface)&&(surface-p.y>=.6||p.swimPose&&(!supported()||collision(p.x,p.y,p.z,STAND_HEIGHT)))&&!collision(p.x,p.y,p.z,SPRINT_RULES.swimHeight);}
 function updateSwimPose(surface){
  const active=swimmingActive(surface);if(active){p.swimPose=true;p.crouch=false;}
  else if(p.swimPose&&!collision(p.x,p.y,p.z,shiftHeld()?CROUCH_HEIGHT:STAND_HEIGHT)){p.swimPose=false;p.crouch=!flying&&shiftHeld();}
@@ -801,7 +801,7 @@ function axis(k,v){if(v===0)return false;let rem=v;while(Math.abs(rem)>1e-6){let
 // Fluid contact uses the bottom of the player's collision box, not a point
 // 0.25 blocks above it. Sample the actual sloping surface under the footprint.
 function swimSurface(){
- let r=.29,top=-Infinity,y0=Math.floor(p.y+.001),y1=Math.floor(p.y+.3);
+ let r=.3,top=-Infinity,y0=Math.floor(p.y+.001),y1=Math.floor(p.y+.3);
  for(let x=Math.floor(p.x-r+.00001);x<=Math.floor(p.x+r-.00001);x++)for(let z=Math.floor(p.z-r+.00001);z<=Math.floor(p.z+r-.00001);z++)for(let y=y0;y<=y1;y++){
   if(get(x,y,z)!==WATER)continue;
   let sx=Math.max(x+.00001,Math.min(x+1-.00001,p.x)),sz=Math.max(z+.00001,Math.min(z+1-.00001,p.z));
@@ -813,7 +813,7 @@ function swimSurface(){
  }
  return top;
 }
-function physics(dt){if(riddenPig){if(!canSprint())cancelSprint();if(shiftHeld())tryDismount();if(riddenPig){syncRider();if(gameMode==='survival')tickDamage(dt,p.y,true);return;}}const n=Math.max(1,Math.ceil(dt*120)),step=dt/n;for(let i=0;i<n;i++){const before=p.y,wet=gameMode==='survival'&&Number.isFinite(swimSurface());physicsStep(step);if(gameMode==='survival'){tickDamage(step,before,wet);if(survivalHUD.health<=0)break;}}}
+function physics(dt){if(riddenPig){if(!canSprint()||keys.has('KeyS')||shiftHeld())cancelSprint();if(shiftHeld())tryDismount();if(riddenPig){syncRider();if(gameMode==='survival')tickDamage(dt,p.y,true);return;}}const n=Math.max(1,Math.ceil(dt*120)),step=dt/n;for(let i=0;i<n;i++){const before=p.y,wet=gameMode==='survival'&&Number.isFinite(swimSurface());physicsStep(step);if(gameMode==='survival'){tickDamage(step,before,wet);if(survivalHUD.health<=0)break;}}}
 function physicsStep(dt){if(dt<=0)return;
  if(gameMode==='survival'&&!flying&&p.vy<=0&&supported()&&!Number.isFinite(swimSurface()))finishPlayerLanding(p.y);
  if(!canSprint()||keys.has('KeyS')||(!flying&&shiftHeld()))cancelSprint();else if(sprint&&!keys.has('KeyW'))cancelSprint();
@@ -835,7 +835,7 @@ function physicsStep(dt){if(dt<=0)return;
  if(ran){
   addExhaustion(Math.hypot(p.x-startX,p.z-startZ)*.1);
   const jumpStep=p.vy>0&&(keys.has('Space')||jumpQueued)&&!collision(startX+Math.sign(attemptX)*.34,p.y+1,startZ+Math.sign(attemptZ)*.34);
-  updateSprintWall(dt,hitX,hitZ,attemptX,attemptZ,p.x-startX,p.z-startZ,jumpStep);
+  updateSprintWall(dt,hitX,hitZ,tx*dt,tz*dt,p.x-startX,p.z-startZ,jumpStep);
  }else if(!flying&&fastSwim){addExhaustion(Math.hypot(p.x-startX,p.z-startZ)*.1);updateSprintWall(dt,hitX,hitZ,attemptX,attemptZ,p.x-startX,p.z-startZ);}else sprintWallTime=0;
  if(flying){swimLift=false;let dy=(+keys.has('Space')-+shiftHeld())*6.5;p.vy=mix(p.vy,dy,1-Math.exp(-dt*18));if(axis('y',p.vy*dt))p.vy=0;p.ground=false;jumpQueued=false;}
  else{
@@ -843,7 +843,7 @@ function physicsStep(dt){if(dt<=0)return;
    surface=swimSurface();wet=Number.isFinite(surface);fastSwim=updateSwimPose(surface);if(p.swimPose)p.eyeHeight=Math.min(p.eyeHeight,.4);
    p.ground=p.vy<=0&&supported();
    let swimPress=!suppressJump&&(jumpQueued||keys.has('Space')),thrust=0;
-   if(wet&&fastSwim){swimLift=false;p.ground=false;let vy=fw*Math.sin(p.pitch)*SPRINT_RULES.swimSpeed+(swimPress?2.4:0);if(surface-p.y<.25&&vy>0)vy=Math.min(vy,(surface-p.y)*5);p.vy=mix(p.vy,vy,1-Math.exp(-dt*12));jumpQueued=false;if(axis('y',p.vy*dt))p.vy=0;}
+   if(wet&&fastSwim){swimLift=false;p.ground=false;const bank=swimPress&&surface-p.y<=1.75&&(hitX||hitZ)&&!collision(p.x,Math.max(p.y+.06,surface+.46),p.z)&&((hitX&&!collision(p.x+Math.sign(tx)*.32,surface+.46,p.z))||(hitZ&&!collision(p.x,surface+.46,p.z+Math.sign(tz)*.32)));let vy=fw*Math.sin(p.pitch)*SPRINT_RULES.swimSpeed+(swimPress?2.4:0);if(bank)p.vy=Math.max(p.vy,5.8);else{if(surface-p.y<.25&&vy>0)vy=Math.min(vy,(surface-p.y)*5);p.vy=mix(p.vy,vy,1-Math.exp(-dt*12));}jumpQueued=false;if(axis('y',p.vy*dt))p.vy=0;}
    else if(wet&&swimPress){
     let depth=surface-p.y;
     // Only boost out of the water against a reachable bank. Probe beyond the
@@ -1637,14 +1637,14 @@ function dropInventoryCursor(all=false){if(!cursorStack||gameMode!=='survival')r
 function invDragStart(e){
  if(screen!=='inventory'||gameMode!=='survival'||e.button!==0||!e.isPrimary)return;
  const slot=invSlotAt(e.clientX,e.clientY),outside=invOutside(e.clientX,e.clientY);if(!slot&&!(outside&&cursorStack))return;
- invDrag={pointer:e.pointerId,x:e.clientX,y:e.clientY,source:slot,hadCarry:!!cursorStack,shift:e.shiftKey,moved:false};e.preventDefault();
+ invDrag={pointer:e.pointerId,x:e.clientX,y:e.clientY,source:slot,hadCarry:!!cursorStack,shift:e.shiftKey,moved:false};invPointer={x:e.clientX,y:e.clientY};const c=$('#invCursor');c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';e.preventDefault();
 }
 function invDragMove(e){
  if(!invDrag||e.pointerId!==invDrag.pointer||invDrag.moved||Math.hypot(e.clientX-invDrag.x,e.clientY-invDrag.y)<5)return;
  invDrag.moved=true;if(!invDrag.hadCarry&&invDrag.source)invActivate(invDrag.source);
 }
 function invDragEnd(e){
- if(!invDrag||e.pointerId!==invDrag.pointer)return;const g=invDrag;invDrag=null;if(screen!=='inventory'||gameMode!=='survival')return;
+ if(!invDrag||e.pointerId!==invDrag.pointer)return;invDragMove(e);const g=invDrag;invDrag=null;if(screen!=='inventory'||gameMode!=='survival')return;
  const dest=invSlotAt(e.clientX,e.clientY),outside=invOutside(e.clientX,e.clientY);
  if(!g.moved){if(g.source&&sameInvSlot(g.source,dest))invActivate(g.source,false,g.shift);else if(outside&&cursorStack)dropInventoryCursor(true);}
  else if(outside&&cursorStack)dropInventoryCursor(true);
@@ -1801,7 +1801,7 @@ function toggleModeForTest(){
  const next=gameMode==='creative'?'survival':'creative',stats={...survivalHUD};
  clearInput();setGameMode(next,stats);hotbar();target=ray();drawHeld();notify('テスト：'+modeLabel(gameMode));save(true);
 }
-function toggleFly(){if(gameMode==='survival'||riddenPig)return;flying=!flying;p.vy=0;p.ground=false;jumpQueued=false;notify(flying?'飛行モード ON':'飛行モード OFF');}
+function toggleFly(){if(gameMode==='survival'||riddenPig)return;if(!flying&&p.swimPose){if(collision(p.x,p.y,p.z,STAND_HEIGHT))return;p.swimPose=false;}flying=!flying;p.vy=0;p.ground=false;jumpQueued=false;notify(flying?'飛行モード ON':'飛行モード OFF');}
 function pressKey(code,now=performance.now()){
  if(keys.has(code))return;keys.add(code);
  if(code==='Space'){if(gameMode==='creative'&&now-lastSpace<=DOUBLE_TAP){toggleFly();lastSpace=-Infinity;suppressJump=!flying;}else{lastSpace=now;jumpQueued=!flying;}}
