@@ -565,7 +565,7 @@ function itemVertices(){
 function mobVertices(){
  const out=[];
  const emit=(v,tile,light)=>{const u=tile%4*16,y=(tile>>2)*16;for(const k of ord){const uv=uvs[k];out.push(...v[k],(u+.1+uv[0]*15.8)/64,(y+.1+uv[1]*15.8)/64,light);}};
- for(const m of mobs){if(m.hp<=0||Math.hypot(m.x-p.x,m.z-p.z)>64)continue;const k=m.baby?.5:1,c=Math.cos(m.yaw),s=Math.sin(m.yaw),a=Math.sin(m.step)*.52*(m.walkBlend||0),flap=m.type==='chicken'&&!m.ground?Math.sin(m.age*20)*.85:0;
+ for(const m of mobs){if(m.hp<=0||Math.hypot(m.x-p.x,m.z-p.z)>64)continue;const k=(m.baby?.5:1)*(m.type==='chicken'?16*.8/15:m.type==='pig'?.9:1.3/1.5),c=Math.cos(m.yaw),s=Math.sin(m.yaw),a=Math.sin(m.step)*.52*(m.walkBlend||0),flap=m.type==='chicken'&&!m.ground?Math.sin(m.age*20)*.85:0;
  const world=v=>[m.x+k*(v[0]*c+v[2]*s),m.y+k*v[1],m.z+k*(-v[0]*s+v[2]*c)];
  const box=(center,size,tiles,rot=0,pivot=center,head=false,wing=0)=>{const ch=Math.cos(head?m.head:0),sh=Math.sin(head?m.head:0),cr=Math.cos(rot),sr=Math.sin(rot),cw=Math.cos(wing),sw=Math.sin(wing);
   const at=v=>{let x=center[0]+(v[0]-.5)*size[0]-pivot[0],y=center[1]+(v[1]-.5)*size[1]-pivot[1],z=center[2]+(v[2]-.5)*size[2]-pivot[2];[y,z]=[y*cr-z*sr,y*sr+z*cr];[x,y]=[x*cw-y*sw,x*sw+y*cw];[x,z]=[x*ch+z*sh,-x*sh+z*ch];return world([x+pivot[0],y+pivot[1],z+pivot[2]]);};
@@ -1020,7 +1020,7 @@ function addFoodCrumbs(last=false){
 function updateEating(dt,now=performance.now()){
  if(eatHeld&&(!canEatSteak()||eatSlot!==selected))endEating();
  if(eatHeld){
-  const elapsed=Math.max(0,(now-eatLast)/1000);eatLast=now;eatElapsed+=elapsed;
+  const elapsed=Math.max(0,(now-eatLast)/1000);eatLast=Math.max(eatLast,now);eatElapsed+=elapsed;
   while(eatElapsed+1e-9>=eatNextBite&&eatNextBite<STEAK_RULES.seconds){addFoodCrumbs();eatNextBite+=.20;}
   while(eatHeld&&eatElapsed+1e-9>=STEAK_RULES.seconds){
    if(!completeSteak()){endEating();break;}
@@ -1045,7 +1045,8 @@ function newMob(type,x,y,z,baby=false,r=Math.random){return {type,x,y,z,baby,hp:
 function mobCollision(m,x,y,z){const {w,h}=mobSize(m),r=w/2-.002;for(let a=Math.floor(x-r);a<=Math.floor(x+r);a++)for(let b=Math.floor(y+1e-5);b<=Math.floor(y+h-1e-5);b++)for(let c=Math.floor(z-r);c<=Math.floor(z+r);c++)if(solid(a,b,c))return true;return false;}
 function mobStand(m,x,z,base,drop=3,water=false){if(x<1||z<1||x>=W-1||z>=D-1)return null;
  for(let y=Math.min(H-2,Math.floor(base)+1);y>=Math.max(1,Math.floor(base)-drop);y--){if(y>base+1.03||!solid(x,y-1,z)||mobCollision(m,x+.5,y,z+.5))continue;if(!water&&get(x,y,z)===WATER)continue;return y;}return null;}
-function spawnGround(x,z){if(x<2||z<2||x>=W-2||z>=D-2)return null;for(let y=H-3;y>0;y--){const b=get(x,y,z);if(b===0||isPlant(b))continue;if(b!==1||solid(x,y+1,z)||solid(x,y+2,z))return null;return y+1;}return null;}
+function animalSkyLight(x,y,z){for(let h=y;h<H;h++){const b=get(x,h,z);if(solid(x,h,z)&&b!==9)return 0;}return day?15:4;}
+function spawnGround(x,z){if(x<2||z<2||x>=W-2||z>=D-2)return null;for(let y=H-3;y>0;y--){const b=get(x,y,z);if(b===0||isPlant(b))continue;if(b!==1||solid(x,y+1,z)||solid(x,y+2,z)||animalSkyLight(x,y+1,z)<7)return null;return y+1;}return null;}
 function spawnGroup(x,z,r=Math.random,forced=null){const roll=r()*28,type=forced||(roll<10?'pig':roll<20?'chicken':'cow'),rule=MOB_RULES[type],n=randInt(...rule.group,r);let made=0;
  for(let i=0;i<n;i++){if(mobs.length>=MOB_LIMIT)break;for(let j=0;j<24;j++){const a=x+(j===0&&i===0?0:randInt(-4,4,r)),b=z+(j===0&&i===0?0:randInt(-4,4,r)),y=spawnGround(a,b);if(y===null||mobs.some(m=>Math.hypot(m.x-a-.5,m.z-b-.5)<1.1))continue;const m=newMob(type,a+.5,y,b+.5,r()<.05,r);if(mobCollision(m,m.x,m.y,m.z))continue;mobs.push(m);made++;break;}}
  return made;}
@@ -1071,16 +1072,16 @@ function updateMobs(dt){mobSpawnClock+=dt;if(day&&mobSpawnClock>=20){mobSpawnClo
  for(const m of mobs.slice()){if(m.hp<=0)continue;const rule=MOB_RULES[m.type];m.age+=dt;for(const k of ['panic','hurt','love','cooldown','fire'])m[k]=Math.max(0,m[k]-dt);if(m.baby&&m.age>=1200){m.baby=false;if(mobCollision(m,m.x,m.y,m.z))m.baby=true;else m.age=0;}
   if(m.type==='chicken'&&!m.baby){m.eggTime-=dt;if(m.eggTime<=0){spawnItem(113,1,m.x,m.y+.12,m.z);m.eggTime=300+Math.random()*300;}}
   if(m.fire>0){m.fireTick+=dt;if(m.fireTick>=1){m.fireTick-=1;mobDamage(m,1);}}else m.fireTick=0;if(m.hp<=0)continue;
-  const dist=Math.hypot(m.x-p.x,m.z-p.z),wet=get(Math.floor(m.x),Math.floor(m.y+.12),Math.floor(m.z))===WATER;
+  const startX=m.x,startZ=m.z,dist=Math.hypot(m.x-p.x,m.z-p.z),wet=get(Math.floor(m.x),Math.floor(m.y+.12),Math.floor(m.z))===WATER;
   m.decision-=dt;if(m.decision<=0&&!wet&&m.ground){chooseMobGoal(m);m.decision=m.goal==='wander'?.85:.35;}
   let t=m.path[0],vx=0,vz=0;const speed=rule.speed*6*(m.panic>0?rule.panicSpeed:m.goal==='tempt'?rule.temptSpeed:m.goal==='parent'?1.1:1);
-  if(t){let dx=t.x-m.x,dz=t.z-m.z,d=Math.hypot(dx,dz);if(d<.12&&Math.abs(m.y-t.y)<.25){m.path.shift();t=m.path[0];}if(t){dx=t.x-m.x;dz=t.z-m.z;d=Math.hypot(dx,dz);if(d>.001){vx=dx/d*Math.min(speed,d/dt);vz=dz/d*Math.min(speed,d/dt);m.yaw=Math.atan2(dx,dz);}}}
-  if(dist<7&&m.panic===0){const look=Math.atan2(p.x-m.x,p.z-m.z)-m.yaw;m.head=Math.max(-.9,Math.min(.9,Math.atan2(Math.sin(look),Math.cos(look))));}else m.head=Math.sin(m.age*.65)*.35;
+  if(t){let dx=t.x-m.x,dz=t.z-m.z,d=Math.hypot(dx,dz);if(d<.12&&Math.abs(m.y-t.y)<.25){m.path.shift();t=m.path[0];}if(t){dx=t.x-m.x;dz=t.z-m.z;d=Math.hypot(dx,dz);if(d>.001){vx=dx/d*Math.min(speed,d/dt);vz=dz/d*Math.min(speed,d/dt);const goalYaw=Math.atan2(dx,dz),turn=goalYaw-m.yaw;m.yaw+=Math.atan2(Math.sin(turn),Math.cos(turn))*(1-Math.exp(-dt*10));}}}
+  if(dist<7&&m.panic===0){const look=Math.atan2(p.x-m.x,p.z-m.z)-m.yaw;m.head+=(Math.max(-.9,Math.min(.9,Math.atan2(Math.sin(look),Math.cos(look))))-m.head)*(1-Math.exp(-dt*9));}else m.head+=(Math.sin(m.age*.65)*.35-m.head)*(1-Math.exp(-dt*5));
   const n=Math.max(1,Math.ceil(dt*60)),h=dt/n;for(let j=0;j<n;j++){const was=m.ground;if(was)m.fall=m.y;
    if(wet){m.vy=Math.min(2.2,m.vy+12*h);m.fall=m.y;}else{if(was&&t&&t.y>m.y+.3)m.vy=8.4;m.vy-=28*h;if(m.type==='chicken'&&m.vy<0)m.vy=Math.max(-2.5,m.vy*.98);}
    const before=m.y;m.ground=false;const hitY=mobMove(m,'y',m.vy*h);if(hitY){m.ground=m.vy<0;m.vy=0;}if(!wet){m.fall=Math.max(m.fall,before,m.y);if(m.ground){const fall=m.fall-m.y;m.fall=m.y;if(m.type!=='chicken'&&fall>3.05)mobDamage(m,Math.ceil(fall-3-.05));}}
    const hx=mobMove(m,'x',(vx+m.kx)*h),hz=mobMove(m,'z',(vz+m.kz)*h);if((hx||hz)&&m.ground){if(t&&t.y>m.y+.1)m.vy=8.4;else{m.path=[];m.decision=0;}}m.kx*=Math.exp(-h*7);m.kz*=Math.exp(-h*7);
-  }const motion=Math.hypot(vx,vz);m.step+=motion*dt*5;m.walkBlend+=(Math.min(1,motion/1.2)-m.walkBlend)*(1-Math.exp(-dt*12));if(m.y<0)m.hp=0;
+  }const motion=dt>0?Math.hypot(m.x-startX,m.z-startZ)/dt:0;m.step+=motion*dt*5;m.walkBlend+=(Math.min(1,motion/1.2)-m.walkBlend)*(1-Math.exp(-dt*12));if(m.y<0)m.hp=0;
  }
  mobs=mobs.filter(m=>m.hp>0&&(m.persistent||Math.hypot(m.x-p.x,m.y-p.y,m.z-p.z)<44));
  updateXP(dt);updateEggs(dt);
