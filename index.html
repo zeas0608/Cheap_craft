@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>VOXELCRAFT v1.14 | ブロックの世界</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>VOXELCRAFT v1.15 | ブロックの世界</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff;user-select:none}button{font:inherit;cursor:pointer;color:inherit}#game{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}#hud{position:absolute;inset:0;pointer-events:none;display:none}body.playing #hud{display:block}#cross{position:absolute;left:50%;top:50%;width:20px;height:20px;transform:translate(-50%,-50%);filter:drop-shadow(1px 1px 1px #000)}#cross:before,#cross:after{content:"";background:#fff;position:absolute}#cross:before{height:2px;width:18px;top:9px;left:1px}#cross:after{width:2px;height:18px;left:9px;top:1px}#debug{position:absolute;top:18px;left:20px;text-shadow:1px 2px 2px #000;font-size:12px;line-height:1.65;white-space:pre-line;font-variant-numeric:tabular-nums}#mode{position:absolute;right:20px;top:20px;background:#17251d99;border:1px solid #ffffff35;padding:8px 13px;border-radius:5px;font-size:12px;letter-spacing:.08em}#barWrap{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);text-align:center;max-width:96vw}#blockName{height:28px;font-size:15px;font-weight:650;text-shadow:1px 2px 3px #000}#bar{display:flex;gap:3px;padding:5px;background:#101811c9;border:1px solid #cbd5bc80;box-shadow:0 4px 16px #0007;border-radius:5px;pointer-events:auto} .slot{width:clamp(30px,6vw,53px);height:clamp(34px,6vw,53px);background:#586256aa;border:2px solid #202b22;position:relative;display:grid;place-items:center;padding:0;outline:0}.slot.active{background:#a6b59cba;border:2px solid #fff;box-shadow:0 0 0 2px #0009;transform:translateY(-2px)}.slot canvas{width:65%;height:65%;image-rendering:pixelated;filter:drop-shadow(2px 3px 1px #0008)}.slot small{position:absolute;top:1px;left:4px;font-size:10px;color:white;text-shadow:1px 1px #000}#toast{position:absolute;top:20%;left:50%;transform:translateX(-50%);background:#17251de8;border:1px solid #cbd5bc55;border-radius:5px;padding:10px 18px;font-size:14px;opacity:0;transition:opacity .2s;white-space:nowrap}#toast.on{opacity:1}#overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#101c14e8 0%,#101c1499 55%,#101c1440 100%);padding:22px;overflow:auto}#overlay.hidden{display:none}.panel{width:min(720px,100%);margin:auto;padding:30px 36px;background:linear-gradient(145deg,#18271eea,#101b15dc);border:1px solid #a8cba545;border-radius:12px;box-shadow:0 20px 80px #0008;backdrop-filter:blur(9px)}.eyebrow{color:#a5d49a;letter-spacing:.22em;font-size:11px;font-weight:750;margin-bottom:7px}h1{font-size:clamp(32px,7vw,64px);letter-spacing:-.07em;line-height:.95;margin:0;text-shadow:0 4px #2c472e,0 7px #0b130e;font-weight:1000}h1 span{color:#9fd275}.sub{color:#bdcdbd;font-size:13px;margin:14px 0 22px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px}.btn{padding:12px 14px;border:1px solid #80947f66;border-radius:5px;background:#34483a;text-align:center;font-weight:700;font-size:14px}.btn:hover{background:#4c6651}.btn.primary{background:#8cc66b;color:#172817;border-color:#c3e1ac;grid-column:1/-1;font-size:16px;padding:15px;box-shadow:inset 0 -3px #5b9347}.btn.primary:hover{background:#a9df89}.btn:disabled{opacity:.4;cursor:not-allowed}.controls{display:grid;grid-template-columns:1fr 1fr;gap:9px 20px;margin-top:19px;color:#c5d3c5;font-size:12px}.controls div{display:flex;align-items:center;justify-content:space-between;gap:8px}.controls b{font-weight:600;color:#fff}kbd{font-family:inherit;font-size:11px;background:#ffffff16;border:1px solid #ffffff24;border-radius:3px;padding:2px 5px;white-space:nowrap}.foot{margin-top:20px;font-size:10px;color:#8ea18e;line-height:1.6}#touch{display:none;position:absolute;inset:0;pointer-events:none}#touch button{pointer-events:auto;background:#20332699;border:1px solid #ffffff75;border-radius:9px;width:48px;height:48px;font-size:20px;touch-action:none}#dpad{position:absolute;left:15px;bottom:98px;display:grid;grid-template-columns:repeat(3,48px);gap:4px}#actions{position:absolute;right:15px;bottom:98px;display:grid;grid-template-columns:repeat(2,48px);gap:5px}#pauseTouch{position:absolute;right:15px;top:58px}#error{color:#ffb2a3;margin-top:12px;font-size:13px;display:none}@media(pointer:coarse){body.playing #touch{display:block}.controls{display:none}.panel{padding:22px}.sub{margin-bottom:14px}#barWrap{bottom:12px}#debug{top:9px;left:10px;font-size:10px}#mode{top:9px;right:10px}}@media(max-height:540px){.panel{padding:18px}.controls{margin-top:12px;gap:5px 14px}.foot{margin-top:10px}.sub{margin:9px 0 12px}h1{font-size:42px}.btn{padding:8px}.btn.primary{padding:10px}}
 
-/* v1.14: Minecraft-inspired hotbar and camera-space held model. */
-#heldView{position:absolute;right:1.8vh;bottom:-29vh;width:min(64vh,66vw);height:auto;aspect-ratio:1;pointer-events:none;image-rendering:pixelated;transform-origin:70% 86%;z-index:0;will-change:transform;display:block}
-#heldView.bare{right:24vh;bottom:-10vh;width:min(38vh,48vw)}
-#barWrap{--slot-size:clamp(27px,min(8.05vh,10.45vw),84px);bottom:0;z-index:2;max-width:98vw}
-#bar{gap:0;padding:2px;border:3px solid #171717;border-radius:0;background:#797979d9;box-shadow:0 0 0 1px #c8c8c8a0,inset 0 0 0 2px #bcbcbc9c;overflow:visible}
-.slot{width:var(--slot-size);height:var(--slot-size);flex:none;border:0;border-radius:0;outline:0;background:#2525258c;box-shadow:inset 0 0 0 2px #747474e6,inset 3px 3px 0 2px #373737bc,inset -3px -3px 0 2px #b4b4b4b0;position:relative;transform:none}
-.slot.active{background:#4545459c;border:0;box-shadow:inset 0 0 0 3px #7c8276;transform:none;z-index:1}
-.slot.active:after{content:"";position:absolute;inset:-4px;pointer-events:none;border:4px solid #d9e1cd;box-shadow:0 0 0 2px #1d211d,inset 0 0 0 2px #858c7e,inset -3px -3px #a3ad9b}
-.slot canvas{width:74%;height:74%;image-rendering:pixelated;filter:none;pointer-events:none}
+/* v1.15: Bedrock-style HUD and perspective first-person item view. */
+#heldView{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;z-index:0;display:block}
+#barWrap{--u:clamp(1px,min(.395vh,.52vw),5px);--slot-size:calc(var(--u)*20);bottom:var(--u);z-index:2;max-width:98vw}
+#bar{gap:0;padding:0;border:var(--u) solid #151515;border-radius:0;background:rgba(36,36,36,.32);box-shadow:0 0 0 1px #0005;overflow:visible}
+.slot{width:var(--slot-size);height:var(--slot-size);flex:none;border:0;border-radius:0;outline:0;background:rgba(18,18,18,.53);box-shadow:inset 0 0 0 var(--u) #7779,inset calc(var(--u)*2) calc(var(--u)*2) 0 var(--u) #333c,inset calc(var(--u)*-2) calc(var(--u)*-2) 0 var(--u) #a2a2a299;position:relative;transform:none}
+.slot.active{background:rgba(18,18,18,.53);border:0;transform:none;z-index:1;box-shadow:inset 0 0 0 var(--u) #a2aa97,inset calc(var(--u)*2) calc(var(--u)*2) 0 var(--u) #626b59,inset calc(var(--u)*-2) calc(var(--u)*-2) 0 var(--u) #c0c8b3}
+.slot.active:after{content:"";position:absolute;inset:calc(var(--u)*-1);pointer-events:none;border:var(--u) solid #e8f0dc;box-shadow:0 0 0 var(--u) #292d24,inset 0 0 0 var(--u) #a6b09c}
+.slot canvas{width:80%;height:80%;image-rendering:pixelated;filter:none;pointer-events:none}
 .slot small{display:none}
-#blockName{height:26px;font-size:clamp(12px,1.95vh,19px);font-weight:600;text-shadow:2px 2px #242424;opacity:0;transition:opacity .15s;pointer-events:none}
+#blockName{height:calc(var(--u)*7);font-size:clamp(12px,1.95vh,19px);font-weight:600;text-shadow:2px 2px #242424;opacity:0;transition:opacity .12s;pointer-events:none}
 #blockName.visible{opacity:1}
 #cross,#debug,#mode,#toast,#touch{z-index:3}
-@media(pointer:coarse){#barWrap{bottom:8px}#heldView{right:-4vw;width:min(58vh,64vw)}#heldView.bare{right:7vw;width:min(36vh,45vw)}}
+@media(pointer:coarse){#barWrap{bottom:8px}}
 </style></head><body>
 <canvas id="game" aria-label="3Dブロックワールド"></canvas><div id="hud"><canvas id="heldView" width="256" height="256" aria-hidden="true"></canvas><div id="debug"></div><div id="mode"></div><div id="cross"></div><div id="toast"></div><div id="barWrap"><div id="blockName"></div><div id="bar"></div></div><div id="touch"><div id="dpad"><span></span><button data-key="KeyW">▲</button><span></span><button data-key="KeyA">◀</button><button data-key="KeyS">▼</button><button data-key="KeyD">▶</button></div><div id="actions"><button data-key="Space">↑</button><button data-key="ShiftLeft">↓</button><button id="breakTouch">⛏</button><button id="placeTouch">＋</button><button id="flyTouch">✈</button></div><button id="pauseTouch">Ⅱ</button></div></div>
-<div id="overlay"><div class="panel"><div class="eyebrow">A BLOCK WORLD · CREATIVE SANDBOX · v1.14</div><h1>VOXEL<span>CRAFT</span></h1><p class="sub" id="subtitle">掘って、建てて、自由に探索する。あなただけのブロックの世界。</p><div class="buttons"><button id="start" class="btn primary">ワールドに入る</button><button id="new" class="btn">新しいワールド</button><button id="save" class="btn">ワールドを保存</button><button id="export" class="btn">セーブを出力</button><button id="import" class="btn">セーブを読み込む</button><button id="textureImport" class="btn">テクスチャ読み込み（JAR / ZIP）</button><button id="textureReset" class="btn">標準テクスチャに戻す</button><input type="file" id="textureFile" accept=".jar,.zip,application/zip" hidden><input type="file" id="file" accept=".json,application/json" hidden></div><div class="controls"><div><b>移動</b><kbd>W A S D</kbd></div><div><b>視点</b><kbd>マウス</kbd></div><div><b>ジャンプ / 上昇</b><kbd>Space</kbd></div><div><b>ダッシュ（Wを離すと解除）</b><kbd>W ×2</kbd></div><div><b>スニーク / 下降</b><kbd>Shift 長押し</kbd></div><div><b>破壊（長押し可）/ 設置</b><kbd>左 / 右クリック</kbd></div><div><b>ブロック選択</b><kbd>1–9 / ホイール</kbd></div><div><b>素手 / ブロックを戻す</b><kbd>0</kbd></div><div><b>飛行切替</b><kbd>Space ×2 / F</kbd></div><div><b>再出現</b><kbd>R</kbd></div><div><b>昼夜切替 / メニュー</b><kbd>N / Esc</kbd></div><div><b>テスト用リセット（変更消去）</b><kbd>Ctrl + Alt + R</kbd></div></div><div class="foot">オフライン対応 · シード地形生成 · 自動保存（利用可能な場合）<br>非公式のブロックサンドボックス。標準素材は独自の16×16ドット絵です。手元のJava版JAR・リソースパックZIPをローカルで読み込めます。公式コードは使用していません。</div><div id="error"></div></div></div>
+<div id="overlay"><div class="panel"><div class="eyebrow">A BLOCK WORLD · CREATIVE SANDBOX · v1.15</div><h1>VOXEL<span>CRAFT</span></h1><p class="sub" id="subtitle">掘って、建てて、自由に探索する。あなただけのブロックの世界。</p><div class="buttons"><button id="start" class="btn primary">ワールドに入る</button><button id="new" class="btn">新しいワールド</button><button id="save" class="btn">ワールドを保存</button><button id="export" class="btn">セーブを出力</button><button id="import" class="btn">セーブを読み込む</button><button id="textureImport" class="btn">テクスチャ読み込み（JAR / ZIP）</button><button id="textureReset" class="btn">標準テクスチャに戻す</button><input type="file" id="textureFile" accept=".jar,.zip,application/zip" hidden><input type="file" id="file" accept=".json,application/json" hidden></div><div class="controls"><div><b>移動</b><kbd>W A S D</kbd></div><div><b>視点</b><kbd>マウス</kbd></div><div><b>ジャンプ / 上昇</b><kbd>Space</kbd></div><div><b>ダッシュ（Wを離すと解除）</b><kbd>W ×2</kbd></div><div><b>スニーク / 下降</b><kbd>Shift 長押し</kbd></div><div><b>破壊（長押し可）/ 設置</b><kbd>左 / 右クリック</kbd></div><div><b>ブロック選択</b><kbd>1–9 / ホイール</kbd></div><div><b>素手 / ブロックを戻す</b><kbd>0</kbd></div><div><b>飛行切替</b><kbd>Space ×2 / F</kbd></div><div><b>再出現</b><kbd>R</kbd></div><div><b>昼夜切替 / メニュー</b><kbd>N / Esc</kbd></div><div><b>テスト用リセット（変更消去）</b><kbd>Ctrl + Alt + R</kbd></div></div><div class="foot">オフライン対応 · シード地形生成 · 自動保存（利用可能な場合）<br>非公式のブロックサンドボックス。標準素材は独自の16×16ドット絵です。手元のJava版JAR・リソースパックZIPをローカルで読み込めます。公式コードは使用していません。</div><div id="error"></div></div></div>
 <script>
 'use strict';
 (()=>{
@@ -226,6 +225,8 @@ function physicsStep(dt){if(dt<=0)return;
 function heldId(){return emptySlots.has(selected)?0:palette[selected];}
 const handCanvas=$('#heldView'),handCtx=handCanvas.getContext('2d'),tileCache=new Map();
 let swingStart=-Infinity,equipStart=-Infinity,lastHeld=-1,blockLabelTimer=0,bobPhase=0;
+const HAND_SWING_MS=320,HAND_EQUIP_MS=180,handPixels=new Map();
+let shownHeld=-1,equipFrom=-1,handStamp='',bobAmount=0,handLastYaw=null,handLastPitch=null,handYawLag=0,handPitchLag=0;
 // Every face uses the live 16px atlas. The shaded caches preserve alpha for leaves/glass.
 function faceTile(tile,shade){
  const key=tile+':'+shade;if(tileCache.has(key))return tileCache.get(key);
@@ -256,20 +257,74 @@ function drawModel(g,id,held=false){
  modelFace(g,side,a,diff(d,a),v,id?.82:.79);
  modelFace(g,side,d,diff(c,d),v,id?.68:1);
 }
-function drawHeld(){const id=heldId();handCanvas.classList.toggle('bare',!id);drawModel(handCtx,id,true);}
-function swingHand(){const now=performance.now();if(now-swingStart>=255)swingStart=now;}
+// A first-person camera-space cuboid. True perspective changes the visible faces
+// during the swing instead of translating/rotating a flat inventory icon.
+const handFaces=[
+ {v:[[-.5,.5,.5],[.5,.5,.5],[.5,.5,-.5],[-.5,.5,-.5]],n:[0,1,0],tile:'top',shade:1},
+ {v:[[-.5,.5,-.5],[.5,.5,-.5],[.5,-.5,-.5],[-.5,-.5,-.5]],n:[0,0,-1],tile:'side',shade:.80},
+ {v:[[.5,.5,-.5],[.5,.5,.5],[.5,-.5,.5],[.5,-.5,-.5]],n:[1,0,0],tile:'side',shade:.72},
+ {v:[[-.5,.5,.5],[-.5,.5,-.5],[-.5,-.5,-.5],[-.5,-.5,.5]],n:[-1,0,0],tile:'side',shade:.87},
+ {v:[[.5,.5,.5],[-.5,.5,.5],[-.5,-.5,.5],[.5,-.5,.5]],n:[0,0,1],tile:'side',shade:.76},
+ {v:[[-.5,-.5,-.5],[.5,-.5,-.5],[.5,-.5,.5],[-.5,-.5,.5]],n:[0,-1,0],tile:'bottom',shade:.57}
+];
+function rotateHand(v,a){let [x,y,z]=v,[rx,ry,rz]=a,c=Math.cos(rx),n=Math.sin(rx);[y,z]=[y*c-z*n,y*n+z*c];c=Math.cos(ry);n=Math.sin(ry);[x,z]=[x*c+z*n,-x*n+z*c];c=Math.cos(rz);n=Math.sin(rz);return [x*c-y*n,x*n+y*c,z];}
+function handPose(id,t,bob,phase,yawLag,pitchLag,equip){
+ // Fast forward/upward strike, then a slower recovery. The secondary curve
+ // changes yaw and roll independently, as seen in the supplied Bedrock clip.
+ const hit=t>=1?0:Math.sin(Math.PI*Math.pow(Math.max(0,t),.68));
+ const turn=t>=1?0:Math.sin(Math.PI*Math.pow(Math.max(0,t),.82));
+ const bx=Math.sin(phase)*bob*.028,by=Math.abs(Math.cos(phase))*bob*.035;
+ return {angles:[(id?-.062:-.26)-.60*hit+pitchLag,(id?.633:.65)-.95*turn+yawLag,(id?-.09:-.26)+.48*hit],
+ pos:[(id?1.268:1.22)-.82*hit+bx,(id?-1.236:-1.3)+.32*hit-by-.82*equip,(id?2.193:2.15)+.10*turn],
+ size:id?[1,1,1]:[.46,1.25,.46]};
+}
+function projectHand(v,w,h){const z=Math.max(.08,v[2]);return [w/2+h*Math.min(0,(w/h-1.65)*.32)+h*.95*v[0]/z,h/2-h*.95*v[1]/z];}
+function handGeometry(id,pose,w,h){
+ const transform=v=>{let a=rotateHand(v.map((x,i)=>x*pose.size[i]),pose.angles);return a.map((x,i)=>x+pose.pos[i]);};
+ const out=[];
+ for(const f of handFaces){
+  let v=f.v.map(transform),n=rotateHand(f.n,pose.angles),center=v[0].map((_,i)=>v.reduce((sum,q)=>sum+q[i],0)/4);
+  if(n.reduce((sum,x,i)=>sum+x*center[i],0)>=0||v.some(q=>q[2]<=.08))continue;
+  out.push({v,depth:center[2],tile:id?blocks[id][f.tile]:'skin',shade:f.shade});
+ }
+ return out.sort((a,b)=>b.depth-a.depth);
+}
+function handPixelColors(tile,shade){let key=tile+':'+shade;if(handPixels.has(key))return handPixels.get(key);let im=faceTile(tile,shade).getContext('2d').getImageData(0,0,16,16).data,out=[];
+ for(let i=0;i<im.length;i+=4){let a=im[i+3];out.push(a<8?null:{color:'rgba('+im[i]+','+im[i+1]+','+im[i+2]+','+(a/255)+')',opaque:a>250});}
+ handPixels.set(key,out);return out;
+}
+function paintHandFace(g,face,w,h){
+ const v=face.v,colors=handPixelColors(face.tile,face.shade),grid=[];
+ for(let j=0;j<=16;j++)for(let i=0;i<=16;i++){
+  let u=i/16,t=j/16,q=v[0].map((a,k)=>a+(v[1][k]-a)*u+(v[3][k]-a)*t);grid.push(projectHand(q,w,h));
+ }
+ for(let j=0;j<16;j++)for(let i=0;i<16;i++){let c=colors[j*16+i];if(!c)continue;let a=j*17+i,pts=[grid[a],grid[a+1],grid[a+18],grid[a+17]];
+  if(pts.every(q=>q[0]<0)||pts.every(q=>q[0]>w)||pts.every(q=>q[1]<0)||pts.every(q=>q[1]>h))continue;
+  g.beginPath();g.moveTo(...pts[0]);for(let k=1;k<4;k++)g.lineTo(...pts[k]);g.closePath();g.fillStyle=c.color;g.fill();if(c.opaque){g.strokeStyle=c.color;g.lineWidth=.65;g.stroke();}
+ }
+}
+function drawHeld(){handStamp='';}
+function swingHand(){const now=performance.now();if(now-swingStart>=HAND_SWING_MS)swingStart=now;}
 function updateHand(now,dt){
  if(!playing)return;
- const motion=Math.min(1,Math.hypot(p.vx,p.vz)/4.32);if(p.ground&&!flying)bobPhase+=dt*10*motion;
- const bob=p.ground&&!flying?motion:0,age=(now-swingStart)/300,t=Math.min(1,Math.max(0,age)),swing=Math.sin(Math.PI*t),equip=Math.sin(Math.PI*Math.min(1,Math.max(0,(now-equipStart)/190)));
- const h=innerHeight/100,x=-h*10*swing+Math.sin(bobPhase)*h*.65*bob,y=h*5*swing+Math.abs(Math.cos(bobPhase))*h*.5*bob+h*10*equip;
- handCanvas.style.transform='translate('+x+'px,'+y+'px) rotate('+(-20*swing)+'deg)';
- handCanvas.style.filter='brightness('+(day?1:.56)+')'+(underwater()?' saturate(.72) hue-rotate(12deg) brightness(.85)':'');
+ if(breaking&&now-swingStart>=HAND_SWING_MS)swingStart=now;
+ const t=Math.min(1,Math.max(0,(now-swingStart)/HAND_SWING_MS)),equipAge=Math.max(0,now-equipStart),equip=Math.sin(Math.PI*Math.min(1,equipAge/HAND_EQUIP_MS));
+ const id=equipAge<HAND_EQUIP_MS*.5&&equipFrom>=0?equipFrom:heldId();shownHeld=id;
+ const motion=p.ground&&!flying?Math.min(1,Math.hypot(p.vx,p.vz)/4.32):0,k=1-Math.exp(-Math.max(0,dt)*14);
+ bobAmount+=(motion-bobAmount)*k;bobPhase+=Math.max(0,dt)*10*bobAmount;
+ if(handLastYaw!==null){handYawLag+=Math.max(-.14,Math.min(.14,(handLastYaw-p.yaw)*.85));handPitchLag+=Math.max(-.12,Math.min(.12,(handLastPitch-p.pitch)*.85));}
+ handLastYaw=p.yaw;handLastPitch=p.pitch;const decay=Math.exp(-Math.max(0,dt)*12);handYawLag=Math.max(-.18,Math.min(.18,handYawLag*decay));handPitchLag=Math.max(-.15,Math.min(.15,handPitchLag*decay));
+ const scale=Math.min(1,1600/Math.max(1,innerWidth)),w=Math.max(1,Math.round(innerWidth*scale)),h=Math.max(1,Math.round(innerHeight*scale));
+ if(handCanvas.width!==w||handCanvas.height!==h){handCanvas.width=w;handCanvas.height=h;handStamp='';}
+ const pose=handPose(id,t,bobAmount,bobPhase,handYawLag,handPitchLag,equip),wet=underwater(),stamp=[id,w,h,+day,+wet,...pose.angles,...pose.pos].map(n=>Math.round(n*1000)).join(':');
+ if(handStamp===stamp)return;handStamp=stamp;handCtx.setTransform(1,0,0,1,0,0);handCtx.clearRect(0,0,w,h);
+ for(const f of handGeometry(id,pose,w,h))paintHandFace(handCtx,f,w,h);
+ handCanvas.style.filter='brightness('+(day?1:.56)+')'+(wet?' saturate(.72) hue-rotate(12deg) brightness(.85)':'');
 }
 function action(place){if(!playing)return;const id=heldId();if(!place)swingHand();if(place&&!id)return;target=ray();if(!target)return;let v=place?target.prev:target.v;if(!v)return;let [x,y,z]=v;if(!inside(x,y,z))return;if(!place){if(target.b===11){notify('岩盤は破壊できません');return;}const broken=get(x,y,z);if(!broken||broken===WATER)return;spawnDebris(x,y,z,broken);change(x,y,z,0);}else{if(get(x,y,z)&&get(x,y,z)!==10)return;let r=.29;if(x+1>p.x-r&&x<p.x+r&&z+1>p.z-r&&z<p.z+r&&y+1>p.y&&y<p.y+bodyHeight())return;change(x,y,z,id);swingHand();}target=ray();}
 function drawSlot(i){const b=$('#bar').children[i];if(!b)return;const id=emptySlots.has(i)?0:palette[i];b.title=id?blocks[id].name:'空のスロット';b.setAttribute('aria-label',(i+1)+' '+b.title);const g=b.querySelector('canvas').getContext('2d');if(id)drawModel(g,id);else g.clearRect(0,0,256,256);}
-function hotbar(){tileCache.clear();let bar=$('#bar');bar.innerHTML='';palette.forEach((id,i)=>{let b=document.createElement('button');b.className='slot';let c=document.createElement('canvas');c.width=c.height=256;b.append(c);b.addEventListener('click',()=>choose(i));b.addEventListener('contextmenu',e=>{e.preventDefault();choose(i);toggleEmpty();});bar.append(b);drawSlot(i);});choose(selected);drawHeld();}
-function choose(i){selected=((i%9)+9)%9;[...$('#bar').children].forEach((b,j)=>{b.classList.toggle('active',j===selected);b.setAttribute('aria-pressed',String(j===selected));});const id=heldId(),label=$('#blockName');if(id!==lastHeld){lastHeld=id;equipStart=performance.now();drawHeld();label.textContent=id?blocks[id].name:'';label.classList.toggle('visible',!!id);clearTimeout(blockLabelTimer);blockLabelTimer=setTimeout(()=>label.classList.remove('visible'),1400);}}
+function hotbar(){tileCache.clear();handPixels.clear();let bar=$('#bar');bar.innerHTML='';palette.forEach((id,i)=>{let b=document.createElement('button');b.className='slot';let c=document.createElement('canvas');c.width=c.height=256;b.append(c);b.addEventListener('click',()=>choose(i));b.addEventListener('contextmenu',e=>{e.preventDefault();choose(i);toggleEmpty();});bar.append(b);drawSlot(i);});choose(selected);drawHeld();}
+function choose(i){selected=((i%9)+9)%9;[...$('#bar').children].forEach((b,j)=>{b.classList.toggle('active',j===selected);b.setAttribute('aria-pressed',String(j===selected));});const id=heldId(),label=$('#blockName');if(id!==lastHeld){equipFrom=shownHeld>=0?shownHeld:id;lastHeld=id;equipStart=performance.now();drawHeld();label.textContent=id?blocks[id].name:'';label.classList.toggle('visible',!!id);clearTimeout(blockLabelTimer);blockLabelTimer=setTimeout(()=>label.classList.remove('visible'),1400);}}
 function toggleEmpty(){if(emptySlots.has(selected))emptySlots.delete(selected);else emptySlots.add(selected);drawSlot(selected);choose(selected);}
 function notify(s){$('#toast').textContent=s;$('#toast').classList.add('on');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('on'),1600);}
 function snapshot(){return {version:1,seed,edits:[...edits],p:{x:p.x,y:p.y,z:p.z,yaw:p.yaw,pitch:p.pitch},day,flying,selected,emptySlots:[...emptySlots]};}
@@ -293,7 +348,7 @@ function mouseLook(dx,dy,locked,now=performance.now()){
 function resetWorldForTest(){clearInput();gen(seed);hotbar();choose(0);target=null;touchId=null;resetMouseLook();rebuild();let saved=save(true);notify('テスト用リセット完了'+(saved?'':'（保存不可）'));}
 function beginBreak(source){if(!playing||breaking)return;breaking=true;breakSource=source;target=ray();action(false);nextBreak=performance.now()+BREAK_INITIAL;}
 function stopBreak(source){if(source&&breakSource!==source)return;breaking=false;breakSource=null;nextBreak=Infinity;}
-function clearInput(){swingStart=-Infinity;keys.clear();sprint=false;swimLift=false;lastW=lastSpace=-Infinity;jumpQueued=false;suppressJump=false;stopBreak();drag=false;resetMouseLook();p.vx=p.vy=p.vz=0;}
+function clearInput(){swingStart=-Infinity;handLastYaw=handLastPitch=null;handYawLag=handPitchLag=bobAmount=0;handStamp='';keys.clear();sprint=false;swimLift=false;lastW=lastSpace=-Infinity;jumpQueued=false;suppressJump=false;stopBreak();drag=false;resetMouseLook();p.vx=p.vy=p.vz=0;}
 function updateBreak(now){if(!breaking||now<nextBreak)return;action(false);nextBreak=now+BREAK_INTERVAL;}
 function toggleFly(){flying=!flying;p.vy=0;p.ground=false;jumpQueued=false;notify(flying?'飛行モード ON':'飛行モード OFF');}
 function pressKey(code,now=performance.now()){
