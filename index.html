@@ -710,7 +710,7 @@ function playerVertices(now=performance.now()){
  box([-2,6,0],[4,12,4],82,leftLeg);box([2,6,0],[4,12,4],82,rightLeg,true);
  box([0,18,0],[8,12,4],70);
  box([-6,18,0],[4,12,4],76,rightArm);box([6,18,0],[4,12,4],76,leftArm,true);
- box([0,28,0],[8,8,8],64,v=>rotate(v,[0,24,0],p.pitch));
+ box([0,28,0],[8,8,8],64,v=>rotate(v,[0,24,0],-p.pitch));
  if(id&&itemInfo(id)){
   const t=itemInfo(id),grip=v=>rightArm(v);
   if(isPlant(id)||isItem(id)){
