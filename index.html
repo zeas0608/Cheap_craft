@@ -335,7 +335,7 @@ const chestData=new Map(),chestLinks=new Map(),wetChests=new Set();
 let openChestIds=[],creativeContainerCatalog=false;
 function chestSlots(i){if(!chestData.has(i))chestData.set(i,Array(27).fill(null));return chestData.get(i);}
 function chestOrientation(i){return chestFacing.get(i)??4;}
-function chestRight(f){return f===4?[-1,0]:f===5?[1,0]:f===0?[0,1]:[0,-1];}
+function chestRight(f){return f===4?[1,0]:f===5?[-1,0]:f===0?[0,-1]:[0,1];}
 function chestPair(i){const j=chestLinks.get(i);return j!==undefined&&chestLinks.get(j)===i&&world[i]===20&&world[j]===20?j:null;}
 function chestOrder(i){const j=chestPair(i);if(j===null)return [i];const a=coords(i),b=coords(j),r=chestRight(chestOrientation(i));return (b[0]-a[0])*r[0]+(b[2]-a[2])*r[1]>0?[i,j]:[j,i];}
 function tryLinkChest(i){if(chestPair(i)!==null)return;const [x,y,z]=coords(i),[dx,dz]=chestRight(chestOrientation(i));for(const sign of [-1,1]){const a=x+sign*dx,b=z+sign*dz;if(!inside(a,y,b))continue;const j=ix(a,y,b);if(world[j]!==20||chestOrientation(j)!==chestOrientation(i)||chestPair(j)!==null)continue;chestLinks.set(i,j);chestLinks.set(j,i);markDirty(a,b);break;}}
@@ -349,6 +349,7 @@ function clearOpenChest(){const ids=openChestIds;openChestIds=[];markChestMeshes
 function restoreChestData(data){
  for(const e of Array.isArray(data.chestData)?data.chestData:[]){if(Array.isArray(e)&&Number.isInteger(e[0])&&world[e[0]]===20&&Array.isArray(e[1]))chestData.set(e[0],Array.from({length:27},(_,k)=>cleanStack(e[1][k])));}
  for(const e of Array.isArray(data.chestLinks)?data.chestLinks:[]){if(!Array.isArray(e))continue;const [i,j]=e;if(!Number.isInteger(i)||!Number.isInteger(j)||world[i]!==20||world[j]!==20||i===j||chestLinks.has(i)||chestLinks.has(j)||chestOrientation(i)!==chestOrientation(j))continue;const a=coords(i),b=coords(j),r=chestRight(chestOrientation(i));if(a[1]===b[1]&&Math.abs(a[0]-b[0])+Math.abs(a[2]-b[2])===1&&Math.abs((a[0]-b[0])*r[0]+(a[2]-b[2])*r[1])===1){chestLinks.set(i,j);chestLinks.set(j,i);}}
+ if(!Array.isArray(data.chestLinks))for(const [i,b] of edits)if(b===20)tryLinkChest(i);
  for(const i of Array.isArray(data.wetChests)?data.wetChests:[])if(Number.isInteger(i)&&world[i]===20)wetChests.add(i);
 }
 
@@ -480,7 +481,8 @@ function waterCorners(x,y,z){return [waterCorner(x,y,z),waterCorner(x+1,y,z),wat
 function waterSurfaceAt(x,y,z,px,pz){let [a,b,c,d]=waterCorners(x,y,z),u=Math.max(0,Math.min(1,px-x)),v=Math.max(0,Math.min(1,pz-z));return u+v<=1?a+(b-a)*u+(c-a)*v:d+(c-d)*(1-u)+(b-d)*(1-v);}
 // Camera immersion, not foot immersion: a shallow stream does not tint the screen
 // unless the camera is actually below its local fluid surface.
-function underwater(e=eye()){let [x,y,z]=e.map(Math.floor);return get(x,y,z)===WATER&&e[1]<y+waterSurfaceAt(x,y,z,e[0],e[2]);}
+function isWaterCell(x,y,z){return get(x,y,z)===WATER||(inside(x,y,z)&&wetChests.has(ix(x,y,z)));}
+function underwater(e=eye()){let [x,y,z]=e.map(Math.floor);return isWaterCell(x,y,z)&&e[1]<y+waterSurfaceAt(x,y,z,e[0],e[2]);}
 function waterFog(){return day?[.065,.24,.43]:[.024,.075,.15];}
 const SAPLING_BLOCK=18,SAPLING_ITEM=101,BONEMEAL_ID=123;
 const saplingStages=new Map();let saplingClock=0;
@@ -1094,7 +1096,9 @@ function render(){if(fallback){renderSoft();return;}resize();let e=worldViewEye(
 drawMiningCracks(vp,e);
 if(playing&&target&&!aimedMob()){let [x,y,z]=target.v,q=.004;let v=[[x-q,y-q,z-q],[x+1+q,y-q,z-q],[x+1+q,y-q,z+1+q],[x-q,y-q,z+1+q],[x-q,y+1+q,z-q],[x+1+q,y+1+q,z-q],[x+1+q,y+1+q,z+1+q],[x-q,y+1+q,z+1+q]],edges=[0,1,1,2,2,3,3,0,4,5,5,6,6,7,7,4,0,4,1,5,2,6,3,7];gl.useProgram(linePr);gl.disableVertexAttribArray(loc.uv);gl.disableVertexAttribArray(loc.light);gl.bindBuffer(gl.ARRAY_BUFFER,lineBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(edges.flatMap(i=>v[i])),gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,3,gl.FLOAT,false,0,0);gl.uniformMatrix4fv(lv,false,vp);gl.uniform4f(lc,.06,.07,.05,1);gl.drawArrays(gl.LINES,0,24);}}
 function bodyHeight(){return p.swimPose?.6:p.crouch?CROUCH_HEIGHT:STAND_HEIGHT;}
-function collision(x,y,z,h=bodyHeight()){let r=.3;for(let a=Math.floor(x-r+.00001);a<=Math.floor(x+r-.00001);a++)for(let b=Math.floor(y+.00001);b<=Math.floor(y+h-.00001);b++)for(let c=Math.floor(z-r+.00001);c<=Math.floor(z+r-.00001);c++)if(solid(a,b,c))return true;return false;}
+function chestBounds(x,y,z){const i=ix(x,y,z),j=chestPair(i),b=[x+.0625,y,z+.0625,x+.9375,y+.875,z+.9375];if(j!==null){const a=coords(j);if(a[0]<x)b[0]=x;if(a[0]>x)b[3]=x+1;if(a[2]<z)b[2]=z;if(a[2]>z)b[5]=z+1;}return b;}
+function collisionBlock(a,b,c,x,y,z,r,h){if(!solid(a,b,c))return false;if(get(a,b,c)!==20)return true;const q=chestBounds(a,b,c);return x+r>q[0]+1e-5&&x-r<q[3]-1e-5&&y+h>q[1]+1e-5&&y<q[4]-1e-5&&z+r>q[2]+1e-5&&z-r<q[5]-1e-5;}
+function collision(x,y,z,h=bodyHeight()){let r=.3;for(let a=Math.floor(x-r+.00001);a<=Math.floor(x+r-.00001);a++)for(let b=Math.floor(y+.00001);b<=Math.floor(y+h-.00001);b++)for(let c=Math.floor(z-r+.00001);c<=Math.floor(z+r-.00001);c++)if(collisionBlock(a,b,c,x,y,z,r,h))return true;return false;}
 function supported(x=p.x,y=p.y,z=p.z){return collision(x,y-.035,z);}
 function sneakMove(k,v){if(!v)return false;const next=(f)=>supported(p.x+(k==='x'?v*f:0),p.y,p.z+(k==='z'?v*f:0));if(!next(1)){let lo=0,hi=1;for(let i=0;i<12;i++){let m=(lo+hi)/2;if(next(m))lo=m;else hi=m;}axis(k,v*lo);return true;}return axis(k,v);}
 function shiftHeld(){return keys.has('ShiftLeft')||keys.has('ShiftRight')||(flying?mobile.descending:mobile.sneak);}
@@ -1131,7 +1135,7 @@ function axis(k,v){if(v===0)return false;let rem=v;while(Math.abs(rem)>1e-6){let
 function swimSurface(){
  let r=.3,top=-Infinity,y0=Math.floor(p.y+.001),y1=Math.floor(p.y+.3);
  for(let x=Math.floor(p.x-r+.00001);x<=Math.floor(p.x+r-.00001);x++)for(let z=Math.floor(p.z-r+.00001);z<=Math.floor(p.z+r-.00001);z++)for(let y=y0;y<=y1;y++){
-  if(get(x,y,z)!==WATER)continue;
+  if(!isWaterCell(x,y,z))continue;
   let sx=Math.max(x+.00001,Math.min(x+1-.00001,p.x)),sz=Math.max(z+.00001,Math.min(z+1-.00001,p.z));
   let surface=y+waterSurfaceAt(x,y,z,sx,sz);if(surface>p.y+.001){
    // Find the true connected surface above this part of the player footprint.
@@ -1387,7 +1391,7 @@ function updateItems(dt){
  for(let i=droppedItems.length-1;i>=0;i--){
   const q=droppedItems[i];q.age+=dt;if(q.age>=300||q.y<-.5){droppedItems.splice(i,1);continue;}
   const n=Math.max(1,Math.ceil(dt*60)),h=dt/n;
-  for(let j=0;j<n;j++){const wet=get(Math.floor(q.x),Math.floor(q.y),Math.floor(q.z))===WATER;
+  for(let j=0;j<n;j++){const wet=isWaterCell(Math.floor(q.x),Math.floor(q.y),Math.floor(q.z));
    q.vy+=(wet?1.5:-16)*h;if(wet)q.vy=Math.min(.65,q.vy);
    q.ground=false;for(const [axis,vel] of [['x','vx'],['y','vy'],['z','vz']]){const old=q[axis];q[axis]+=q[vel]*h;
     if(debrisBlocked(q.x,q.y,q.z,.09)){q[axis]=old;if(axis==='y'&&q[vel]<0){q.ground=true;q.vx*=.72;q.vz*=.72;}q[vel]=0;}
@@ -1462,7 +1466,7 @@ function updateEating(dt,now=performance.now()){
  for(const q of eatCrumbs){q.life-=dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vy+=2.5*dt;q.angle+=q.spin*dt;}
  eatCrumbs=eatCrumbs.filter(q=>q.life>0);
 }
-function useHeld(){if(useBoneMeal())return;const m=aimedMob();if(m&&isDying(m))return;if(useAnimalItem(m))return;if(m&&feedMob(m))return;if(!shiftHeld()){const block=ray();if(block?.b===19){openInventory(true);return;}if(block?.b===20){openChest(block.v);return;}}if(heldId()===113){throwEgg();return;}if(heldId()===STEAK_ID){beginEating();return;}action(true);}
+function useHeld(){const m=aimedMob();if(!m&&!shiftHeld()){const block=ray();if(block?.b===19){openInventory(true);return;}if(block?.b===20){openChest(block.v);return;}}if(useBoneMeal())return;if(m&&isDying(m))return;if(useAnimalItem(m))return;if(m&&feedMob(m))return;if(heldId()===113){throwEgg();return;}if(heldId()===STEAK_ID){beginEating();return;}action(true);}
 function giveTestSteak(){if(gameMode!=='survival'){notify('サバイバルに切り替えてください');return;}const n=64-insertStack(inventory,STEAK_ID,64);refreshInventoryHotbar();notify(n?'テスト：ステーキ '+n+' 個を追加':'インベントリに空きがありません');}
 // Passive animals. World-space units are blocks; AI goals are evaluated by priority.
 const MOB_RULES={pig:{hp:10,w:.9,h:.9,scale:.9,speed:.25,panicSpeed:1.25,temptSpeed:1.2,group:[1,3],weight:10,food:[114,115,116]},chicken:{hp:4,w:.6,h:.8,scale:.8,speed:.25,panicSpeed:1.4,temptSpeed:1,group:[2,4],weight:10,food:[104,120,121,122]},cow:{hp:10,w:.9,h:1.3,scale:1.3,speed:.2,panicSpeed:1.25,temptSpeed:1.25,group:[2,3],weight:8,food:[117]}};
@@ -1471,7 +1475,7 @@ let mobs=[],xpOrbs=[],eggs=[],mobSpawnClock=0,mobAttackAt=-Infinity;
 const randInt=(a,b,r=Math.random)=>a+Math.floor(r()*(b-a+1));
 function mobSize(m){const r=MOB_RULES[m.type],k=m.baby?.5:1;return {w:r.w*k,h:r.h*k};}
 function newMob(type,x,y,z,baby=false,r=Math.random){return {type,x,y,z,baby,hp:MOB_RULES[type].hp,age:0,yaw:r()*Math.PI*2,head:0,step:0,vy:0,ground:false,fall:y,panic:0,hurt:0,fire:0,fireTick:0,love:0,cooldown:0,eggTime:300+r()*300,decision:0,path:[],goal:'idle',kx:0,kz:0,persistent:false,walkBlend:0,hitCooldown:0,lastHit:0,knockTime:0,routeTicks:0,wanderTicks:0,wanderWait:0,navGoal:null,saddled:false,boost:0};}
-function mobCollision(m,x,y,z){const {w,h}=mobSize(m),r=w/2-.002;for(let a=Math.floor(x-r);a<=Math.floor(x+r);a++)for(let b=Math.floor(y+1e-5);b<=Math.floor(y+h-1e-5);b++)for(let c=Math.floor(z-r);c<=Math.floor(z+r);c++)if(solid(a,b,c))return true;return false;}
+function mobCollision(m,x,y,z){const {w,h}=mobSize(m),r=w/2-.002;for(let a=Math.floor(x-r);a<=Math.floor(x+r);a++)for(let b=Math.floor(y+1e-5);b<=Math.floor(y+h-1e-5);b++)for(let c=Math.floor(z-r);c<=Math.floor(z+r);c++)if(collisionBlock(a,b,c,x,y,z,r,h))return true;return false;}
 function mobStand(m,x,z,base,drop=3){return mobNavStand(m,x,z,base,drop);}
 function animalSkyLight(x,y,z){for(let h=y;h<H;h++){const b=get(x,h,z);if(solid(x,h,z)&&b!==9)return 0;}return day?15:4;}
 function spawnGround(x,z){if(x<2||z<2||x>=W-2||z>=D-2)return null;for(let y=H-3;y>0;y--){const b=get(x,y,z);if(b===0||isPlant(b))continue;if(b!==1||solid(x,y+1,z)||solid(x,y+2,z)||animalSkyLight(x,y+1,z)<7)return null;return y+1;}return null;}
@@ -2151,7 +2155,7 @@ function drawInventory(){
 }
 function openChest(v){const i=ix(...v);if(!chestCanOpen(i)){notify('チェストの上にブロックがあるため開けません');return;}openInventory(false,chestOrder(i));}
 function openInventory(workbench=false,chest=[]){
- if(!playing)return;openChestIds=chest;markChestMeshes(chest);creativeContainerCatalog=false;$('#inventoryScreen').classList.toggle('chest',chest.length>0);$('#inventoryScreen').classList.toggle('large-chest',chest.length===2);craftGrid=Array(workbench===true?9:4).fill(null);$('#inventoryScreen').classList.toggle('workbench',craftGrid.length===9);$('#craftTitle').textContent=craftGrid.length===9?'作業台':'クラフト';playing=false;clearInput();target=null;document.body.classList.remove('playing');invDrag=null;invHover=null;invPointer=null;invPose=null;invStamp='';invLast=performance.now();showScreen('inventory');$('#invHint').hidden=true;drawInventory();if(document.pointerLockElement===canvas)document.exitPointerLock();
+ if(!playing)return;clearOpenChest();openChestIds=chest;markChestMeshes(chest);creativeContainerCatalog=false;$('#inventoryScreen').classList.toggle('chest',chest.length>0);$('#inventoryScreen').classList.toggle('large-chest',chest.length===2);craftGrid=Array(workbench===true?9:4).fill(null);$('#inventoryScreen').classList.toggle('workbench',craftGrid.length===9);$('#craftTitle').textContent=craftGrid.length===9?'作業台':'クラフト';playing=false;clearInput();target=null;document.body.classList.remove('playing');invDrag=null;invHover=null;invPointer=null;invPose=null;invStamp='';invLast=performance.now();showScreen('inventory');$('#invHint').hidden=true;drawInventory();if(document.pointerLockElement===canvas)document.exitPointerLock();
 }
 function settleInventory(){
  for(const q of [...craftGrid,cursorStack])if(q){const left=insertStack(inventory,q.id,q.count);if(left)spawnItem(q.id,left,p.x,p.y+.5,p.z,true);}
