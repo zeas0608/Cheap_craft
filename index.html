@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>VOXELCRAFT v1.62 | ブロックの世界</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>VOXELCRAFT v1.63 | ブロックの世界</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff;user-select:none}button{font:inherit;cursor:pointer;color:inherit}#game{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}#hud{position:absolute;inset:0;pointer-events:none;display:none}body.playing #hud{display:block}#cross{position:absolute;left:50%;top:50%;width:20px;height:20px;transform:translate(-50%,-50%);filter:drop-shadow(1px 1px 1px #000)}#cross:before,#cross:after{content:"";background:#fff;position:absolute}#cross:before{height:2px;width:18px;top:9px;left:1px}#cross:after{width:2px;height:18px;left:9px;top:1px}#debug{position:absolute;top:18px;left:20px;text-shadow:1px 2px 2px #000;font-size:12px;line-height:1.65;white-space:pre-line;font-variant-numeric:tabular-nums}#mode{position:absolute;right:20px;top:20px;background:#17251d99;border:1px solid #ffffff35;padding:8px 13px;border-radius:5px;font-size:12px;letter-spacing:.08em}#barWrap{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);text-align:center;max-width:96vw}#blockName{height:28px;font-size:15px;font-weight:650;text-shadow:1px 2px 3px #000}#bar{display:flex;gap:3px;padding:5px;background:#101811c9;border:1px solid #cbd5bc80;box-shadow:0 4px 16px #0007;border-radius:5px;pointer-events:auto} .slot{width:clamp(30px,6vw,53px);height:clamp(34px,6vw,53px);background:#586256aa;border:2px solid #202b22;position:relative;display:grid;place-items:center;padding:0;outline:0}.slot.active{background:#a6b59cba;border:2px solid #fff;box-shadow:0 0 0 2px #0009;transform:translateY(-2px)}.slot canvas{width:65%;height:65%;image-rendering:pixelated;filter:drop-shadow(2px 3px 1px #0008)}.slot small{position:absolute;top:1px;left:4px;font-size:10px;color:white;text-shadow:1px 1px #000}#toast{position:absolute;top:20%;left:50%;transform:translateX(-50%);background:#17251de8;border:1px solid #cbd5bc55;border-radius:5px;padding:10px 18px;font-size:14px;opacity:0;transition:opacity .2s;white-space:nowrap}#toast.on{opacity:1}#overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#101c14e8 0%,#101c1499 55%,#101c1440 100%);padding:22px;overflow:auto}#overlay.hidden{display:none}.panel{width:min(720px,100%);margin:auto;padding:30px 36px;background:linear-gradient(145deg,#18271eea,#101b15dc);border:1px solid #a8cba545;border-radius:12px;box-shadow:0 20px 80px #0008;backdrop-filter:blur(9px)}.eyebrow{color:#a5d49a;letter-spacing:.22em;font-size:11px;font-weight:750;margin-bottom:7px}h1{font-size:clamp(32px,7vw,64px);letter-spacing:-.07em;line-height:.95;margin:0;text-shadow:0 4px #2c472e,0 7px #0b130e;font-weight:1000}h1 span{color:#9fd275}.sub{color:#bdcdbd;font-size:13px;margin:14px 0 22px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px}.btn{padding:12px 14px;border:1px solid #80947f66;border-radius:5px;background:#34483a;text-align:center;font-weight:700;font-size:14px}.btn:hover{background:#4c6651}.btn.primary{background:#8cc66b;color:#172817;border-color:#c3e1ac;grid-column:1/-1;font-size:16px;padding:15px;box-shadow:inset 0 -3px #5b9347}.btn.primary:hover{background:#a9df89}.btn:disabled{opacity:.4;cursor:not-allowed}.controls{display:grid;grid-template-columns:1fr 1fr;gap:9px 20px;margin-top:19px;color:#c5d3c5;font-size:12px}.controls div{display:flex;align-items:center;justify-content:space-between;gap:8px}.controls b{font-weight:600;color:#fff}kbd{font-family:inherit;font-size:11px;background:#ffffff16;border:1px solid #ffffff24;border-radius:3px;padding:2px 5px;white-space:nowrap}.foot{margin-top:20px;font-size:10px;color:#8ea18e;line-height:1.6}#touch{display:none;position:absolute;inset:0;pointer-events:none}#touch button{pointer-events:auto;background:#20332699;border:1px solid #ffffff75;border-radius:9px;width:48px;height:48px;font-size:20px;touch-action:none}#dpad{position:absolute;left:15px;bottom:98px;display:grid;grid-template-columns:repeat(3,48px);gap:4px}#actions{position:absolute;right:15px;bottom:98px;display:grid;grid-template-columns:repeat(2,48px);gap:5px}#pauseTouch{position:absolute;right:15px;top:58px}#error{color:#ffb2a3;margin-top:12px;font-size:13px;display:none}@media(pointer:coarse){body.playing #touch{display:block}.controls{display:none}.panel{padding:22px}.sub{margin-bottom:14px}#barWrap{bottom:12px}#debug{top:9px;left:10px;font-size:10px}#mode{top:9px;right:10px}}@media(max-height:540px){.panel{padding:18px}.controls{margin-top:12px;gap:5px 14px}.foot{margin-top:10px}.sub{margin:9px 0 12px}h1{font-size:42px}.btn{padding:8px}.btn.primary{padding:10px}}
 
-/* v1.62: Bedrock-style HUD and perspective first-person item view. */
+/* v1.63: Bedrock-style HUD and perspective first-person item view. */
 #heldView{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;z-index:0;display:block}
 #barWrap{--u:clamp(1px,min(.395vh,.52vw),5px);--slot-size:calc(var(--u)*20);bottom:var(--u);z-index:2;max-width:98vw}
 #bar{gap:0;padding:0;border:var(--u) solid #151515;border-radius:0;background:transparent;box-shadow:0 0 0 1px #0005;overflow:visible}
@@ -122,7 +122,7 @@ body.paused #hud{display:block}body.paused #hud>:not(#heldView){display:none}
 #loadingScreen .mc-button{min-height:40px;font-size:16px;margin-top:1vh}
 @media(max-width:750px){.world-toolbar{grid-template-columns:auto 1fr 1fr;gap:6px}.world-toolbar #new{grid-column:2}.world-toolbar #import{grid-column:3}.world-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.world-cards.list .world-card2{grid-template-columns:95px minmax(0,1fr) 45px}.pause-content{width:85%}.loading-panel{width:90vw}.loading-logo{width:85vw}.world-details,.world-edit{min-height:65px}}
 
-/* v1.62: measured reference proportions; original pixel-art interface. */
+/* v1.63: measured reference proportions; original pixel-art interface. */
 #overlay{--ui:clamp(2px,.43vh,6px);font-family:"Yu Gothic UI","Yu Gothic","Meiryo","Noto Sans JP",sans-serif;font-weight:400}
 .mc-button{--edge:var(--ui);background:#c6c6c6;color:#494949;border-color:#131313;box-shadow:inset 0 0 0 1px #979797,inset 0 var(--ui) #f7f7f7,inset var(--ui) 0 #efefef,inset 0 calc(-1 * var(--ui)) #575757,inset calc(-1 * var(--ui)) 0 #858585;font-weight:400;letter-spacing:.055em;font-size:clamp(14px,3.35vh,38px);line-height:1.15;gap:.4em}
 .mc-button:hover,.mc-button:focus-visible{background:#c6c6c6;color:#222;outline:2px solid #fff;outline-offset:-2px}
@@ -180,7 +180,7 @@ body.paused #hud{display:block}body.paused #hud>:not(#heldView){display:none}
 #loadingFill{background:repeating-linear-gradient(90deg,transparent 0 calc(2.27vw - 2px),#314c20 calc(2.27vw - 2px) 2.27vw),linear-gradient(#afd973 0 28%,#82b64e 28% 70%,#65913a 70%);transition:none}
 @media(max-width:750px){.title-logo{width:85vw;top:18vh}.home-buttons{width:65vw;top:42%}.world-tabs{height:7vh}.world-tab{width:100%;min-width:0}.world-toolbar{grid-template-columns:auto 1fr 1fr;gap:6px}.world-toolbar .mc-button{height:auto;min-height:46px;font-size:14px}.world-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.world-details,.world-edit{min-height:65px}.loading-panel{width:90vw}.loading-logo{width:85vw}.pause-content{width:85%}.pause-right .home-avatar{max-width:95%}}
 
-/* v1.62: fixed full-height pause columns, independent of inherited grid sizing. */
+/* v1.63: fixed full-height pause columns, independent of inherited grid sizing. */
 #pauseScreen{display:block;position:absolute;inset:0;overflow:hidden;background:rgba(0,0,0,.22)}
 #pauseScreen .pause-left{position:absolute;inset:0 auto 0 0;width:55.6%;height:100%;display:block;background:rgba(0,0,0,.45);min-width:0}
 #pauseScreen .pause-content{position:absolute;left:52.5%;top:13%;width:63.2%;max-width:none;min-width:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:stretch;gap:1.35vh;margin:0}
@@ -197,7 +197,7 @@ body.paused #hud{display:block}body.paused #hud>:not(#heldView){display:none}
 @media(max-width:750px){#pauseScreen .pause-content{width:88%;left:50%;top:18%}#pauseScreen .pause-content .mc-button{font-size:clamp(12px,3.2vw,23px);padding:0 3px}#pauseScreen .paused-tag{left:50%;font-size:clamp(12px,3.2vw,24px)}#pauseScreen .avatar-name{font-size:clamp(12px,3vw,22px)}#pauseScreen .home-avatar{max-width:87%;height:auto;max-height:51vh}}
  .steve-avatar{aspect-ratio:256/440;object-fit:contain;image-rendering:pixelated}
 
-/* v1.62 survival HUD: same shared scale as the nine-slot bar. */
+/* v1.63 survival HUD: same shared scale as the nine-slot bar. */
 #survivalHUD{width:100%;margin-bottom:calc(var(--u)*2.7);pointer-events:none}
 #survivalHUD[hidden],#survivalNotice[hidden]{display:none!important}
 .survival-stats{position:relative;display:flex;align-items:end;justify-content:space-between;width:100%;height:auto;min-height:0;margin-bottom:calc(var(--u)*1.1)}
@@ -330,7 +330,7 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 </style></head><body>
 <canvas id="game" aria-label="3Dブロックワールド"></canvas><div id="hud"><canvas id="heldView" width="256" height="256" aria-hidden="true"></canvas><div id="debug"></div><div id="mode"></div><div id="cross"></div><div id="toast"></div><div id="barWrap"><div id="blockName"></div><div id="survivalHUD" hidden><canvas id="airIcons" width="81" height="9" role="img" aria-label="酸素" hidden></canvas><div class="survival-stats"><canvas id="healthIcons" width="81" height="9" role="img" aria-label="体力 20 / 20"></canvas><span id="xpLevel" aria-label="経験値レベル"></span><canvas id="hungerIcons" width="81" height="9" role="img" aria-label="空腹度 20 / 20"></canvas></div><div id="xpBar" role="progressbar" aria-label="経験値" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="xpFill"></div></div></div><div id="bar"></div><button id="mobileInventoryMore" aria-label="インベントリ" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M3 10h4v4H3z M10 10h4v4h-4z M17 10h4v4h-4z"/></svg></button></div><div id="touch"><div id="mobileTop"><button id="viewTouch" type="button" class="mobile-key" aria-label="一人称・三人称切り替え"><svg viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M9 2h6v2h2v7h-2v2h-2v3h4v2h-4v4h-2v-4H7v-2h4v-3H9v-2H7V4h2z M10 5v5h4V5z M2 7h4v2H4v4h2v2H2z M18 7h4v8h-4v-2h2V9h-2z"/></svg></button><button id="inventoryTouch" type="button" class="mobile-key" aria-label="インベントリ"><svg viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M3 5h18v14H3z M5 7v10h14V7z M7 9h3v3H7z M14 9h3v3h-3z M10 13h4v2h-4z"/></svg></button><button id="pauseTouch" type="button" class="mobile-key" aria-label="メニュー"><svg viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M5 5h14v3H5z M5 11h14v3H5z M5 17h14v3H5z"/></svg></button></div><div id="mobileSpeed">0.00 M/S</div><div id="joyBase" role="group" aria-label="移動スティック"><div id="joyKnob"></div></div><div id="actions"><button id="jumpTouch" type="button" class="mobile-key" aria-label="ジャンプ・飛行"><svg viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M10 3h4v2h2v2h2v2h2v2h-5v6H9v-6H4V9h2V7h2V5h2z M4 20h16v2H4z"/></svg></button><button id="dashTouch" type="button" class="mobile-key" aria-label="ダッシュ切り替え"><svg viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M3 4h4v3h3v3h3v4h-3v3H7v3H3v-5h3v-3h3v-1H6V8H3z M12 4h4v3h3v3h3v4h-3v3h-3v3h-4v-5h3v-3h3v-1h-3V8h-3z"/></svg></button><button id="sneakTouch" type="button" class="mobile-key" aria-label="スニーク・下降"><svg viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M9 3h6v7h5v2h-2v2h-2v2h-2v2h-4v-2H8v-2H6v-2H4v-2h5z M4 20h16v2H4z"/></svg></button><button id="breakTouch" type="button" class="mobile-key" aria-label="攻撃・破壊"><svg viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M19 2h3v6h-3v3h-3v3h-3v3h-3v-3H7v-3h3V8h3V5h3V2z M4 13h3v3h3v3h3v3h-3v-3H7v3H2v-5h3v-1H4z"/></svg></button><button id="placeTouch" type="button" class="mobile-key" aria-label="設置・使用"><svg viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M10 2h4v7h-4z M10 15h4v7h-4z M2 10h7v4H2z M15 10h7v4h-7z"/></svg></button></div></div></div>
 <div id="overlay" data-screen="home">
-<section id="homeScreen" class="menu-screen" aria-label="タイトル画面"><div class="title-logo"><svg class="craft-logo" viewBox="-16 -12 888 148" role="img" aria-label="Cheap Craft" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="stoneV1241" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d4cbc5"/><stop offset=".62" stop-color="#b5aca7"/><stop offset="1" stop-color="#96908c"/></linearGradient><path id="shapeV1241" d="M0 0h12v12h-12zM12 0h12v12h-12zM24 0h12v12h-12zM36 0h12v12h-12zM48 0h12v12h-12zM60 0h12v12h-12zM0 12h12v12h-12zM12 12h12v12h-12zM24 12h12v12h-12zM36 12h12v12h-12zM48 12h12v12h-12zM60 12h12v12h-12zM0 24h12v12h-12zM12 24h12v12h-12zM0 36h12v12h-12zM12 36h12v12h-12zM0 48h12v12h-12zM12 48h12v12h-12zM0 60h12v12h-12zM12 60h12v12h-12zM24 60h12v12h-12zM36 60h12v12h-12zM48 60h12v12h-12zM60 60h12v12h-12zM0 72h12v12h-12zM12 72h12v12h-12zM24 72h12v12h-12zM36 72h12v12h-12zM48 72h12v12h-12zM60 72h12v12h-12zM84 0h12v12h-12zM96 0h12v12h-12zM132 0h12v12h-12zM144 0h12v12h-12zM84 12h12v12h-12zM96 12h12v12h-12zM132 12h12v12h-12zM144 12h12v12h-12zM84 24h12v12h-12zM96 24h12v12h-12zM132 24h12v12h-12zM144 24h12v12h-12zM84 36h12v12h-12zM96 36h12v12h-12zM108 36h12v12h-12zM120 36h12v12h-12zM132 36h12v12h-12zM144 36h12v12h-12zM84 48h12v12h-12zM96 48h12v12h-12zM132 48h12v12h-12zM144 48h12v12h-12zM84 60h12v12h-12zM96 60h12v12h-12zM132 60h12v12h-12zM144 60h12v12h-12zM84 72h12v12h-12zM96 72h12v12h-12zM132 72h12v12h-12zM144 72h12v12h-12zM168 0h12v12h-12zM180 0h12v12h-12zM192 0h12v12h-12zM204 0h12v12h-12zM216 0h12v12h-12zM228 0h12v12h-12zM168 12h12v12h-12zM180 12h12v12h-12zM192 12h12v12h-12zM204 12h12v12h-12zM216 12h12v12h-12zM228 12h12v12h-12zM168 24h12v12h-12zM180 24h12v12h-12zM168 36h12v12h-12zM180 36h12v12h-12zM192 36h12v12h-12zM204 36h12v12h-12zM216 36h12v12h-12zM168 48h12v12h-12zM180 48h12v12h-12zM168 60h12v12h-12zM180 60h12v12h-12zM192 60h12v12h-12zM204 60h12v12h-12zM216 60h12v12h-12zM228 60h12v12h-12zM168 72h12v12h-12zM180 72h12v12h-12zM192 72h12v12h-12zM204 72h12v12h-12zM216 72h12v12h-12zM228 72h12v12h-12zM264 0h12v12h-12zM276 0h12v12h-12zM288 0h12v12h-12zM300 0h12v12h-12zM252 12h12v12h-12zM264 12h12v12h-12zM276 12h12v12h-12zM288 12h12v12h-12zM300 12h12v12h-12zM312 12h12v12h-12zM252 24h12v12h-12zM264 24h12v12h-12zM300 24h12v12h-12zM312 24h12v12h-12zM252 36h12v12h-12zM264 36h12v12h-12zM276 36h12v12h-12zM288 36h12v12h-12zM300 36h12v12h-12zM312 36h12v12h-12zM252 48h12v12h-12zM264 48h12v12h-12zM300 48h12v12h-12zM312 48h12v12h-12zM252 60h12v12h-12zM264 60h12v12h-12zM300 60h12v12h-12zM312 60h12v12h-12zM252 72h12v12h-12zM264 72h12v12h-12zM300 72h12v12h-12zM312 72h12v12h-12zM336 0h12v12h-12zM348 0h12v12h-12zM360 0h12v12h-12zM372 0h12v12h-12zM384 0h12v12h-12zM336 12h12v12h-12zM348 12h12v12h-12zM360 12h12v12h-12zM372 12h12v12h-12zM384 12h12v12h-12zM396 12h12v12h-12zM336 24h12v12h-12zM348 24h12v12h-12zM384 24h12v12h-12zM396 24h12v12h-12zM336 36h12v12h-12zM348 36h12v12h-12zM360 36h12v12h-12zM372 36h12v12h-12zM384 36h12v12h-12zM336 48h12v12h-12zM348 48h12v12h-12zM336 60h12v12h-12zM348 60h12v12h-12zM336 72h12v12h-12zM348 72h12v12h-12zM444 0h12v12h-12zM456 0h12v12h-12zM468 0h12v12h-12zM480 0h12v12h-12zM492 0h12v12h-12zM504 0h12v12h-12zM444 12h12v12h-12zM456 12h12v12h-12zM468 12h12v12h-12zM480 12h12v12h-12zM492 12h12v12h-12zM504 12h12v12h-12zM444 24h12v12h-12zM456 24h12v12h-12zM444 36h12v12h-12zM456 36h12v12h-12zM444 48h12v12h-12zM456 48h12v12h-12zM444 60h12v12h-12zM456 60h12v12h-12zM468 60h12v12h-12zM480 60h12v12h-12zM492 60h12v12h-12zM504 60h12v12h-12zM444 72h12v12h-12zM456 72h12v12h-12zM468 72h12v12h-12zM480 72h12v12h-12zM492 72h12v12h-12zM504 72h12v12h-12zM528 0h12v12h-12zM540 0h12v12h-12zM552 0h12v12h-12zM564 0h12v12h-12zM576 0h12v12h-12zM528 12h12v12h-12zM540 12h12v12h-12zM552 12h12v12h-12zM564 12h12v12h-12zM576 12h12v12h-12zM588 12h12v12h-12zM528 24h12v12h-12zM540 24h12v12h-12zM576 24h12v12h-12zM588 24h12v12h-12zM528 36h12v12h-12zM540 36h12v12h-12zM552 36h12v12h-12zM564 36h12v12h-12zM576 36h12v12h-12zM528 48h12v12h-12zM540 48h12v12h-12zM564 48h12v12h-12zM576 48h12v12h-12zM528 60h12v12h-12zM540 60h12v12h-12zM576 60h12v12h-12zM588 60h12v12h-12zM528 72h12v12h-12zM540 72h12v12h-12zM576 72h12v12h-12zM588 72h12v12h-12zM624 0h12v12h-12zM636 0h12v12h-12zM648 0h12v12h-12zM660 0h12v12h-12zM612 12h12v12h-12zM624 12h12v12h-12zM636 12h12v12h-12zM648 12h12v12h-12zM660 12h12v12h-12zM672 12h12v12h-12zM612 24h12v12h-12zM624 24h12v12h-12zM660 24h12v12h-12zM672 24h12v12h-12zM612 36h12v12h-12zM624 36h12v12h-12zM636 36h12v12h-12zM648 36h12v12h-12zM660 36h12v12h-12zM672 36h12v12h-12zM612 48h12v12h-12zM624 48h12v12h-12zM660 48h12v12h-12zM672 48h12v12h-12zM612 60h12v12h-12zM624 60h12v12h-12zM660 60h12v12h-12zM672 60h12v12h-12zM612 72h12v12h-12zM624 72h12v12h-12zM660 72h12v12h-12zM672 72h12v12h-12zM696 0h12v12h-12zM708 0h12v12h-12zM720 0h12v12h-12zM732 0h12v12h-12zM744 0h12v12h-12zM756 0h12v12h-12zM696 12h12v12h-12zM708 12h12v12h-12zM720 12h12v12h-12zM732 12h12v12h-12zM744 12h12v12h-12zM756 12h12v12h-12zM696 24h12v12h-12zM708 24h12v12h-12zM696 36h12v12h-12zM708 36h12v12h-12zM720 36h12v12h-12zM732 36h12v12h-12zM744 36h12v12h-12zM696 48h12v12h-12zM708 48h12v12h-12zM696 60h12v12h-12zM708 60h12v12h-12zM696 72h12v12h-12zM708 72h12v12h-12zM780 0h12v12h-12zM792 0h12v12h-12zM804 0h12v12h-12zM816 0h12v12h-12zM828 0h12v12h-12zM840 0h12v12h-12zM780 12h12v12h-12zM792 12h12v12h-12zM804 12h12v12h-12zM816 12h12v12h-12zM828 12h12v12h-12zM840 12h12v12h-12zM804 24h12v12h-12zM816 24h12v12h-12zM804 36h12v12h-12zM816 36h12v12h-12zM804 48h12v12h-12zM816 48h12v12h-12zM804 60h12v12h-12zM816 60h12v12h-12zM804 72h12v12h-12zM816 72h12v12h-12z"/></defs><g transform="scale(1 1.15) skewX(-10)"><use href="#shapeV1241" transform="translate(6 24)" stroke="#090909" stroke-width="13" stroke-linejoin="round" fill="#141313"/><use href="#shapeV1241" transform="translate(4 17)" fill="#464342" stroke="#111" stroke-width="10"/><use href="#shapeV1241" transform="translate(2 9)" fill="#77716d" stroke="#111" stroke-width="8"/><use href="#shapeV1241" stroke="#090909" stroke-width="10" stroke-linejoin="round" fill="url(#stoneV1241)" paint-order="stroke fill"/><path d="M0 1h12M1 0v12M12 1h12M24 1h12M36 1h12M48 1h12M60 1h12M1 12v12M1 24v12M1 36v12M1 48v12M1 60v12M24 61h12M36 61h12M48 61h12M60 61h12M1 72v12M84 1h12M85 0v12M96 1h12M132 1h12M133 0v12M144 1h12M85 12v12M133 12v12M85 24v12M133 24v12M85 36v12M108 37h12M120 37h12M85 48v12M133 48v12M85 60v12M133 60v12M85 72v12M133 72v12M168 1h12M169 0v12M180 1h12M192 1h12M204 1h12M216 1h12M228 1h12M169 12v12M169 24v12M169 36v12M192 37h12M204 37h12M216 37h12M169 48v12M169 60v12M192 61h12M204 61h12M216 61h12M228 61h12M169 72v12M264 1h12M265 0v12M276 1h12M288 1h12M300 1h12M252 13h12M253 12v12M312 13h12M253 24v12M301 24v12M253 36v12M276 37h12M288 37h12M253 48v12M301 48v12M253 60v12M301 60v12M253 72v12M301 72v12M336 1h12M337 0v12M348 1h12M360 1h12M372 1h12M384 1h12M337 12v12M396 13h12M337 24v12M385 24v12M337 36v12M360 37h12M372 37h12M337 48v12M337 60v12M337 72v12M444 1h12M445 0v12M456 1h12M468 1h12M480 1h12M492 1h12M504 1h12M445 12v12M445 24v12M445 36v12M445 48v12M445 60v12M468 61h12M480 61h12M492 61h12M504 61h12M445 72v12M528 1h12M529 0v12M540 1h12M552 1h12M564 1h12M576 1h12M529 12v12M588 13h12M529 24v12M577 24v12M529 36v12M552 37h12M564 37h12M529 48v12M565 48v12M529 60v12M577 60v12M588 61h12M529 72v12M577 72v12M624 1h12M625 0v12M636 1h12M648 1h12M660 1h12M612 13h12M613 12v12M672 13h12M613 24v12M661 24v12M613 36v12M636 37h12M648 37h12M613 48v12M661 48v12M613 60v12M661 60v12M613 72v12M661 72v12M696 1h12M697 0v12M708 1h12M720 1h12M732 1h12M744 1h12M756 1h12M697 12v12M697 24v12M697 36v12M720 37h12M732 37h12M744 37h12M697 48v12M697 60v12M697 72v12M780 1h12M781 0v12M792 1h12M804 1h12M816 1h12M828 1h12M840 1h12M781 12v12M805 24v12M805 36v12M805 48v12M805 60v12M805 72v12" stroke="#eee9e4" stroke-width="1.5" fill="none"/><path d="M3 14h9v6h5M27 62h9v6h5M135 2h9v6h5M87 38h9v6h5M207 2h9v6h5M171 62h9v6h5M279 2h9v6h5M303 50h9v6h5M351 2h9v6h5M459 14h9v6h5M483 62h9v6h5M531 14h9v6h5M543 38h9v6h5M615 38h9v6h5M735 2h9v6h5M699 62h9v6h5M807 2h9v6h5" stroke="#6d6661" stroke-width="1.6" fill="none" opacity=".82"/><path d="M3 14h9v6h5M27 62h9v6h5M135 2h9v6h5M87 38h9v6h5M207 2h9v6h5M171 62h9v6h5M279 2h9v6h5M303 50h9v6h5M351 2h9v6h5M459 14h9v6h5M483 62h9v6h5M531 14h9v6h5M543 38h9v6h5M615 38h9v6h5M735 2h9v6h5M699 62h9v6h5M807 2h9v6h5" transform="translate(-1 -1)" stroke="#f1e6de" stroke-width="1" fill="none" opacity=".65"/></g></svg><span class="title-splash">自由に、つくろう！</span></div><div class="home-buttons"><button class="mc-button" id="homePlay">プレイ</button><button class="mc-button" id="homeSettings">設定</button></div><div class="avatar-panel"><span class="avatar-name">プレイヤー</span><canvas class="home-avatar steve-avatar" width="256" height="440" role="img" aria-label="スティーブ"></canvas></div><div class="home-footer"><span>Cheap Craft · 非公式サンドボックス</span><span id="homeVersion">v1.62</span></div><div id="error" role="alert"></div></section>
+<section id="homeScreen" class="menu-screen" aria-label="タイトル画面"><div class="title-logo"><svg class="craft-logo" viewBox="-16 -12 888 148" role="img" aria-label="Cheap Craft" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="stoneV1241" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d4cbc5"/><stop offset=".62" stop-color="#b5aca7"/><stop offset="1" stop-color="#96908c"/></linearGradient><path id="shapeV1241" d="M0 0h12v12h-12zM12 0h12v12h-12zM24 0h12v12h-12zM36 0h12v12h-12zM48 0h12v12h-12zM60 0h12v12h-12zM0 12h12v12h-12zM12 12h12v12h-12zM24 12h12v12h-12zM36 12h12v12h-12zM48 12h12v12h-12zM60 12h12v12h-12zM0 24h12v12h-12zM12 24h12v12h-12zM0 36h12v12h-12zM12 36h12v12h-12zM0 48h12v12h-12zM12 48h12v12h-12zM0 60h12v12h-12zM12 60h12v12h-12zM24 60h12v12h-12zM36 60h12v12h-12zM48 60h12v12h-12zM60 60h12v12h-12zM0 72h12v12h-12zM12 72h12v12h-12zM24 72h12v12h-12zM36 72h12v12h-12zM48 72h12v12h-12zM60 72h12v12h-12zM84 0h12v12h-12zM96 0h12v12h-12zM132 0h12v12h-12zM144 0h12v12h-12zM84 12h12v12h-12zM96 12h12v12h-12zM132 12h12v12h-12zM144 12h12v12h-12zM84 24h12v12h-12zM96 24h12v12h-12zM132 24h12v12h-12zM144 24h12v12h-12zM84 36h12v12h-12zM96 36h12v12h-12zM108 36h12v12h-12zM120 36h12v12h-12zM132 36h12v12h-12zM144 36h12v12h-12zM84 48h12v12h-12zM96 48h12v12h-12zM132 48h12v12h-12zM144 48h12v12h-12zM84 60h12v12h-12zM96 60h12v12h-12zM132 60h12v12h-12zM144 60h12v12h-12zM84 72h12v12h-12zM96 72h12v12h-12zM132 72h12v12h-12zM144 72h12v12h-12zM168 0h12v12h-12zM180 0h12v12h-12zM192 0h12v12h-12zM204 0h12v12h-12zM216 0h12v12h-12zM228 0h12v12h-12zM168 12h12v12h-12zM180 12h12v12h-12zM192 12h12v12h-12zM204 12h12v12h-12zM216 12h12v12h-12zM228 12h12v12h-12zM168 24h12v12h-12zM180 24h12v12h-12zM168 36h12v12h-12zM180 36h12v12h-12zM192 36h12v12h-12zM204 36h12v12h-12zM216 36h12v12h-12zM168 48h12v12h-12zM180 48h12v12h-12zM168 60h12v12h-12zM180 60h12v12h-12zM192 60h12v12h-12zM204 60h12v12h-12zM216 60h12v12h-12zM228 60h12v12h-12zM168 72h12v12h-12zM180 72h12v12h-12zM192 72h12v12h-12zM204 72h12v12h-12zM216 72h12v12h-12zM228 72h12v12h-12zM264 0h12v12h-12zM276 0h12v12h-12zM288 0h12v12h-12zM300 0h12v12h-12zM252 12h12v12h-12zM264 12h12v12h-12zM276 12h12v12h-12zM288 12h12v12h-12zM300 12h12v12h-12zM312 12h12v12h-12zM252 24h12v12h-12zM264 24h12v12h-12zM300 24h12v12h-12zM312 24h12v12h-12zM252 36h12v12h-12zM264 36h12v12h-12zM276 36h12v12h-12zM288 36h12v12h-12zM300 36h12v12h-12zM312 36h12v12h-12zM252 48h12v12h-12zM264 48h12v12h-12zM300 48h12v12h-12zM312 48h12v12h-12zM252 60h12v12h-12zM264 60h12v12h-12zM300 60h12v12h-12zM312 60h12v12h-12zM252 72h12v12h-12zM264 72h12v12h-12zM300 72h12v12h-12zM312 72h12v12h-12zM336 0h12v12h-12zM348 0h12v12h-12zM360 0h12v12h-12zM372 0h12v12h-12zM384 0h12v12h-12zM336 12h12v12h-12zM348 12h12v12h-12zM360 12h12v12h-12zM372 12h12v12h-12zM384 12h12v12h-12zM396 12h12v12h-12zM336 24h12v12h-12zM348 24h12v12h-12zM384 24h12v12h-12zM396 24h12v12h-12zM336 36h12v12h-12zM348 36h12v12h-12zM360 36h12v12h-12zM372 36h12v12h-12zM384 36h12v12h-12zM336 48h12v12h-12zM348 48h12v12h-12zM336 60h12v12h-12zM348 60h12v12h-12zM336 72h12v12h-12zM348 72h12v12h-12zM444 0h12v12h-12zM456 0h12v12h-12zM468 0h12v12h-12zM480 0h12v12h-12zM492 0h12v12h-12zM504 0h12v12h-12zM444 12h12v12h-12zM456 12h12v12h-12zM468 12h12v12h-12zM480 12h12v12h-12zM492 12h12v12h-12zM504 12h12v12h-12zM444 24h12v12h-12zM456 24h12v12h-12zM444 36h12v12h-12zM456 36h12v12h-12zM444 48h12v12h-12zM456 48h12v12h-12zM444 60h12v12h-12zM456 60h12v12h-12zM468 60h12v12h-12zM480 60h12v12h-12zM492 60h12v12h-12zM504 60h12v12h-12zM444 72h12v12h-12zM456 72h12v12h-12zM468 72h12v12h-12zM480 72h12v12h-12zM492 72h12v12h-12zM504 72h12v12h-12zM528 0h12v12h-12zM540 0h12v12h-12zM552 0h12v12h-12zM564 0h12v12h-12zM576 0h12v12h-12zM528 12h12v12h-12zM540 12h12v12h-12zM552 12h12v12h-12zM564 12h12v12h-12zM576 12h12v12h-12zM588 12h12v12h-12zM528 24h12v12h-12zM540 24h12v12h-12zM576 24h12v12h-12zM588 24h12v12h-12zM528 36h12v12h-12zM540 36h12v12h-12zM552 36h12v12h-12zM564 36h12v12h-12zM576 36h12v12h-12zM528 48h12v12h-12zM540 48h12v12h-12zM564 48h12v12h-12zM576 48h12v12h-12zM528 60h12v12h-12zM540 60h12v12h-12zM576 60h12v12h-12zM588 60h12v12h-12zM528 72h12v12h-12zM540 72h12v12h-12zM576 72h12v12h-12zM588 72h12v12h-12zM624 0h12v12h-12zM636 0h12v12h-12zM648 0h12v12h-12zM660 0h12v12h-12zM612 12h12v12h-12zM624 12h12v12h-12zM636 12h12v12h-12zM648 12h12v12h-12zM660 12h12v12h-12zM672 12h12v12h-12zM612 24h12v12h-12zM624 24h12v12h-12zM660 24h12v12h-12zM672 24h12v12h-12zM612 36h12v12h-12zM624 36h12v12h-12zM636 36h12v12h-12zM648 36h12v12h-12zM660 36h12v12h-12zM672 36h12v12h-12zM612 48h12v12h-12zM624 48h12v12h-12zM660 48h12v12h-12zM672 48h12v12h-12zM612 60h12v12h-12zM624 60h12v12h-12zM660 60h12v12h-12zM672 60h12v12h-12zM612 72h12v12h-12zM624 72h12v12h-12zM660 72h12v12h-12zM672 72h12v12h-12zM696 0h12v12h-12zM708 0h12v12h-12zM720 0h12v12h-12zM732 0h12v12h-12zM744 0h12v12h-12zM756 0h12v12h-12zM696 12h12v12h-12zM708 12h12v12h-12zM720 12h12v12h-12zM732 12h12v12h-12zM744 12h12v12h-12zM756 12h12v12h-12zM696 24h12v12h-12zM708 24h12v12h-12zM696 36h12v12h-12zM708 36h12v12h-12zM720 36h12v12h-12zM732 36h12v12h-12zM744 36h12v12h-12zM696 48h12v12h-12zM708 48h12v12h-12zM696 60h12v12h-12zM708 60h12v12h-12zM696 72h12v12h-12zM708 72h12v12h-12zM780 0h12v12h-12zM792 0h12v12h-12zM804 0h12v12h-12zM816 0h12v12h-12zM828 0h12v12h-12zM840 0h12v12h-12zM780 12h12v12h-12zM792 12h12v12h-12zM804 12h12v12h-12zM816 12h12v12h-12zM828 12h12v12h-12zM840 12h12v12h-12zM804 24h12v12h-12zM816 24h12v12h-12zM804 36h12v12h-12zM816 36h12v12h-12zM804 48h12v12h-12zM816 48h12v12h-12zM804 60h12v12h-12zM816 60h12v12h-12zM804 72h12v12h-12zM816 72h12v12h-12z"/></defs><g transform="scale(1 1.15) skewX(-10)"><use href="#shapeV1241" transform="translate(6 24)" stroke="#090909" stroke-width="13" stroke-linejoin="round" fill="#141313"/><use href="#shapeV1241" transform="translate(4 17)" fill="#464342" stroke="#111" stroke-width="10"/><use href="#shapeV1241" transform="translate(2 9)" fill="#77716d" stroke="#111" stroke-width="8"/><use href="#shapeV1241" stroke="#090909" stroke-width="10" stroke-linejoin="round" fill="url(#stoneV1241)" paint-order="stroke fill"/><path d="M0 1h12M1 0v12M12 1h12M24 1h12M36 1h12M48 1h12M60 1h12M1 12v12M1 24v12M1 36v12M1 48v12M1 60v12M24 61h12M36 61h12M48 61h12M60 61h12M1 72v12M84 1h12M85 0v12M96 1h12M132 1h12M133 0v12M144 1h12M85 12v12M133 12v12M85 24v12M133 24v12M85 36v12M108 37h12M120 37h12M85 48v12M133 48v12M85 60v12M133 60v12M85 72v12M133 72v12M168 1h12M169 0v12M180 1h12M192 1h12M204 1h12M216 1h12M228 1h12M169 12v12M169 24v12M169 36v12M192 37h12M204 37h12M216 37h12M169 48v12M169 60v12M192 61h12M204 61h12M216 61h12M228 61h12M169 72v12M264 1h12M265 0v12M276 1h12M288 1h12M300 1h12M252 13h12M253 12v12M312 13h12M253 24v12M301 24v12M253 36v12M276 37h12M288 37h12M253 48v12M301 48v12M253 60v12M301 60v12M253 72v12M301 72v12M336 1h12M337 0v12M348 1h12M360 1h12M372 1h12M384 1h12M337 12v12M396 13h12M337 24v12M385 24v12M337 36v12M360 37h12M372 37h12M337 48v12M337 60v12M337 72v12M444 1h12M445 0v12M456 1h12M468 1h12M480 1h12M492 1h12M504 1h12M445 12v12M445 24v12M445 36v12M445 48v12M445 60v12M468 61h12M480 61h12M492 61h12M504 61h12M445 72v12M528 1h12M529 0v12M540 1h12M552 1h12M564 1h12M576 1h12M529 12v12M588 13h12M529 24v12M577 24v12M529 36v12M552 37h12M564 37h12M529 48v12M565 48v12M529 60v12M577 60v12M588 61h12M529 72v12M577 72v12M624 1h12M625 0v12M636 1h12M648 1h12M660 1h12M612 13h12M613 12v12M672 13h12M613 24v12M661 24v12M613 36v12M636 37h12M648 37h12M613 48v12M661 48v12M613 60v12M661 60v12M613 72v12M661 72v12M696 1h12M697 0v12M708 1h12M720 1h12M732 1h12M744 1h12M756 1h12M697 12v12M697 24v12M697 36v12M720 37h12M732 37h12M744 37h12M697 48v12M697 60v12M697 72v12M780 1h12M781 0v12M792 1h12M804 1h12M816 1h12M828 1h12M840 1h12M781 12v12M805 24v12M805 36v12M805 48v12M805 60v12M805 72v12" stroke="#eee9e4" stroke-width="1.5" fill="none"/><path d="M3 14h9v6h5M27 62h9v6h5M135 2h9v6h5M87 38h9v6h5M207 2h9v6h5M171 62h9v6h5M279 2h9v6h5M303 50h9v6h5M351 2h9v6h5M459 14h9v6h5M483 62h9v6h5M531 14h9v6h5M543 38h9v6h5M615 38h9v6h5M735 2h9v6h5M699 62h9v6h5M807 2h9v6h5" stroke="#6d6661" stroke-width="1.6" fill="none" opacity=".82"/><path d="M3 14h9v6h5M27 62h9v6h5M135 2h9v6h5M87 38h9v6h5M207 2h9v6h5M171 62h9v6h5M279 2h9v6h5M303 50h9v6h5M351 2h9v6h5M459 14h9v6h5M483 62h9v6h5M531 14h9v6h5M543 38h9v6h5M615 38h9v6h5M735 2h9v6h5M699 62h9v6h5M807 2h9v6h5" transform="translate(-1 -1)" stroke="#f1e6de" stroke-width="1" fill="none" opacity=".65"/></g></svg><span class="title-splash">自由に、つくろう！</span></div><div class="home-buttons"><button class="mc-button" id="homePlay">プレイ</button><button class="mc-button" id="homeSettings">設定</button></div><div class="avatar-panel"><span class="avatar-name">プレイヤー</span><canvas class="home-avatar steve-avatar" width="256" height="440" role="img" aria-label="スティーブ"></canvas></div><div class="home-footer"><span>Cheap Craft · 非公式サンドボックス</span><span id="homeVersion">v1.63</span></div><div id="error" role="alert"></div></section>
 <section id="worldScreen" class="menu-screen" hidden>
 <div class="menu-heading"><button id="worldBack" class="mc-button back-button" aria-label="ホームに戻る"><svg class="ui-icon" viewBox="0 0 14 16" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M8 1h2v2H8zM6 3h2v2H6zM4 5h2v2H4zM2 7h2v2H2zM4 9h2v2H4zM6 11h2v2H6zM8 13h2v2H8z"/></svg></button><h2>プレイ</h2></div>
 <div class="world-browser"><div class="world-tabs"><div class="world-tab active">▣　ワールド (<span id="worldCount">0</span>)</div></div>
@@ -959,6 +959,7 @@ function worldViewEye(){
 // Update the gait at the physics substep, so takeoff preserves the exact ground pose.
 function updatePlayerGait(dt,travel,onGround,swimming=false,inFlight=false){
  if(dt<=0)return;
+ const actual=travel<2?travel:0;animationState.moveSpeed=actual/dt;if(onGround&&!inFlight)animationState.walkDistance+=actual;animationState.moveDistance+=actual;
  if(!onGround&&!swimming&&!inFlight)return; // Freeze the last stride for the entire jump/fall.
  const speed=travel<2?travel/dt:0,active=!inFlight&&speed>.08;
  const blend=active?Math.min(1,speed/3.5):0;
@@ -966,7 +967,7 @@ function updatePlayerGait(dt,travel,onGround,swimming=false,inFlight=false){
  if(active)playerWalkPhase+=travel*3.6;
  else if(playerWalkBlend<.015){playerWalkBlend=0;playerWalkPhase=0;}
 }
-function playerWalkAngle(){return Math.sin(playerWalkPhase)*.75*playerWalkBlend;}
+function playerWalkAngle(){return cosD(animationState.moveDistance*38.17)*Math.min(1.3,animationState.moveSpeed/HAND_NATIVE.glidingSpeed)*57.3*HAND_DEG;}
 function updateThirdPerson(dt){
  if(!thirdViewActive()){thirdCameraDistance=0;return;}
  const max=thirdPersonClearance(renderEye(),direction());
@@ -988,11 +989,11 @@ function playerVertices(now=performance.now()){
  const out=[],anchor=renderEye(),feet=[anchor[0],anchor[1]-p.eyeHeight,anchor[2]],yaw=Math.PI-p.yaw,c=Math.cos(yaw),s=Math.sin(yaw),scale=1.8/32;
  const swimming=p.swimPose, crouching=p.crouch&&!swimming,ride=!!riddenPig;
  const walk=playerWalkAngle();
- const swingT=eatHeld?1:swingProgress(now),attack=thirdArmDelta(swingT),idleRoll=(2.8*Math.cos(handIdleTime*1.8)+2.8)*HAND_DEG,idlePitch=2.8*Math.sin(handIdleTime*1.34)*HAND_DEG;
+ const swingT=eatHeld?1:swingProgress(now),attack=bedrockThirdAttack(swingT),idleRoll=(cosD(handIdleTime*103.2)*2.865+2.865)*HAND_DEG;
  const hurt=playing&&hurtRoll(now)!==0;
  const root=v=>{let [x,y,z]=v.map(n=>n*scale);
   if(swimming){const yy=y-.9;[y,z]=[.30+yy*.12-z*.99,yy*.99+z*.12];}
-  else if(crouching)y*=CROUCH_HEIGHT/1.8;
+  else if(crouching){const a=28*HAND_DEG,yy=y-.65;[y,z]=[.65+yy*Math.cos(a)-z*Math.sin(a)-.08,yy*Math.sin(a)+z*Math.cos(a)];}
   return [feet[0]+x*c+z*s,feet[1]+y,feet[2]-x*s+z*c];};
  const rotate=(v,pivot,a)=>{const x=v[0]-pivot[0],y=v[1]-pivot[1],z=v[2]-pivot[2];return [x+pivot[0],y*Math.cos(a)-z*Math.sin(a)+pivot[1],y*Math.sin(a)+z*Math.cos(a)+pivot[2]];};
  const emit=(v,tile,light,flip=false)=>{const u=tile%4*16,y=(tile>>2)*16;for(const i of ord){const uv=uvs[i];out.push(...v[i],(u+.1+(flip?1-uv[0]:uv[0])*15.8)/64,(y+.1+uv[1]*15.8)/64,light*(hurt?-1:1));}};
@@ -1000,20 +1001,24 @@ function playerVertices(now=performance.now()){
   for(let i=0;i<faces.length;i++){const f=faces[i],j=mirror&&i<2?1-i:i;
    const tile=typeof tiles==='number'?tiles+j:tiles[i];const v=f.v.map(q=>root(transform(q.map((v,k)=>center[k]+(v-.5)*size[k]))));emit(v,tile,f.l,mirror);}
  }
- const leftLeg=v=>rotate(v,[-2,12,0],ride?-1.10:walk),rightLeg=v=>rotate(v,[2,12,0],ride?-1.10:-walk);
- const id=shownHeld>=0?shownHeld:heldId(),armAngles=[(ride?-.35:-walk)+(id?-.28:0)+idlePitch+attack[0],attack[1],idleRoll];
- if(eatLift>0){const f=eatLift;armAngles[0]=armAngles[0]*(1-f)+(-1.5+.087*Math.sin(eatPhase*25))*f;armAngles[1]=armAngles[1]*(1-f)+.30*f;}
  const joint=(v,pivot,angles)=>rotateHand(v.map((n,i)=>n-pivot[i]),angles).map((n,i)=>n+pivot[i]);
- const rightArm=v=>joint(v,[-6,23,0],armAngles),leftArm=v=>joint(v,[6,23,0],[ride?-.35:walk-idlePitch,0,-idleRoll]);
+ const torso=v=>joint(v,[0,12,0],[0,attack.body*HAND_DEG,0]);
+ const legBase=ride?-81*HAND_DEG:crouching?-28*HAND_DEG:0,swimLeg=cosD(handIdleTime*390)*17.2*HAND_DEG;
+ const leftLeg=v=>joint(v,[-2,12,0],[ride?legBase:swimming?-swimLeg:legBase+walk,ride?-18*HAND_DEG:0,0]),rightLeg=v=>joint(v,[2,12,0],[ride?legBase:swimming?swimLeg:legBase-walk,ride?18*HAND_DEG:0,0]);
+ const id=shownHeld>=0?shownHeld:heldId(),sneak=crouching?-5.7*HAND_DEG:0,baseArm=ride?-36*HAND_DEG:sneak;
+ let armAngles=[baseArm+(ride?0:-walk)+(id?-.28:0)+attack.right[0]*HAND_DEG,attack.right[1]*HAND_DEG,idleRoll],leftAngles=[baseArm+(ride?0:walk)+attack.left[0]*HAND_DEG,0,-idleRoll];
+ if(swimming){leftAngles=bedrockSwim(animationState.swimTime,1).map(x=>x*HAND_DEG);if(swingT===1&&!eatHeld)armAngles=bedrockSwim(animationState.swimTime,-1).map(x=>x*HAND_DEG);}
+ if(eatLift>0){const f=eatLift;armAngles[0]=armAngles[0]*(1-f)+(-1.5+.087*sinD(eatPhase*1800))*f;armAngles[1]=armAngles[1]*(1-f)+.30*f;}
+ const rightArm=v=>torso(joint(v,[-6,23,0],armAngles)),leftArm=v=>torso(joint(v,[6,23,0],leftAngles));
  box([-2,6,0],[4,12,4],82,leftLeg);box([2,6,0],[4,12,4],82,rightLeg,true);
- box([0,18,0],[8,12,4],70);
+ box([0,18,0],[8,12,4],70,torso);
  box([-6,18,0],[4,12,4],76,rightArm);box([6,18,0],[4,12,4],76,leftArm,true);
  box([0,28,0],[8,8,8],64,v=>rotate(v,[0,24,0],-p.pitch));
  if(id&&itemInfo(id)){
   const t=itemInfo(id),eq=equipProgress(now-equipStart).offset,grip=v=>rightArm([v[0],v[1]-eq*3,v[2]]);
-  if(isPlant(id)||isItem(id)){
+  if(['item','tool'].includes(heldCategory(id))){
    for(const face of spriteGeometry(t.side)){const v=face.v.map(q=>root(grip([-6+q[0]*6,10+q[1]*6,3+q[2]*6])));const u=t.side%4*16,y=(t.side>>2)*16;for(const k of ord){const uv=[[0,0],[1,0],[1,1],[0,1]][k],px=face.pixel===undefined?.1+uv[0]*15.8:face.pixel%16+.5,py=face.pixel===undefined?.1+uv[1]*15.8:Math.floor(face.pixel/16)+.5;out.push(...v[k],(u+px)/64,(y+py)/64,face.shade*(hurt?-1:1));}}
-  }else box([-6,10,3.1],[5.4,5.4,5.4],faces.map((_,i)=>blockFaceTile(id,i,4)),grip);
+  }else if(handBoxes(id)){for(const q of handBoxes(id))box(q.center.map((v,i)=>v*5.4+[-6,10,3.1][i]),q.size.map(v=>v*5.4),Array(6).fill(q.tex),grip);}else box([-6,10,3.1],[5.4,5.4,5.4],faces.map((_,i)=>blockFaceTile(handBlockId(id),i,4)),grip);
  }
  return out;
 }
@@ -1176,7 +1181,7 @@ function supported(x=p.x,y=p.y,z=p.z){return collision(x,y-.035,z);}
 function sneakMove(k,v){if(!v)return false;const next=(f)=>supported(p.x+(k==='x'?v*f:0),p.y,p.z+(k==='z'?v*f:0));if(!next(1)){let lo=0,hi=1;for(let i=0;i<12;i++){let m=(lo+hi)/2;if(next(m))lo=m;else hi=m;}axis(k,v*lo);return true;}return axis(k,v);}
 function shiftHeld(){return keys.has('ShiftLeft')||keys.has('ShiftRight')||(flying?mobile.descending:mobile.sneak);}
 // Sprint rules, independent of frame rate.
-const SPRINT_RULES=Object.freeze({wallAngle:8,wallGrace:.12,swimHeight:.6,swimSpeed:5.6,useSlowdown:.2});
+const SPRINT_RULES=Object.freeze({wallAngle:8,wallGrace:.12,swimHeight:.6,swimSpeed:5.6,useSlowdown:.35});
 let sprintWallTime=0,sprintFov=72;
 const playerEffects={blindness:false},playerUse={shield:false,bow:false};
 function restrictedTerrain(){
@@ -1227,7 +1232,7 @@ function physicsStep(dt){if(dt<=0)return;p.hitCooldown=Math.max(0,(p.hitCooldown
  if(!p.swimPose){if(!flying&&shiftHeld()){p.crouch=true;cancelSprint();}else if(!collision(p.x,p.y,p.z,STAND_HEIGHT))p.crouch=false;}
  const eyeTarget=p.swimPose?.40:p.crouch?1.27:1.62;p.eyeHeight=Math.min(bodyHeight()-.08,mix(p.eyeHeight,eyeTarget,1-Math.exp(-dt*18)));
  // Minecraft-like speeds (blocks/s); exponential acceleration independent of frame rate.
- let speed=flying?(sprinting()?FLIGHT_SPEED.sprint:FLIGHT_SPEED.normal):fastSwim?SPRINT_RULES.swimSpeed:wet?2.5:p.swimPose?.9:p.crouch?1.3:sprinting()?GROUND_SPEED.sprint:GROUND_SPEED.walk;if(usingSlowItem())speed*=SPRINT_RULES.useSlowdown;
+ let speed=flying?(sprinting()?FLIGHT_SPEED.sprint:FLIGHT_SPEED.normal):fastSwim?SPRINT_RULES.swimSpeed:wet?2.5:p.swimPose?.9:p.crouch?1.3:sprinting()?GROUND_SPEED.sprint:GROUND_SPEED.walk;if(usingSlowItem())speed*=eatHeld?(FOOD_RULES[eatItem]?.movementModifier??.35):.2;
  const forward=fastSwim?fw*Math.cos(p.pitch):fw;let tx=(forward*Math.sin(p.yaw)+st*Math.cos(p.yaw))*speed,tz=(-forward*Math.cos(p.yaw)+st*Math.sin(p.yaw))*speed;
  let accel=flying?12:wet?9:p.ground?(fw||st?24:32):(sprinting()?SPRINT_JUMP.airAccel:8);
  p.vx=mix(p.vx,tx,1-Math.exp(-accel*dt));p.vz=mix(p.vz,tz,1-Math.exp(-accel*dt));
@@ -1279,7 +1284,7 @@ function physicsStep(dt){if(dt<=0)return;p.hitCooldown=Math.max(0,(p.hitCooldown
 // Survival HUD and environmental damage. Hunger consumption and XP simulation remain future work.
 const normalizeMode=v=>v==='survival'?'survival':'creative';
 function modeLabel(v){return normalizeMode(v)==='survival'?'サバイバル':'クリエイティブ';}
-function normalizeHUD(v){const limit=(n,max,def)=>Number.isFinite(n)?Math.max(0,Math.min(max,n)):def;const hunger=Math.floor(limit(v?.hunger,20,20));return {health:limit(v?.health,20,20),hunger,saturation:limit(v?.saturation,hunger,v?0:Math.min(5,hunger)),exhaustion:limit(v?.exhaustion,3.999999999,0),xp:limit(v?.xp,1,0),level:Math.floor(limit(v?.level,99999,0)),air:limit(v?.air,15,15),cause:['fall','suffocation','drowning','starvation'].includes(v?.cause)?v.cause:''};}
+function normalizeHUD(v){const limit=(n,max,def)=>Number.isFinite(n)?Math.max(0,Math.min(max,n)):def;const hunger=Math.floor(limit(v?.hunger,20,20));return {health:limit(v?.health,20,20),hunger,saturation:limit(v?.saturation,hunger,v?0:Math.min(5,hunger)),exhaustion:limit(v?.exhaustion,3.999999999,0),hungerEffect:limit(v?.hungerEffect,30,0),xp:limit(v?.xp,1,0),level:Math.floor(limit(v?.level,99999,0)),air:limit(v?.air,15,15),cause:['fall','suffocation','drowning','starvation'].includes(v?.cause)?v.cause:''};}
 // Full-state sprites sampled from the supplied reference: 9x9, 8px pitch.
 const HUD_HEART=['..kk.kk..','.krrkrrk.','krhrrrrrk','krrrrrrrk','kdrrrrrdk','.kdrrrdk.','..kdrdk..','...kdk...','....k....'];
 const HUD_FOOD=['..kk.....','.krdk....','krhrak...','kdrabak..','.kcebbk..','..kceek..','...kkkskk','......kwk','......kk.'];
@@ -1336,6 +1341,7 @@ function addExhaustion(amount){
 const NUTRITION_RULES=Object.freeze({interval:4,healThreshold:18,starveFloor:1});
 function tickNutrition(dt){
  if(gameMode!=='survival'||survivalHUD.health<=0){regenTime=starveTime=0;return;}
+ if(survivalHUD.hungerEffect>0){const step=Math.min(dt,survivalHUD.hungerEffect);survivalHUD.hungerEffect=Math.max(0,survivalHUD.hungerEffect-step);addExhaustion(step*.1);if(survivalHUD.hungerEffect<1e-8){survivalHUD.hungerEffect=0;updateSurvivalHUD();}}
  const {interval,healThreshold,starveFloor}=NUTRITION_RULES;
  if(survivalHUD.hunger>=healThreshold&&survivalHUD.health<20){
   regenTime+=dt;
@@ -1406,12 +1412,12 @@ function respawnPlayer(){
  setGameMode('survival');resetPosition();target=null;save(true);start();
 }
 function updateSurvivalHUD(){
- const on=gameMode==='survival';document.body.classList.toggle('survival',on);$('#survivalHUD').hidden=!on;
+ const on=gameMode==='survival';document.body.classList.toggle('survival',on);$('#survivalHUD').hidden=!on;$('#hungerIcons').style.filter=on&&survivalHUD.hungerEffect>0?'hue-rotate(75deg) saturate(.7)':'';
  if(!on){$('#airIcons').hidden=true;return;}
  updateAirHUD();drawStatIcons($('#healthIcons'),HUD_HEART,survivalHUD.health,'heart');drawStatIcons($('#hungerIcons'),HUD_FOOD,survivalHUD.hunger,'food');
  $('#xpLevel').textContent=survivalHUD.level?String(survivalHUD.level):'';const pct=survivalHUD.xp*100;$('#xpFill').style.width=pct+'%';$('#xpBar').setAttribute('aria-valuenow',String(pct));
 }
-function setGameMode(mode,stats){if(riddenPig)tryDismount(true);gameMode=normalizeMode(mode);survivalHUD=normalizeHUD(stats);if(gameMode==='survival')flying=false;if(!canSprint())cancelSprint();resetDamageTracking();updateSurvivalHUD();}
+function setGameMode(mode,stats){endEating(true);if(riddenPig)tryDismount(true);gameMode=normalizeMode(mode);survivalHUD=normalizeHUD(stats);if(gameMode==='survival')flying=false;if(!canSprint())cancelSprint();resetDamageTracking();updateSurvivalHUD();}
 const STACK_LIMIT=64, EXTRA_ITEMS={101:{name:'オークの苗木',side:19},102:{name:'棒',side:20},103:{name:'リンゴ',side:21},104:{name:'小麦の種',side:22},105:{name:'ステーキ',side:23},106:{name:'生の豚肉',side:39},107:{name:'焼き豚',side:40},108:{name:'生の鶏肉',side:41},109:{name:'焼き鳥',side:42},110:{name:'生の牛肉',side:43},111:{name:'羽根',side:44},112:{name:'革',side:45},113:{name:'卵',side:46},114:{name:'ニンジン',side:47},115:{name:'ジャガイモ',side:48},116:{name:'ビートルート',side:49},117:{name:'小麦',side:50},118:{name:'鞍',side:52},119:{name:'ニンジン付きの棒',side:53},120:{name:'スイカの種',side:54},121:{name:'カボチャの種',side:55},122:{name:'ビートルートの種',side:56},123:{name:'骨粉',side:57},...{"124":{"name":"木のツルハシ","side":91,"limit":1},"125":{"name":"木の斧","side":92,"limit":1},"126":{"name":"木のシャベル","side":93,"limit":1},"127":{"name":"木のクワ","side":94,"limit":1},"128":{"name":"木の剣","side":95,"limit":1},"129":{"name":"ボウル","side":96,"limit":64},"130":{"name":"パン","side":97,"limit":64},"131":{"name":"はしご","side":98,"limit":64},"132":{"name":"オークのフェンス","side":99,"limit":64},"133":{"name":"オークのフェンスゲート","side":100,"limit":64},"134":{"name":"オークのドア","side":101,"limit":64},"135":{"name":"オークのトラップドア","side":102,"limit":64},"136":{"name":"オークの看板","side":103,"limit":16},"137":{"name":"オークの階段","side":104,"limit":64},"138":{"name":"オークのハーフブロック","side":105,"limit":64},"139":{"name":"オークのボタン","side":106,"limit":64},"140":{"name":"オークの感圧板","side":107,"limit":64},"141":{"name":"黄色の染料","side":108,"limit":64},"142":{"name":"赤色の染料","side":109,"limit":64},"143":{"name":"赤紫色の染料","side":110,"limit":64},"144":{"name":"白色の染料","side":111,"limit":64},"145":{"name":"橙色の染料","side":112,"limit":64},"146":{"name":"桃色の染料","side":113,"limit":64},"147":{"name":"革の帽子","side":114,"limit":1},"148":{"name":"革の上着","side":115,"limit":1},"149":{"name":"革のズボン","side":116,"limit":1},"150":{"name":"革のブーツ","side":117,"limit":1},"151":{"name":"革の馬鎧","side":118,"limit":1},"152":{"name":"ガラス瓶","side":119,"limit":64},"153":{"name":"ガラス板","side":120,"limit":64},"154":{"name":"干し草の俵","side":121,"limit":64},"155":{"name":"骨ブロック","side":122,"limit":64},"156":{"name":"石の階段","side":124,"limit":64},"157":{"name":"石のハーフブロック","side":125,"limit":64},"158":{"name":"石のボタン","side":126,"limit":64},"159":{"name":"石の感圧板","side":127,"limit":64},"160":{"name":"レンガの階段","side":128,"limit":64},"161":{"name":"レンガのハーフブロック","side":129,"limit":64},"162":{"name":"レンガの塀","side":130,"limit":64},"163":{"name":"石レンガの階段","side":131,"limit":64},"164":{"name":"石レンガのハーフブロック","side":132,"limit":64},"165":{"name":"石レンガの塀","side":133,"limit":64},"166":{"name":"雪（層）","side":134,"limit":64},"167":{"name":"模様入りの石レンガ","side":135,"limit":64},"168":{"name":"額縁","side":141,"limit":64},"169":{"name":"砂岩の階段","side":143,"limit":64},"170":{"name":"砂岩のハーフブロック","side":144,"limit":64},"171":{"name":"砂岩の塀","side":145,"limit":64},"172":{"name":"模様入りの砂岩","side":146,"limit":64}}};
 const itemInfo=id=>EXTRA_ITEMS[id]||blocks[id];
 const isItem=id=>Object.prototype.hasOwnProperty.call(EXTRA_ITEMS,id);
@@ -1507,41 +1513,43 @@ function recipe(grid){
 function craftOnce(){const q=recipe(craftGrid);if(!q||q.count>stackLimit(q.id)||cursorStack&&(cursorStack.id!==q.id||cursorStack.count+q.count>stackLimit(q.id)))return false;cursorStack={id:q.id,count:(cursorStack?.count||0)+q.count};for(const i of q.used){if(--craftGrid[i].count===0)craftGrid[i]=null;}return true;}
 // Survival food: use time is 32 ticks (1.6s); consumption happens only at completion.
 const STEAK_RULES=Object.freeze({seconds:1.6,hunger:8,saturation:12.8,maxHunger:20});
-const FOOD_RULES=Object.freeze({103:[4,2.4],105:[8,12.8],106:[3,1.8],107:[8,12.8],108:[2,1.2],109:[6,7.2],110:[3,1.8],114:[3,3.6],115:[1,.6],116:[1,1.2],130:[5,6]});
-let eatItem=0;
-let eatHeld=false,eatSlot=-1,eatElapsed=0,eatLift=0,eatPhase=0,eatNextBite=.20,eatCrumbs=[],eatLast=0;
-function canEatSteak(){return playing&&gameMode==='survival'&&survivalHUD.health>0&&survivalHUD.hunger<20&&!!FOOD_RULES[inventory[selected]?.id]&&inventory[selected].count>0;}
+const FOOD_RULES=Object.freeze(Object.fromEntries(Object.entries({103:[4,2.4],105:[8,12.8],106:[3,1.8],107:[8,12.8],108:[2,1.2],109:[6,7.2],110:[3,1.8],114:[3,3.6],115:[1,.6],116:[1,1.2],130:[5,6]}).map(([id,[nutrition,saturation]])=>[id,Object.freeze({name:itemInfo(+id).name,nutrition,saturation,useDuration:1.6,movementModifier:.35,canAlwaysEat:false,useAnimation:'eat',effects:+id===108?[{id:'hunger',level:1,seconds:30,chance:.30}]:[]})])));
+let eatItem=0,eatHeld=false,eatSlot=-1,eatElapsed=0,eatLift=0,eatPhase=0,eatNextBite=.20,eatCrumbs=[],eatLast=0;
+function canEatSteak(){const id=heldId(),food=FOOD_RULES[id];return playing&&!!food&&(gameMode==='creative'||(survivalHUD.health>0&&(survivalHUD.hunger<20||food.canAlwaysEat)&&stockCount(id)>0));}
 function endEating(immediate=false){eatHeld=false;eatSlot=-1;eatElapsed=0;eatNextBite=.2;if(immediate){eatLift=0;eatPhase=0;eatCrumbs=[];} }
 function beginEating(){if(!canEatSteak()||eatHeld)return false;stopBreak();swingStart=-Infinity;cancelSprint();eatHeld=true;eatSlot=selected;eatItem=heldId();eatElapsed=0;eatPhase=0;eatNextBite=.20;eatLast=performance.now();return true;}
-function steakNutrition(hunger,saturation){const h=Math.min(STEAK_RULES.maxHunger,hunger+STEAK_RULES.hunger);return {hunger:h,saturation:Math.min(h,saturation+STEAK_RULES.saturation)};}
-function completeSteak(){
- if(!canEatSteak()||selected!==eatSlot)return false;
- const food=FOOD_RULES[eatItem];if(!food||heldId()!==eatItem)return false;const h=Math.min(20,survivalHUD.hunger+food[0]),next={hunger:h,saturation:Math.min(h,survivalHUD.saturation+food[1])};
- Object.assign(survivalHUD,next);const q=inventory[selected];if(--q.count===0)inventory[selected]=null;
+function foodNutrition(food,hunger,saturation){const h=Math.min(20,hunger+food.nutrition);return {hunger:h,saturation:Math.min(h,saturation+food.saturation)};}
+function steakNutrition(hunger,saturation){return foodNutrition(FOOD_RULES[105],hunger,saturation);}
+function applyFoodEffects(food,rng=Math.random){for(const effect of food.effects)if(effect.id==='hunger'&&rng()<effect.chance)survivalHUD.hungerEffect=Math.max(survivalHUD.hungerEffect||0,effect.seconds);}
+function completeSteak(rng=Math.random){
+ if(!canEatSteak()||selected!==eatSlot||heldId()!==eatItem)return false;
+ const food=FOOD_RULES[eatItem];if(gameMode==='creative')return true;
+ Object.assign(survivalHUD,foodNutrition(food,survivalHUD.hunger,survivalHUD.saturation));applyFoodEffects(food,rng);const q=inventory[selected];if(--q.count===0)inventory[selected]=null;
  updateSurvivalHUD();refreshInventoryHotbar();return true;
 }
+let foodAudio=null;
+function foodSound(last=false){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;const ac=foodAudio||(foodAudio=new AC());if(ac.state==='suspended')ac.resume().catch(()=>{});const duration=last?.22:.095,n=Math.floor(ac.sampleRate*duration),buf=ac.createBuffer(1,n,ac.sampleRate),data=buf.getChannelData(0);for(let i=0;i<n;i++){const t=i/ac.sampleRate,env=(1-i/n)**2;data[i]=env*(last?Math.sin(2*Math.PI*(95*t-100*t*t))*.6+(Math.random()-.5)*.3:(Math.random()-.5)*.8);}const src=ac.createBufferSource(),filter=ac.createBiquadFilter(),gain=ac.createGain();filter.type='lowpass';filter.frequency.value=last?650:1700;gain.gain.value=.14;src.buffer=buf;src.connect(filter).connect(gain).connect(ac.destination);src.start();}catch(e){}}
 function addFoodCrumbs(last=false){
- const colors=['#522f1f','#713f2d','#8e523c','#985c43','#4e2719'];
- for(let i=0;i<(last?6:3);i++){const a=Math.random()*Math.PI*2,spd=.12+Math.random()*.55;eatCrumbs.push({x:.08+(Math.random()-.5)*.22,y:.79+(Math.random()-.5)*.10,vx:Math.cos(a)*spd*1.9,vy:-.5-Math.random()*1.5,size:.035+Math.random()*.16,angle:Math.random()*6.28,spin:(Math.random()-.5)*8,life:.24+Math.random()*.32,color:colors[Math.floor(Math.random()*colors.length)]});}
- if(eatCrumbs.length>48)eatCrumbs.splice(0,eatCrumbs.length-48);
+ const colors=handPixelColors(itemInfo(eatItem||STEAK_ID).side,1).filter(q=>q?.opaque).map(q=>q.color);
+ for(let i=0;i<(last?6:3);i++){const a=Math.random()*Math.PI*2,spd=.12+Math.random()*.55;eatCrumbs.push({x:.08+(Math.random()-.5)*.22,y:.79+(Math.random()-.5)*.10,vx:Math.cos(a)*spd*1.9,vy:-.5-Math.random()*1.5,size:.025+Math.random()*.07,angle:Math.random()*6.28,spin:(Math.random()-.5)*8,life:.24+Math.random()*.32,color:colors[Math.floor(Math.random()*colors.length)]||'#af855a'});}
+ if(eatCrumbs.length>48)eatCrumbs.splice(0,eatCrumbs.length-48);foodSound(last);
 }
 function updateEating(dt,now=performance.now()){
- if(eatHeld&&(!canEatSteak()||(eatSlot!==selected||heldId()!==eatItem)))endEating();
+ if(eatHeld&&(!canEatSteak()||eatSlot!==selected||heldId()!==eatItem))endEating();
  if(eatHeld){
-  const elapsed=Math.max(0,(now-eatLast)/1000);eatLast=Math.max(eatLast,now);eatElapsed+=elapsed;
-  while(eatElapsed+1e-9>=eatNextBite&&eatNextBite<STEAK_RULES.seconds){addFoodCrumbs();eatNextBite+=.20;}
-  while(eatHeld&&eatElapsed+1e-9>=STEAK_RULES.seconds){
-   if(!completeSteak()){endEating();break;}
-   addFoodCrumbs(true);eatElapsed=Math.max(0,eatElapsed-STEAK_RULES.seconds);eatNextBite=.20;
-   if(!canEatSteak())endEating();
+  const duration=FOOD_RULES[eatItem].useDuration,elapsed=Math.max(0,(now-eatLast)/1000);eatLast=Math.max(eatLast,now);eatElapsed+=elapsed;
+  while(eatHeld&&eatElapsed+1e-9>=duration){
+   while(eatNextBite<duration-1e-9){addFoodCrumbs();eatNextBite+=.20;}
+   addFoodCrumbs(true);if(!completeSteak()){endEating();break;}
+   eatElapsed=Math.max(0,eatElapsed-duration);eatNextBite=.20;if(!canEatSteak()||heldId()!==eatItem)endEating();
   }
-  eatPhase=eatElapsed;
-  eatLift=Math.min(1,eatElapsed/.20);
+  while(eatHeld&&eatElapsed+1e-9>=eatNextBite&&eatNextBite<duration-1e-9){addFoodCrumbs();eatNextBite+=.20;}
+  if(eatHeld){eatPhase=eatElapsed;eatLift=Math.min(1,eatLift+Math.max(0,dt)/.2);}else eatLift=Math.max(0,eatLift-dt/.14);
  }else{eatLift=Math.max(0,eatLift-dt/.14);}
  for(const q of eatCrumbs){q.life-=dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vy+=2.5*dt;q.angle+=q.spin*dt;}
  eatCrumbs=eatCrumbs.filter(q=>q.life>0);
 }
-function useHeld(){if(eatHeld)return;const m=aimedMob();if(!m&&!shiftHeld()){const block=ray();if(block?.b===19){openInventory(true);return;}if(block?.b===20){openChest(block.v);return;}}if(useBoneMeal())return;if(m&&isDying(m))return;if(useAnimalItem(m))return;if(m&&feedMob(m))return;if(heldId()===113){throwEgg();return;}if(FOOD_RULES[heldId()]){beginEating();return;}action(true);}
+function useHeld(){if(!playing||eatHeld)return;const m=aimedMob();if(!m&&!shiftHeld()){const block=ray();if(block?.b===19){openInventory(true);return;}if(block?.b===20){openChest(block.v);return;}}if(useBoneMeal())return;if(m&&isDying(m))return;if(useAnimalItem(m))return;if(m&&feedMob(m))return;if(heldId()===113){throwEgg();return;}if(FOOD_RULES[heldId()]){beginEating();return;}action(true);}
 function giveTestSteak(){if(gameMode!=='survival'){notify('サバイバルに切り替えてください');return;}const n=64-insertStack(inventory,STEAK_ID,64);refreshInventoryHotbar();notify(n?'テスト：ステーキ '+n+' 個を追加':'インベントリに空きがありません');}
 // Passive animals. World-space units are blocks; AI goals are evaluated by priority.
 const MOB_RULES={pig:{hp:10,w:.9,h:.9,scale:.9,speed:.25,panicSpeed:1.25,temptSpeed:1.2,group:[1,3],weight:10,food:[114,115,116]},chicken:{hp:4,w:.6,h:.8,scale:.8,speed:.25,panicSpeed:1.4,temptSpeed:1,group:[2,4],weight:10,food:[104,120,121,122]},cow:{hp:10,w:.9,h:1.3,scale:1.3,speed:.2,panicSpeed:1.25,temptSpeed:1.25,group:[2,3],weight:8,food:[117]}};
@@ -1612,7 +1620,7 @@ function mobDamage(m,n,player=false,options={}){
  return true;
 }
 function mobLoot(type,burning=false,r=Math.random){if(type==='pig')return [{id:burning?107:106,count:randInt(1,3,r)}];if(type==='chicken')return [{id:burning?109:108,count:1},{id:111,count:randInt(0,2,r)}].filter(q=>q.count);return [{id:burning?105:110,count:randInt(1,3,r)},{id:112,count:randInt(0,2,r)}].filter(q=>q.count);}
-// Cheap Craft v1.62 candidate: fixed 20 Hz animal AI. Seconds in old saves remain compatible.
+// Cheap Craft v1.63 candidate: fixed 20 Hz animal AI. Seconds in old saves remain compatible.
 const ANIMAL_TICK=1/20, ANIMAL_GROWTH=1200, ANIMAL_BREED_COOLDOWN=120, ANIMAL_BOOST=7;
 const MOB_PRIORITY={chicken:['float','panic','breed','tempt','parent','wander'],cow:['float','panic','mount','breed','tempt','wander','parent'],pig:['controlled','float','panic','breed','tempt','parent','wander']};
 const MOB_MULTIPLIERS={chicken:{float:1,panic:1.4,breed:1,tempt:1,parent:1.1,wander:1},cow:{float:1,panic:1.25,mount:1.25,breed:1,tempt:1.25,wander:1,parent:1.1},pig:{controlled:1.25,float:1,panic:1.25,breed:1,tempt:1.2,parent:1.1,wander:1}};
@@ -1867,10 +1875,13 @@ function toggleItemPage(){if(gameMode==='survival')return;setItemPage(itemPage+1
 const handCanvas=$('#heldView'),handCtx=handCanvas.getContext('2d'),tileCache=new Map();
 let swingStart=-Infinity,equipStart=-Infinity,lastHeld=-1,blockLabelTimer=0,bobPhase=0;
 const HAND_SWING_MS=300,HAND_EQUIP_MS=300,handPixels=new Map();
-const HAND_DEG=Math.PI/180;
+const HAND_DEG=Math.PI/180,sinD=x=>Math.sin(x*HAND_DEG),cosD=x=>Math.cos(x*HAND_DEG),clamp01=x=>Math.max(0,Math.min(1,x));
+// Native queries are approximated only at this adapter boundary; RP bone expressions below use degrees.
+const HAND_NATIVE=Object.freeze({swingMs:300,equipMs:300,modelUnit:.115,bobHz:60,moveQueryScale:1/20,glidingSpeed:GROUND_SPEED.walk});
+const animationState={attackTime:0,attackDuration:HAND_NATIVE.swingMs,useType:'none',useTime:0,useDuration:0,equipHeight:1,mainHandItem:0,renderedItem:0,walkDistance:0,handBob:0,lifeTime:0,moveDistance:0,moveSpeed:0,swimTime:0};
 let handMiningLoop=false,handSelectedSlot=-1,handIdleTime=0;
 let swingKind='attack';
-function swingDuration(){return HAND_SWING_MS;}
+function swingDuration(){return itemBehavior(heldId()).swingDuration||HAND_NATIVE.swingMs;}
 let shownHeld=-1,equipFrom=-1,handStamp='',bobAmount=0,handLastYaw=null,handLastPitch=null,handYawLag=0,handPitchLag=0;
 // Every face uses the live 16px atlas. The shaded caches preserve alpha for leaves/glass.
 function faceTile(tile,shade){
@@ -1922,28 +1933,57 @@ const ARM_UV={
 };
 const ARM_FACE_TILES=['skin:top','skin:front','skin:left','skin:right','skin:back','skin:bottom'];
 
-function bedrockArmDelta(t){
- t=Math.max(0,Math.min(1,t));if(t===0||t===1)return {move:[0,0,0],rot:[0,0,0]};
- const a=Math.sin(Math.sqrt(t)*Math.PI),b=Math.sin(t*Math.PI);
- return {move:[-.4*a,.2*Math.sin(Math.sqrt(t)*2*Math.PI),-.2*b],rot:[-80*Math.sin(t*t*Math.PI),45*a,-20*a]};
+
+// Bedrock resource_pack/animations/player_firstperson.animation.json
+// Keep raw bone expressions separate from the camera-coordinate adapter.
+const BEDROCK_EMPTY_ARM=Object.freeze({position:[13.5,-10,12],rotation:[95,-45,115]});
+function bedrockArmDelta(t,f=sinD((1-t)*180),shortArmOffset=0){
+ const a=clamp01(t),x=sinD(f*a*112),r=sinD(f*(1-a)**2*280);
+ return {move:[Math.max(-7,Math.min(999,-15.5*x))*x,sinD(f*(1-a)**2*200)*7.5-f*a*15+shortArmOffset,sinD(f*a*120)*1.75],rot:[-60*r,40*r,20*r]};
 }
-function thirdArmDelta(t){t=Math.max(0,Math.min(1,t));if(t===0||t===1)return [0,0,0];return [(-114.6*Math.sin(t*Math.PI)+22.9*Math.sin((1-(1-t)**2)*Math.PI))*HAND_DEG,34.4*Math.sin(Math.sqrt(t)*Math.PI)*HAND_DEG,0];}
-function equipProgress(age){const t=Math.max(0,Math.min(1,age/HAND_EQUIP_MS));return {offset:t<.5?t*2:(1-t)*2,old:t<.5};}
-function swingProgress(now){return Math.max(0,Math.min(1,(now-swingStart)/swingDuration()));}
-function heldCategory(id){return !id?'arm':id>=124&&id<=128?'tool':isPlant(id)||isItem(id)?'item':'block';}
+function bedrockItemDelta(t){const a=clamp01(t),r=Math.sqrt(a);return {move:[-sinD(r*Math.PI*100)*10,sinD(r*Math.PI*2*60)*10,-sinD(a*Math.PI*65)*2],rot:[-sinD(r*Math.PI*20)*25,-sinD(r*75)*15,-sinD(r*25)*15]};}
+function bedrockWalk(distance,bob){return [sinD(-distance*180)*bob*9.75,-Math.abs(cosD(-distance*180))*bob*15,0];}
+function bedrockThirdAttack(t){const a=clamp01(t),q=sinD((1-(1-a)**4)*180),m=q*1.2+sinD(a*180);return {right:[-m*30,q>1e-12?90*q-30:0,0],left:[-m*10,0,0],body:sinD(360*Math.sqrt(a))*5};}
+function thirdArmDelta(t){return bedrockThirdAttack(t).right.map(x=>x*HAND_DEG);}
+function bedrockSwim(time,side){const t=((time%1.3)+1.3)%1.3,k=[[0,0,180],[.7,0,287.2],[1.1,90,180],[1.3,0,180]];let i=1;while(i<3&&t>k[i][0])i++;const a=k[i-1],b=k[i],f=(t-a[0])/(b[0]-a[0]);return [a[1]+(b[1]-a[1])*f,180,side*(a[2]+(b[2]-a[2])*f)];}
+function equipProgress(age){const t=clamp01(age/HAND_NATIVE.equipMs),offset=t<.5?t*2:(1-t)*2;return {offset,old:t<.5,height:1-offset};}
+function swingProgress(now){return clamp01((now-swingStart)/swingDuration());}
+const SHAPED_HELD=new Set([131,132,133,135,137,138,139,140,153,156,157,158,159,160,161,162,163,164,165,166,169,170,171]);
+const ITEM_BEHAVIOR_CACHE=new Map();
+function itemBehavior(id){if(ITEM_BEHAVIOR_CACHE.has(id))return ITEM_BEHAVIOR_CACHE.get(id);let renderClass=!id?'arm':id===128?'weapon':id===119||(id>=124&&id<=127)?'tool':SHAPED_HELD.has(id)?'shaped':(!isItem(id)&&!isPlant(id)||[154,155,167,172].includes(id))?'block':'flat';
+ const actions=[];if(FOOD_RULES[id])actions.push('eat');if([104,114,115,116,117,120,121,122].includes(id))actions.push('feed');if(id===113)actions.push('throw');if(id===123)actions.push('fertilize');if(id===118||id===119)actions.push('ride');if(id>=141&&id<=146)actions.push('dye');if(id>=147&&id<=151)actions.push('equip');if(renderClass==='block'||renderClass==='shaped'||isPlant(id)||id===101||[134,136,168,104,114,115,116,120,121,122].includes(id))actions.push('place');
+ const v=Object.freeze({renderClass,actions,handEquipped:renderClass==='tool'||renderClass==='weapon',food:FOOD_RULES[id]||null});ITEM_BEHAVIOR_CACHE.set(id,v);return v;
+}
+function heldCategory(id){const c=itemBehavior(id).renderClass;return c==='weapon'?'tool':c==='flat'?'item':c==='shaped'?'block':c;}
+function handBlockId(id){return ({154:21,155:22,167:23,172:24})[id]||id;}
+function handBoxes(id){const slab=[138,157,161,164,170],stairs=[137,156,160,163,169],walls=[162,165,171];let tex=8,boxes;
+ if(slab.includes(id)||stairs.includes(id)){tex=({137:8,138:8,156:3,157:3,160:9,161:9,163:140,164:140,169:142,170:142})[id];boxes=[[[0,-.25,0],[1,.5,1]]];if(stairs.includes(id))boxes.push([[0,.25,.25],[1,.5,.5]]);}
+ else if(walls.includes(id)){tex=id===162?9:id===165?140:142;boxes=[[[0,0,0],[.5,1,.5]],[[0,-.0625,0],[1,.75,.375]]];}
+ else if(id===132||id===133){boxes=id===132?[[[0,0,0],[.25,1,.25]],[[0,.23,0],[1,.15,.16]],[[0,-.16,0],[1,.15,.16]]]:[[[-.39,0,0],[.16,1,.16]],[[.39,0,0],[.16,1,.16]],[[0,.19,0],[.7,.15,.12]],[[0,-.19,0],[.7,.15,.12]]];}
+ else if(id===131){boxes=[[[-.38,0,0],[.10,1,.10]],[[.38,0,0],[.10,1,.10]],...[-.35,0,.35].map(y=>[[0,y,0],[.76,.10,.10]])];}
+ else if(id===135){boxes=[[[0,-.40625,0],[1,.1875,1]]];}
+ else if([139,158].includes(id)){tex=id===158?3:8;boxes=[[[0,0,0],[.375,.25,.125]]];}
+ else if([140,159,166].includes(id)){tex=id===159?3:id===166?14:8;boxes=[[[0,-.4375,0],[.875,.125,.875]]];}
+ else if(id===153){tex=10;boxes=[[[0,0,0],[1,1,.125]]];}
+ return boxes?boxes.map(([center,size])=>({center,size,tex})):null;
+}
 function handPose(id,t,bob,phase,yawLag,pitchLag,equip,kind='attack',lift=0,foodPhase=0,idle=0){
  const cat=heldCategory(id),sprite=cat==='tool'||cat==='item',tool=cat==='tool',scale=tool?1.27:1.02;
- // Preserve the previously calibrated resting silhouette in this camera coordinate system.
+ // The native first-person camera projection is not public. Anchor the official bone rest
+ // to the existing calibrated screen silhouette; all dynamic offsets use the same model unit.
  const base=cat==='arm'?ARM_REST.slice(3):sprite?[.08,tool?-.45:-.22,-.18]:HAND_KEYS[0].slice(4);
  const rest=cat==='arm'?ARM_REST.slice(0,3):sprite?[.98,-.92,2.32]:HAND_KEYS[0].slice(1,4);
  const size=cat==='arm'?ARM_SIZE:sprite?[scale,scale,1]:[1,1,1];
- const d=bedrockArmDelta(lift>0?1:t),unit=1.85;
- const bx=Math.cos(phase)*.05*bob*unit,by=-Math.abs(Math.sin(phase))*.05*bob*unit,roll=Math.cos(phase)*2*bob*HAND_DEG;
- const angles=[base[0]+d.rot[0]*HAND_DEG+pitchLag,base[1]+d.rot[1]*HAND_DEG+yawLag,base[2]+d.rot[2]*HAND_DEG+roll];
+ const active=t>0&&t<1&&lift===0,arm=active?bedrockArmDelta(t):{move:[0,0,0],rot:[0,0,0]},item=active&&id?bedrockItemDelta(t):{move:[0,0,0],rot:[0,0,0]},unit=HAND_NATIVE.modelUnit;
+ const walk=bedrockWalk(phase,bob),height=1-clamp01(equip),breath=id?sinD(idle*45)*.5:0;
+ // rightitem overrides its own bone only; its parent arm remains animated.
+ const fade=active?Math.min(1,(1-t)/.12):0,ar=arm.rot.map((x,i)=>x*HAND_DEG),ir=item.rot.map(x=>x*HAND_DEG*fade);
+ const angles=base.map((x,i)=>x+ar[i]+ir[i]);
  const pivot=cat==='arm'?[0,-.5,0]:tool?[-.36,-.36,0]:sprite?[-.18,-.27,0]:[0,-.35,0];
  const local=pivot.map((v,i)=>v*size[i]),before=rotateHand(local,base),after=rotateHand(local,angles);
- const pos=rest.map((v,i)=>v+d.move[i]*unit+before[i]-after[i]);pos[0]+=bx;pos[1]+=by-1.55*equip+Math.sin(idle*1.8)*.009;
- if(sprite&&lift>0){const f=lift*lift*(3-2*lift),wave=Math.sin(foodPhase*25);pos[0]+=(.23-pos[0])*f;pos[1]+=(-.67-pos[1]+.03*unit*Math.abs(wave))*f;pos[2]+=(1.65-pos[2])*f;angles[0]+=(.10+5*HAND_DEG*wave-angles[0])*f;angles[1]+=(.12-angles[1])*f;angles[2]+=(.25-angles[2])*f;}
+ const itemMove=rotateHand(item.move.map(x=>x*unit*fade),ar);
+ const pos=rest.map((v,i)=>v+(arm.move[i]+walk[i])*unit+itemMove[i]+before[i]-after[i]);pos[1]+=(-10*(1-height)+breath)*unit;
+ if(sprite&&lift>0){const f=lift*lift*(3-2*lift),wave=sinD(foodPhase*1800);pos[0]+=(.23-pos[0])*f;pos[1]+=(-.67-pos[1]+.055*Math.abs(wave))*f;pos[2]+=(1.65-pos[2])*f;angles[0]+=(.10+5*HAND_DEG*wave-angles[0])*f;angles[1]+=(.12-angles[1])*f;angles[2]+=(.25-angles[2])*f;}
  return {pos,angles,size};
 }
 function projectHand(v,w,h){const z=Math.max(.08,v[2]);return [w/2+h*Math.min(0,(w/h-1.65)*.32)+h*.95*v[0]/z,h/2-h*.95*v[1]/z];}
@@ -1969,11 +2009,11 @@ function spriteGeometry(tile){
 function handGeometry(id,pose,w,h){
  const transform=v=>{let a=rotateHand(v.map((x,i)=>x*pose.size[i]),pose.angles);return a.map((x,i)=>x+pose.pos[i]);};
  const out=[];
- if(isPlant(id)||isItem(id)){const tile=itemInfo(id).side;for(const f of spriteGeometry(tile)){const v=f.v.map(transform),n=rotateHand(f.n,pose.angles),center=v[0].map((_,i)=>v.reduce((a,q)=>a+q[i],0)/4);if(n.reduce((a,x,i)=>a+x*center[i],0)>=0||v.some(q=>q[2]<=.08))continue;out.push({v,depth:center[2],tile,shade:f.shade,pixel:f.pixel});}return out.sort((a,b)=>b.depth-a.depth);}
- for(const f of handFaces){
-  let v=f.v.map(transform),n=rotateHand(f.n,pose.angles),center=v[0].map((_,i)=>v.reduce((sum,q)=>sum+q[i],0)/4);
+ if(['item','tool'].includes(heldCategory(id))){const tile=itemInfo(id).side;for(const f of spriteGeometry(tile)){const v=f.v.map(transform),n=rotateHand(f.n,pose.angles),center=v[0].map((_,i)=>v.reduce((a,q)=>a+q[i],0)/4);if(n.reduce((a,x,i)=>a+x*center[i],0)>=0||v.some(q=>q[2]<=.08))continue;out.push({v,depth:center[2],tile,shade:f.shade,pixel:f.pixel});}return out.sort((a,b)=>b.depth-a.depth);}
+ for(const box of handBoxes(id)||[{center:[0,0,0],size:[1,1,1],tex:null}])for(const f of handFaces){
+  let v=f.v.map(q=>q.map((x,i)=>x*box.size[i]+box.center[i])).map(transform),n=rotateHand(f.n,pose.angles),center=v[0].map((_,i)=>v.reduce((sum,q)=>sum+q[i],0)/4);
   if(n.reduce((sum,x,i)=>sum+x*center[i],0)>=0||v.some(q=>q[2]<=.08))continue;
-  out.push({v,depth:center[2],tile:id?(id===20&&f.n[2]===-1?blocks[id].front:blocks[id][f.tile]):ARM_FACE_TILES[handFaces.indexOf(f)],shade:id?f.shade:(f.n[0]===-1?.90:f.n[2]===-1?.85:f.shade)});
+  out.push({v,depth:center[2],tile:id?(box.tex??(id===20&&f.n[2]===-1?blocks[id].front:blocks[handBlockId(id)][f.tile])):ARM_FACE_TILES[handFaces.indexOf(f)],shade:id?f.shade:(f.n[0]===-1?.90:f.n[2]===-1?.85:f.shade)});
  }
  return out.sort((a,b)=>b.depth-a.depth);
 }
@@ -2028,8 +2068,8 @@ function paintSteakHand(g,w,h,pose,equip){
  g.drawImage(faceTile(23,.95),-q.size/2,-q.size/2,q.size,q.size);g.restore();
 }
 function paintFoodCrumbs(g,w,h){
- const tile=faceTile(itemInfo(eatItem||STEAK_ID).side,1);for(const q of eatCrumbs){const n=q.size*h;g.save();g.translate(w/2+q.x*h,q.y*h);g.rotate(q.angle);g.imageSmoothingEnabled=false;
- g.fillStyle=q.color;g.fillRect(-n/2,-n/2,n,n);g.drawImage(tile,8,7,3,3,-n/2,-n/2,n,n);g.restore();}
+ for(const q of eatCrumbs){const n=q.size*h;g.save();g.translate(w/2+q.x*h,q.y*h);g.rotate(q.angle);g.imageSmoothingEnabled=false;
+ g.fillStyle=q.color;g.fillRect(-n/2,-n/2,n,n);g.restore();}
 }
 
 function updateHandState(now,dt){
@@ -2038,12 +2078,13 @@ function updateHandState(now,dt){
  if(mining){if(!handMiningLoop&&swingProgress(now)>=1)swingHand('attack',now);else if(now-swingStart>=swingMs)swingStart=Number.isFinite(swingStart)?swingStart+Math.floor((now-swingStart)/swingMs)*swingMs:now;}
  handMiningLoop=mining;
  const eq=equipProgress(now-equipStart);shownHeld=eq.old&&equipFrom>=0?equipFrom:heldId();
- const speed=Math.hypot(p.vx,p.vz),motion=p.ground&&!flying?Math.min(1.3,speed/GROUND_SPEED.walk):0,k=1-Math.exp(-Math.max(0,dt)*14);
- bobAmount+=(motion-bobAmount)*k;if(p.ground&&!flying)bobPhase+=Math.max(0,dt)*speed*.6*Math.PI;
- handIdleTime+=Math.max(0,dt);
+ const speed=animationState.moveSpeed,motion=p.ground&&!flying&&survivalHUD.health>0?Math.min(.1,speed/HAND_NATIVE.bobHz):0,k=1-Math.pow(.98,Math.max(0,dt)*HAND_NATIVE.bobHz);
+ bobAmount+=(motion-bobAmount)*k;bobPhase=animationState.walkDistance;handIdleTime+=Math.max(0,dt);
+ Object.assign(animationState,{attackTime:swingProgress(now)<1?swingProgress(now):0,attackDuration:swingMs,useType:eatHeld?'eat':'none',useTime:eatElapsed,useDuration:eatHeld?FOOD_RULES[eatItem]?.useDuration||1.6:0,equipHeight:eq.height,mainHandItem:heldId(),renderedItem:shownHeld,handBob:bobAmount,lifeTime:handIdleTime});
+ if(p.swimPose)animationState.swimTime+=dt;else animationState.swimTime=0;
  const max=6*HAND_DEG,clamp=v=>Math.max(-max,Math.min(max,v)),follow=1-Math.pow(.75,Math.max(0,dt)*60);
  const yaw=handLastYaw===null?0:clamp(Math.atan2(Math.sin(handLastYaw-p.yaw),Math.cos(handLastYaw-p.yaw))*.85),pitch=handLastPitch===null?0:clamp((handLastPitch-p.pitch)*.85);
- handYawLag=clamp(handYawLag+(yaw-handYawLag)*follow);handPitchLag=clamp(handPitchLag+(pitch-handPitchLag)*follow);
+ handYawLag=handPitchLag=0; // no undocumented camera sway in Bedrock mode
  handLastYaw=p.yaw;handLastPitch=p.pitch;
 }
 function updateHand(now,dt){
@@ -2327,7 +2368,7 @@ function menu(){
  showScreen('pause');
 }
 function openSettings(from){settingsReturn=from;showScreen('settings');}
-$('#homeVersion').replaceChildren(pixelText('v1.62'));
+$('#homeVersion').replaceChildren(pixelText('v1.63'));
 $('#homePlay').onclick=()=>showScreen('world');
 $('#homeSettings').onclick=()=>openSettings('home');
 $('#worldBack').onclick=()=>showScreen('home');
@@ -2426,7 +2467,7 @@ function mouseLook(dx,dy,locked,now=performance.now()){
 function resetWorldForTest(){clearInput();gen(randomSeed());setGameMode(gameMode);hotbar();choose(0);target=null;touchId=null;resetMouseLook();rebuild();let saved=save(true);notify('ランダムワールド再生成完了'+(saved?'':'（保存不可）'));}
 function beginBreak(source){if(!playing||breaking||eatHeld)return;const mob=aimedMob();if(mob){attackMob(mob);return;}breaking=true;breakSource=source;target=ray();const now=performance.now();if(gameMode==='survival'){resetMining();swingHand('attack');updateSurvivalMining(now);nextBreak=Infinity;}else{action(false);nextBreak=now+BREAK_INITIAL;}}
 function stopBreak(source){if(source&&breakSource!==source)return;breaking=false;breakSource=null;nextBreak=Infinity;resetMining();}
-function clearInput(){p.kx=p.kz=0;resetMobileInput();resetTouchPointers();resetHudTouches();sprintWallTime=0;sprintFov=72;endEating(true);swingStart=-Infinity;handLastYaw=handLastPitch=null;handYawLag=handPitchLag=bobAmount=0;handMiningLoop=false;handStamp='';keys.clear();sprint=false;swimLift=false;lastW=lastSpace=-Infinity;jumpQueued=false;suppressJump=false;stopBreak();drag=false;resetMouseLook();p.vx=p.vy=p.vz=0;}
+function clearInput(){p.kx=p.kz=0;resetMobileInput();resetTouchPointers();resetHudTouches();sprintWallTime=0;sprintFov=72;endEating(true);swingStart=-Infinity;handLastYaw=handLastPitch=null;handYawLag=handPitchLag=bobAmount=0;handMiningLoop=false;animationState.moveSpeed=0;animationState.walkDistance=animationState.moveDistance=animationState.swimTime=0;handStamp='';keys.clear();sprint=false;swimLift=false;lastW=lastSpace=-Infinity;jumpQueued=false;suppressJump=false;stopBreak();drag=false;resetMouseLook();p.vx=p.vy=p.vz=0;}
 function updateBreak(now){if(gameMode==='survival'){updateSurvivalMining(now);return;}if(!breaking||now<nextBreak||eatHeld)return;action(false,true);nextBreak=now+BREAK_INTERVAL;}
 function toggleModeForTest(){
  if(!playing)return;
