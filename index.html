@@ -436,7 +436,7 @@ const fluidSides=[[1,0],[-1,0],[0,1],[0,-1]];
  const FLIGHT_SPEED=Object.freeze({normal:10.8,sprint:21.6});
  const BLOCK_REACH=Object.freeze({creative:5,survival:4.5});
  let gameMode='creative';
- let survivalHUD={health:20,hunger:20,saturation:5,exhaustion:0,xp:0,level:0,air:15,cause:''};
+ let survivalHUD={health:20,hunger:20,saturation:5,exhaustion:0,hungerEffect:0,xp:0,level:0,air:15,cause:''};
  let fallPeak=null,suffActive=false,suffTime=0,drownTime=0,airStamp='',hurtStarted=-Infinity,regenTime=0,starveTime=0;
  const DOUBLE_TAP=275, BREAK_INITIAL=250, BREAK_INTERVAL=145, STAND_HEIGHT=1.8, CROUCH_HEIGHT=1.5, MOUSE_SENS=.00125, MOUSE_MAX_DELTA=220, MOUSE_LOCK_GRACE=70;
 let swimLift=false;
@@ -937,7 +937,7 @@ function mobVertices(){
  return out;
 }
 // Third-person camera and legacy Steve mesh. View changes are visual only.
-let thirdPerson=false,thirdCameraDistance=0,playerWalkPhase=0,playerWalkBlend=0;
+let thirdPerson=false,thirdFront=false,thirdCameraDistance=0,playerWalkPhase=0,playerWalkBlend=0;
 const PLAYER_CAMERA_MAX=4,PLAYER_CAMERA_RADIUS=.14,PLAYER_SKIN_BASE=64;
 function thirdViewActive(){return thirdPerson&&['game','inventory','pause','death'].includes(screen);}
 function cameraObstructed(x,y,z,r=PLAYER_CAMERA_RADIUS){
@@ -951,9 +951,10 @@ function thirdPersonClearance(anchor,dir,max=PLAYER_CAMERA_MAX){
  let lo=0;for(let d=.05;d<=max+1e-8;d+=.05){const t=Math.min(max,d);if(!safe(t)){let hi=t;for(let j=0;j<8;j++){const mid=(lo+hi)/2;if(safe(mid))lo=mid;else hi=mid;}return Math.max(0,lo-.025);}lo=t;}
  return max;
 }
+function viewDirection(){const d=direction();return thirdViewActive()&&thirdFront?d.map(x=>-x):d;}
 function worldViewEye(){
  const anchor=renderEye();if(!thirdViewActive())return anchor;
- const dir=direction(),distance=Math.min(thirdCameraDistance,thirdPersonClearance(anchor,dir));
+ const dir=viewDirection(),distance=Math.min(thirdCameraDistance,thirdPersonClearance(anchor,dir));
  return anchor.map((v,i)=>v-dir[i]*distance);
 }
 // Update the gait at the physics substep, so takeoff preserves the exact ground pose.
@@ -970,12 +971,12 @@ function updatePlayerGait(dt,travel,onGround,swimming=false,inFlight=false){
 function playerWalkAngle(){return cosD(animationState.moveDistance*38.17)*Math.min(1.3,animationState.moveSpeed/HAND_NATIVE.glidingSpeed)*57.3*HAND_DEG;}
 function updateThirdPerson(dt){
  if(!thirdViewActive()){thirdCameraDistance=0;return;}
- const max=thirdPersonClearance(renderEye(),direction());
+ const max=thirdPersonClearance(renderEye(),viewDirection());
  thirdCameraDistance=Math.min(max,thirdCameraDistance+(max-thirdCameraDistance)*(1-Math.exp(-dt*18)));
 }
 function togglePerspective(){
- thirdPerson=!thirdPerson;document.body.classList.toggle('third-person',thirdPerson);thirdCameraDistance=thirdPerson?thirdPersonClearance(renderEye(),direction()):0;handStamp='';handCanvas.style.visibility=thirdPerson?'hidden':'';
- notify(thirdPerson?'三人称視点':'一人称視点');
+ if(!thirdPerson){thirdPerson=true;thirdFront=false;}else if(!thirdFront){thirdFront=true;}else{thirdPerson=false;thirdFront=false;}document.body.classList.toggle('third-person',thirdPerson);thirdCameraDistance=thirdPerson?thirdPersonClearance(renderEye(),viewDirection()):0;handStamp='';handCanvas.style.visibility=thirdPerson?'hidden':'';
+ notify(thirdPerson?(thirdFront?'三人称視点（前方）':'三人称視点（後方）'):'一人称視点');
 }
 function playerSkinUV(u,v,w,h,d){return [[u+d+w,v+d,d,h],[u,v+d,d,h],[u+d,v,w,d],[u+d+w,v,w,d],[u+d,v+d,w,h],[u+2*d+w,v+d,w,h]];}
 function paintPlayerSkin(){
@@ -1147,7 +1148,7 @@ function drawMiningCracks(vp,e){
  for(const [alpha,data] of groups){gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.DYNAMIC_DRAW);gl.uniform4f(lc,0,0,0,alpha);gl.drawArrays(gl.TRIANGLES,0,data.length/3);}
  gl.depthMask(true);gl.disable(gl.BLEND);
 }
-function renderSoft(){let now=performance.now();if(now-lastSoft<45)return;lastSoft=now;resize();let w=canvas.width,h=canvas.height,e=worldViewEye(),wet=underwater(e),waterColor=waterFog().map(k=>k*255),d=direction(),{right,up}=viewAxes(d),f=h/(2*Math.tan(sprintFov*PI/360)),horizon=h/2+Math.tan(p.pitch)*f;let g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,day?'#559bd1':'#101b39');g.addColorStop(1,day?'#c0d7e5':'#28354c');ctx.fillStyle=wet?'rgb('+waterColor.join(',')+')':g;ctx.fillRect(0,0,w,h);const polys=[];
+function renderSoft(){let now=performance.now();if(now-lastSoft<45)return;lastSoft=now;resize();let w=canvas.width,h=canvas.height,e=worldViewEye(),wet=underwater(e),waterColor=waterFog().map(k=>k*255),d=viewDirection(),{right,up}=viewAxes(d),f=h/(2*Math.tan(sprintFov*PI/360)),horizon=h/2+Math.tan(thirdViewActive()&&thirdFront?-p.pitch:p.pitch)*f;let g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,day?'#559bd1':'#101b39');g.addColorStop(1,day?'#c0d7e5':'#28354c');ctx.fillStyle=wet?'rgb('+waterColor.join(',')+')':g;ctx.fillRect(0,0,w,h);const polys=[];
 const cam=(x,y,z)=>{let v=[x-e[0],y-e[1],z-e[2]];return [dot(v,right),dot(v,up),dot(v,d)];};
 function clip(v){let out=[];for(let i=0;i<v.length;i++){let a=v[i],b=v[(i+1)%v.length],ain=a[2]>=.10,bin=b[2]>=.10;if(ain)out.push(a);if(ain!==bin){let t=(.10-a[2])/(b[2]-a[2]);out.push([mix(a[0],b[0],t),mix(a[1],b[1],t),.10]);}}return out;}
 function collect(arr){for(let i=0;i<arr.length;i+=36){let x=arr[i],y=arr[i+1],z=arr[i+2];let dx=x-e[0],dy=y-e[1],dz=z-e[2];if(dx*dx+dy*dy+dz*dz>37*37||dx*d[0]+dy*d[1]+dz*d[2]<-2)continue;let a=[arr[i+6]-x,arr[i+7]-y,arr[i+8]-z],b=[arr[i+12]-x,arr[i+13]-y,arr[i+14]-z];let n=cross(a,b),tile=Math.floor(arr[i+3]*4)+Math.floor(arr[i+4]*4)*4;if(tile!==10&&(tile<15||CHEST_UV_BY_TILE.has(tile))&&!(wet&&tile===11)&&dx*n[0]+dy*n[1]+dz*n[2]>=0)continue;let v=[cam(x,y,z),cam(arr[i+6],arr[i+7],arr[i+8]),cam(arr[i+12],arr[i+13],arr[i+14]),cam(arr[i+30],arr[i+31],arr[i+32])];if(v.every(q=>q[2]<.1))continue;let depth=v.reduce((a,b)=>a+b[2],0)/4,glassQuad=(tile===10||tile>=15)?v:null;v=clip(v).map(q=>[w/2+q[0]*f/q[2],h/2-q[1]*f/q[2]]);if(v.length<3||v.every(q=>q[0]<0)||v.every(q=>q[0]>w)||v.every(q=>q[1]<0)||v.every(q=>q[1]>h))continue;let contact=arr[i+5]>1.5,l=contact?arr[i+5]-2:arr[i+5];l=Math.abs(l);let c=tile===11?(l>.95?[61,99,166]:[54,87,146]):colors[tile]||colors[0],j=tile===11?0:(hash(x+3*y,z,77)-.5)*18,dist=Math.hypot(dx,dy,dz),fog=wet?1-.78*Math.exp(-.14*dist):Math.max(0,Math.min(.85,(depth-18)/23));let rgb=c.map((k,jj)=>Math.round(mix((k+j)*(tile===11?1:l)*(day?1:[.38,.48,.7][jj])*(wet?[.57,.78,.94][jj]:1),(wet?waterColor:day?[179,207,227]:[27,36,58])[jj],fog)));polys.push({v,depth,c:'rgb('+rgb.join(',')+')',tile,waterTop:tile===11&&l>.95,contact,glassQuad,light:l,fog});}}
@@ -1165,7 +1166,7 @@ function drawWaterSurfaces(visible){
  for(const c of visible)drawBuffer(c.t,c.tn);
  gl.depthMask(true);gl.depthFunc(gl.LEQUAL);
 }
-function render(){if(fallback){renderSoft();return;}resize();let e=worldViewEye(),d=direction(),{vp,right,up}=camera(e,d);let wet=underwater(e),fog=wet?waterFog():day?[.67,.81,.91]:[.105,.14,.24];gl.clearColor(...fog,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.disable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.disable(gl.BLEND);if(!wet){gl.useProgram(skyPr);gl.bindBuffer(gl.ARRAY_BUFFER,skyB);gl.enableVertexAttribArray(skyL.pos);gl.vertexAttribPointer(skyL.pos,2,gl.FLOAT,false,0,0);gl.uniform1f(skyL.day,+day);gl.uniform3fv(skyL.dir,d);gl.uniform3fv(skyL.right,right);gl.uniform3fv(skyL.up,up);gl.uniform1f(skyL.aspect,canvas.width/canvas.height);gl.uniform1f(skyL.fovScale,Math.tan(sprintFov*PI/360));gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.useProgram(pr);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);gl.uniform1i(loc.tex,0);gl.uniformMatrix4fv(loc.vp,false,vp);gl.uniform3fv(loc.eye,e);gl.uniform3fv(loc.fog,fog);gl.uniform1f(loc.day,+day);gl.uniform1f(loc.water,+wet);gl.uniform1f(loc.waterTime,(performance.now()/1000)%600);let visible=chunks.filter(c=>c&&Math.hypot(c.x-p.x,c.z-p.z)<95);for(let c of visible)drawBuffer(c.o,c.on);drawMovingChests();gl.disable(gl.CULL_FACE);gl.depthMask(true);for(let c of visible)drawBuffer(c.g,c.gn);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);drawDebris(right,up);drawDroppedItems();drawMobs();drawPlayer();gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);if(wet)gl.disable(gl.CULL_FACE);else{gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);}
+function render(){if(fallback){renderSoft();return;}resize();let e=worldViewEye(),d=viewDirection(),{vp,right,up}=camera(e,d);let wet=underwater(e),fog=wet?waterFog():day?[.67,.81,.91]:[.105,.14,.24];gl.clearColor(...fog,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.disable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.disable(gl.BLEND);if(!wet){gl.useProgram(skyPr);gl.bindBuffer(gl.ARRAY_BUFFER,skyB);gl.enableVertexAttribArray(skyL.pos);gl.vertexAttribPointer(skyL.pos,2,gl.FLOAT,false,0,0);gl.uniform1f(skyL.day,+day);gl.uniform3fv(skyL.dir,d);gl.uniform3fv(skyL.right,right);gl.uniform3fv(skyL.up,up);gl.uniform1f(skyL.aspect,canvas.width/canvas.height);gl.uniform1f(skyL.fovScale,Math.tan(sprintFov*PI/360));gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.useProgram(pr);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);gl.uniform1i(loc.tex,0);gl.uniformMatrix4fv(loc.vp,false,vp);gl.uniform3fv(loc.eye,e);gl.uniform3fv(loc.fog,fog);gl.uniform1f(loc.day,+day);gl.uniform1f(loc.water,+wet);gl.uniform1f(loc.waterTime,(performance.now()/1000)%600);let visible=chunks.filter(c=>c&&Math.hypot(c.x-p.x,c.z-p.z)<95);for(let c of visible)drawBuffer(c.o,c.on);drawMovingChests();gl.disable(gl.CULL_FACE);gl.depthMask(true);for(let c of visible)drawBuffer(c.g,c.gn);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);drawDebris(right,up);drawDroppedItems();drawMobs();drawPlayer();gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);if(wet)gl.disable(gl.CULL_FACE);else{gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);}
  drawWaterSurfaces(visible);
  gl.disable(gl.CULL_FACE);gl.depthMask(true);gl.disable(gl.BLEND);
 drawMiningCracks(vp,e);
@@ -1223,7 +1224,7 @@ function swimSurface(){
  }
  return top;
 }
-function physics(dt){if(riddenPig){if(!canSprint()||keys.has('KeyS')||shiftHeld())cancelSprint();if(shiftHeld())tryDismount();if(riddenPig){playerWalkPhase=playerWalkBlend=0;syncRider();if(gameMode==='survival')tickDamage(dt,p.y,true);return;}}const n=Math.max(1,Math.ceil(dt*120)),step=dt/n;for(let i=0;i<n;i++){const before=p.y,wet=gameMode==='survival'&&Number.isFinite(swimSurface());physicsStep(step);if(gameMode==='survival'){tickDamage(step,before,wet);if(survivalHUD.health<=0)break;}}}
+function physics(dt){if(riddenPig){if(!canSprint()||keys.has('KeyS')||shiftHeld())cancelSprint();if(shiftHeld())tryDismount();if(riddenPig){playerWalkPhase=playerWalkBlend=0;animationState.moveSpeed=0;syncRider();if(gameMode==='survival')tickDamage(dt,p.y,true);return;}}const n=Math.max(1,Math.ceil(dt*120)),step=dt/n;for(let i=0;i<n;i++){const before=p.y,wet=gameMode==='survival'&&Number.isFinite(swimSurface());physicsStep(step);if(gameMode==='survival'){tickDamage(step,before,wet);if(survivalHUD.health<=0)break;}}}
 function physicsStep(dt){if(dt<=0)return;p.hitCooldown=Math.max(0,(p.hitCooldown||0)-dt);
  if(gameMode==='survival'&&!flying&&p.vy<=0&&supported()&&!Number.isFinite(swimSurface()))finishPlayerLanding(p.y);
  const {fw,st}=moveInput();if(!canSprint()||fw<-.10||(!flying&&shiftHeld()))cancelSprint();else if(fw<=.10){sprint=false;sprintWallTime=0;if(Math.abs(st)>.10&&mobile.dash)cancelSprint();}
@@ -1517,7 +1518,7 @@ const FOOD_RULES=Object.freeze(Object.fromEntries(Object.entries({103:[4,2.4],10
 let eatItem=0,eatHeld=false,eatSlot=-1,eatElapsed=0,eatLift=0,eatPhase=0,eatNextBite=.20,eatCrumbs=[],eatLast=0;
 function canEatSteak(){const id=heldId(),food=FOOD_RULES[id];return playing&&!!food&&(gameMode==='creative'||(survivalHUD.health>0&&(survivalHUD.hunger<20||food.canAlwaysEat)&&stockCount(id)>0));}
 function endEating(immediate=false){eatHeld=false;eatSlot=-1;eatElapsed=0;eatNextBite=.2;if(immediate){eatLift=0;eatPhase=0;eatCrumbs=[];} }
-function beginEating(){if(!canEatSteak()||eatHeld)return false;stopBreak();swingStart=-Infinity;cancelSprint();eatHeld=true;eatSlot=selected;eatItem=heldId();eatElapsed=0;eatPhase=0;eatNextBite=.20;eatLast=performance.now();return true;}
+function beginEating(){if(!canEatSteak()||eatHeld)return false;stopBreak();swingStart=-Infinity;cancelSprint();eatHeld=true;eatSlot=selected;eatItem=heldId();eatElapsed=0;eatPhase=0;eatNextBite=.20;eatLast=performance.now();unlockFoodAudio();return true;}
 function foodNutrition(food,hunger,saturation){const h=Math.min(20,hunger+food.nutrition);return {hunger:h,saturation:Math.min(h,saturation+food.saturation)};}
 function steakNutrition(hunger,saturation){return foodNutrition(FOOD_RULES[105],hunger,saturation);}
 function applyFoodEffects(food,rng=Math.random){for(const effect of food.effects)if(effect.id==='hunger'&&rng()<effect.chance)survivalHUD.hungerEffect=Math.max(survivalHUD.hungerEffect||0,effect.seconds);}
@@ -1528,6 +1529,7 @@ function completeSteak(rng=Math.random){
  updateSurvivalHUD();refreshInventoryHotbar();return true;
 }
 let foodAudio=null;
+function unlockFoodAudio(){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;foodAudio=foodAudio||new AC();if(foodAudio.state==='suspended')foodAudio.resume().catch(()=>{});}catch(e){}}
 function foodSound(last=false){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;const ac=foodAudio||(foodAudio=new AC());if(ac.state==='suspended')ac.resume().catch(()=>{});const duration=last?.22:.095,n=Math.floor(ac.sampleRate*duration),buf=ac.createBuffer(1,n,ac.sampleRate),data=buf.getChannelData(0);for(let i=0;i<n;i++){const t=i/ac.sampleRate,env=(1-i/n)**2;data[i]=env*(last?Math.sin(2*Math.PI*(95*t-100*t*t))*.6+(Math.random()-.5)*.3:(Math.random()-.5)*.8);}const src=ac.createBufferSource(),filter=ac.createBiquadFilter(),gain=ac.createGain();filter.type='lowpass';filter.frequency.value=last?650:1700;gain.gain.value=.14;src.buffer=buf;src.connect(filter).connect(gain).connect(ac.destination);src.start();}catch(e){}}
 function addFoodCrumbs(last=false){
  const colors=handPixelColors(itemInfo(eatItem||STEAK_ID).side,1).filter(q=>q?.opaque).map(q=>q.color);
@@ -2082,15 +2084,13 @@ function updateHandState(now,dt){
  bobAmount+=(motion-bobAmount)*k;bobPhase=animationState.walkDistance;handIdleTime+=Math.max(0,dt);
  Object.assign(animationState,{attackTime:swingProgress(now)<1?swingProgress(now):0,attackDuration:swingMs,useType:eatHeld?'eat':'none',useTime:eatElapsed,useDuration:eatHeld?FOOD_RULES[eatItem]?.useDuration||1.6:0,equipHeight:eq.height,mainHandItem:heldId(),renderedItem:shownHeld,handBob:bobAmount,lifeTime:handIdleTime});
  if(p.swimPose)animationState.swimTime+=dt;else animationState.swimTime=0;
- const max=6*HAND_DEG,clamp=v=>Math.max(-max,Math.min(max,v)),follow=1-Math.pow(.75,Math.max(0,dt)*60);
- const yaw=handLastYaw===null?0:clamp(Math.atan2(Math.sin(handLastYaw-p.yaw),Math.cos(handLastYaw-p.yaw))*.85),pitch=handLastPitch===null?0:clamp((handLastPitch-p.pitch)*.85);
  handYawLag=handPitchLag=0; // no undocumented camera sway in Bedrock mode
  handLastYaw=p.yaw;handLastPitch=p.pitch;
 }
 function updateHand(now,dt){
  if(!playing)return;
  handCanvas.style.visibility=thirdViewActive()?'hidden':'';if(thirdViewActive())return;
- const t=swingProgress(now),equip=equipProgress(now-equipStart).offset,id=shownHeld>=0?shownHeld:heldId();
+ const t=swingProgress(now),equip=1-animationState.equipHeight,id=shownHeld>=0?shownHeld:heldId();
  const scale=Math.min(1,1600/Math.max(1,innerWidth)),w=Math.max(1,Math.round(innerWidth*scale)),h=Math.max(1,Math.round(innerHeight*scale));
  if(handCanvas.width!==w||handCanvas.height!==h){handCanvas.width=w;handCanvas.height=h;handStamp='';}
  const pose=handPose(id,t,bobAmount,bobPhase,handYawLag,handPitchLag,equip,swingKind,FOOD_RULES[id]?eatLift:0,eatPhase,handIdleTime),wet=underwater(),roll=hurtRoll(now),stamp=[id,w,h,+day,+wet,roll,eatLift,eatPhase,eatCrumbs.length,eatCrumbs.length?now:0,...pose.angles,...pose.pos].map(n=>Math.round(n*1000)).join(':');
@@ -2132,7 +2132,7 @@ function destroyTarget(t){
 function action(place,repeat=false){if(!playing||eatHeld)return;const held=heldId(),id=held===SAPLING_ITEM?SAPLING_BLOCK:held===154?21:held===155?22:held;if(!place){const m=aimedMob();if(m){if(!repeat)attackMob(m);return;}if(!repeat)swingHand();if(gameMode==='survival')return;}if(place&&(!id||isItem(id)))return;target=ray();if(!target)return;let v=place?(isPlant(target.b)?target.v:target.prev):target.v;if(!v)return;let [x,y,z]=v;if(!inside(x,y,z))return;if(!place){if(target.b===11){notify('岩盤は破壊できません');return;}destroyTarget(target);}else{if(get(x,y,z)&&get(x,y,z)!==10&&!isPlant(get(x,y,z)))return;if(id===SAPLING_BLOCK&&get(x,y,z)!==0)return;if(isPlant(id)&&(!plantGround(x,y,z)||get(x,y,z)===WATER))return;let r=.29;if(!isPlant(id)&&x+1>p.x-r&&x<p.x+r&&z+1>p.z-r&&z<p.z+r&&y+1>p.y&&y<p.y+bodyHeight())return;if(get(x,y,z)===id||(gameMode==='survival'&&stockCount(held)<=0))return;if(isPlant(get(x,y,z)))spawnBlockLoot(get(x,y,z),x,y,z);change(x,y,z,id);consumePlaced(held);swingHand('use');}target=ray();}
 function drawSlot(i){const b=$('#bar').children[i];if(!b)return;const id=slotItem(i);b.title=id?itemInfo(id).name:'空のスロット';b.setAttribute('aria-label',(i+1)+' '+b.title);const g=b.querySelector('canvas').getContext('2d');if(id)drawModel(g,id);else g.clearRect(0,0,256,256);const count=b.querySelector('.stack-count');if(count)count.textContent=id&&gameMode==='survival'?(inventory[i]?.count>1?String(inventory[i].count):'') : '';}
 function hotbar(){tileCache.clear();handPixels.clear();spriteGeometryCache.clear();let bar=$('#bar');bar.innerHTML='';palette.forEach((id,i)=>{let b=document.createElement('button');b.className='slot';let c=document.createElement('canvas');c.width=c.height=256;const count=document.createElement('span');count.className='stack-count';count.setAttribute('aria-hidden','true');b.append(c,count);b.addEventListener('click',()=>choose(i));b.addEventListener('contextmenu',e=>{e.preventDefault();choose(i);toggleEmpty();});bar.append(b);drawSlot(i);});choose(selected);drawHeld();}
-function choose(i){const next=((i%9)+9)%9;if(next!==selected){endEating();if(gameMode==='survival')resetMining();}selected=next;[...$('#bar').children].forEach((b,j)=>{b.classList.toggle('active',j===selected);b.setAttribute('aria-pressed',String(j===selected));});const id=heldId(),label=$('#blockName');if(id!==lastHeld||handSelectedSlot!==selected){equipFrom=shownHeld>=0?shownHeld:id;lastHeld=id;handSelectedSlot=selected;equipStart=performance.now();drawHeld();label.textContent=id?itemInfo(id).name:'';label.classList.toggle('visible',!!id);clearTimeout(blockLabelTimer);blockLabelTimer=setTimeout(()=>label.classList.remove('visible'),1400);}}
+function choose(i){const next=((i%9)+9)%9;if(next!==selected){endEating();if(gameMode==='survival')resetMining();}selected=next;[...$('#bar').children].forEach((b,j)=>{b.classList.toggle('active',j===selected);b.setAttribute('aria-pressed',String(j===selected));});const id=heldId(),label=$('#blockName');if(id!==lastHeld||handSelectedSlot!==selected){if(eatHeld&&id!==eatItem)endEating();equipFrom=shownHeld>=0?shownHeld:id;lastHeld=id;handSelectedSlot=selected;equipStart=performance.now();drawHeld();label.textContent=id?itemInfo(id).name:'';label.classList.toggle('visible',!!id);clearTimeout(blockLabelTimer);blockLabelTimer=setTimeout(()=>label.classList.remove('visible'),1400);}}
 function toggleEmpty(){if(gameMode==='survival'){const i=inventory.findIndex((q,i)=>i<9&&!q);if(i>=0)choose(i);return;}const slot=selected+itemPage*9;if(emptySlots.has(slot))emptySlots.delete(slot);else emptySlots.add(slot);drawSlot(selected);choose(selected);}
 function notify(s){$('#toast').textContent=s;$('#toast').classList.add('on');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('on'),1600);}
 function snapshot(){return {version:1,seed,vegetationVersion,edits:[...edits],chestFacing:[...chestFacing],chestData:[...chestData].filter(([i])=>world[i]===20).map(([i,a])=>[i,a.map(q=>q?{...q}:null)]),chestLinks:[...chestLinks],wetChests:[...wetChests],saplings:[...saplingStages],p:{x:p.x,y:p.y,z:p.z,yaw:p.yaw,pitch:p.pitch,swimPose:!!p.swimPose},day,flying,gameMode,survivalHUD:{...survivalHUD},inventory:inventory.map(q=>q?{...q}:null),craftGrid:craftGrid.map(q=>q?{...q}:null),cursorStack:cursorStack?{...cursorStack}:null,droppedItems:droppedItems.map(q=>({...q})),mobs:mobs.filter(m=>m.hp>0||isDying(m)).map(({path,mountTarget,navGoal,...m})=>m),xpOrbs:xpOrbs.map(q=>({...q})),selected,itemPage,emptySlots:[...emptySlots]};}
@@ -2485,7 +2485,7 @@ function pressKey(code,now=performance.now()){
 function releaseKey(code){keys.delete(code);if(code==='KeyW'){sprint=false;sprintWallTime=0;}if(code==='Space')suppressJump=false;}
 document.addEventListener('mousemove',e=>{if(!playing||document.hidden)return;if(document.pointerLockElement===canvas)mouseLook(e.movementX,e.movementY,true);else if(drag){let dx=e.clientX-dragX,dy=e.clientY-dragY;dragX=e.clientX;dragY=e.clientY;if(Math.hypot(e.clientX-downX,e.clientY-downY)>3){dragMoved=true;stopBreak('mouse');}mouseLook(dx,dy,false);}});
 canvas.addEventListener('mousedown',e=>{if(!playing)return;target=ray();if(document.pointerLockElement===canvas){if(e.button===0)beginBreak('mouse');if(e.button===2)useHeld();if(e.button===1&&target&&gameMode==='creative'){let i=palette.indexOf(target.b);if(i<0&&isPlant(target.b)){setItemPage(1);i=palette.indexOf(target.b);}if(i>=0){emptySlots.delete(i+itemPage*9);drawSlot(i);choose(i);}}}else if(e.button===0){drag=true;dragMoved=false;downX=dragX=e.clientX;downY=dragY=e.clientY;/* survival holds begin immediately; moving the pointer cancels mining */if(gameMode==='survival')beginBreak('mouse');else{breakSource='mouse';nextBreak=performance.now()+BREAK_INITIAL;}}else if(e.button===2)useHeld();});
-document.addEventListener('mouseup',e=>{if(e.button===2){endEating();return;}if(e.button!==0)return;if(gameMode==='creative'&&drag&&!dragMoved&&!breaking&&breakSource==='mouse'&&playing){target=ray();action(false);}drag=false;stopBreak('mouse');});
+document.addEventListener('mouseup',e=>{if(e.button===2){if(eatHeld)updateEating(0,performance.now());endEating();return;}if(e.button!==0)return;if(gameMode==='creative'&&drag&&!dragMoved&&!breaking&&breakSource==='mouse'&&playing){target=ray();action(false);}drag=false;stopBreak('mouse');});
 canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{if(playing){e.preventDefault();choose(selected+(e.deltaY>0?1:-1));}},{passive:false});
 document.addEventListener('keydown',e=>{if(!playing||e.defaultPrevented)return;if(e.code==='F3'){e.preventDefault();if(!e.repeat)togglePerspective();return;}if(e.code==='KeyE'){e.preventDefault();if(!e.repeat)openInventory();return;}if(e.code==='KeyQ'&&gameMode==='survival'){e.preventDefault();if(!e.repeat)throwSelected(e.ctrlKey);return;}if(e.code==='KeyJ'&&e.ctrlKey&&e.altKey&&!e.metaKey&&!e.shiftKey){e.preventDefault();if(!e.repeat)giveMobTest();return;}if(e.code==='KeyK'&&e.ctrlKey&&e.altKey&&!e.metaKey&&!e.shiftKey){e.preventDefault();if(!e.repeat)giveTestSteak();return;}if(e.code==='KeyM'&&e.ctrlKey&&e.altKey&&!e.metaKey&&!e.shiftKey){e.preventDefault();if(!e.repeat)toggleModeForTest();return;}if(e.code==='KeyR'&&e.ctrlKey&&e.altKey&&!e.metaKey&&!e.shiftKey){e.preventDefault();if(!e.repeat)resetWorldForTest();return;}if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();if(e.repeat)return;pressKey(e.code);if(/^Digit[1-9]$/.test(e.code))choose(Number(e.code.slice(-1))-1);if(e.code==='Digit0')toggleEmpty();if(e.code==='KeyB')toggleItemPage();if(e.code==='KeyF')toggleFly();if(e.code==='KeyR'){resetPosition();notify('スポーン地点に戻りました');}if(e.code==='KeyN'){day=!day;notify(day?'昼':'夜');}if(e.code==='Escape')pause();});document.addEventListener('keyup',e=>releaseKey(e.code));window.addEventListener('blur',clearInput);window.addEventListener('focus',resetMouseLook);document.addEventListener('visibilitychange',()=>{if(document.hidden)clearInput();else resetMouseLook();});
 // All action buttons can act as relative look surfaces while held. Joystick remains movement-only.
@@ -2519,7 +2519,7 @@ const bt=$('#breakTouch'),pt=$('#placeTouch');let breakPointer=null,placePointer
 bt.onpointerdown=e=>{if(!playing||breakPointer!==null)return;e.preventDefault();breakPointer=e.pointerId;bt.setPointerCapture(e.pointerId);beginBreak('touch');if(!breaking&&!eatHeld){breaking=true;breakSource='touch';nextBreak=performance.now()+BREAK_INITIAL;resetMining();}};
 bt.onpointerup=bt.onpointercancel=bt.onlostpointercapture=e=>{if(e.pointerId!==breakPointer)return;breakPointer=null;stopBreak('touch');};
 pt.onpointerdown=e=>{if(!playing||placePointer!==null)return;e.preventDefault();placePointer=e.pointerId;pt.setPointerCapture(e.pointerId);useHeld();};
-pt.onpointerup=pt.onpointercancel=pt.onlostpointercapture=e=>{if(e.pointerId!==placePointer)return;placePointer=null;endEating();};
+pt.onpointerup=pt.onpointercancel=pt.onlostpointercapture=e=>{if(e.pointerId!==placePointer)return;placePointer=null;if(e.type==='pointerup'&&eatHeld)updateEating(0,performance.now());endEating();};
 for(const button of [jt,dashButton,sn,bt,pt]){button.addEventListener('pointerdown',e=>{if(playing&&e.pointerType!=='mouse')beginButtonLook(e);});button.addEventListener('pointermove',moveButtonLook);for(const name of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(name,endButtonLook);}
 function resetTouchPointers(){sneakPointer=breakPointer=placePointer=null;buttonLookPointers.clear();}
 $('#viewTouch').onclick=togglePerspective;$('#inventoryTouch').onclick=()=>openInventory();$('#mobileInventoryMore').onclick=()=>openInventory();$('#pauseTouch').onclick=pause;
