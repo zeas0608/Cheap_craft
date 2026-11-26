@@ -1010,9 +1010,9 @@ function playerVertices(now=performance.now()){
  box([-6,18,0],[4,12,4],76,rightArm);box([6,18,0],[4,12,4],76,leftArm,true);
  box([0,28,0],[8,8,8],64,v=>rotate(v,[0,24,0],-p.pitch));
  if(id&&itemInfo(id)){
-  const t=itemInfo(id),grip=v=>rightArm(v);
+  const t=itemInfo(id),eq=equipProgress(now-equipStart).offset,grip=v=>rightArm([v[0],v[1]-eq*3,v[2]]);
   if(isPlant(id)||isItem(id)){
-   const v=[[0,0,.5],[1,0,.5],[1,1,.5],[0,1,.5]].map(q=>root(grip([-6+(q[0]-.5)*6,10+(q[1]-.5)*6,3])));emit(v,t.side,.95);
+   for(const face of spriteGeometry(t.side)){const v=face.v.map(q=>root(grip([-6+q[0]*6,10+q[1]*6,3+q[2]*6])));const u=t.side%4*16,y=(t.side>>2)*16;for(const k of ord){const uv=[[0,0],[1,0],[1,1],[0,1]][k],px=face.pixel===undefined?.1+uv[0]*15.8:face.pixel%16+.5,py=face.pixel===undefined?.1+uv[1]*15.8:Math.floor(face.pixel/16)+.5;out.push(...v[k],(u+px)/64,(y+py)/64,face.shade*(hurt?-1:1));}}
   }else box([-6,10,3.1],[5.4,5.4,5.4],faces.map((_,i)=>blockFaceTile(id,i,4)),grip);
  }
  return out;
@@ -1947,10 +1947,29 @@ function handPose(id,t,bob,phase,yawLag,pitchLag,equip,kind='attack',lift=0,food
  return {pos,angles,size};
 }
 function projectHand(v,w,h){const z=Math.max(.08,v[2]);return [w/2+h*Math.min(0,(w/h-1.65)*.32)+h*.95*v[0]/z,h/2-h*.95*v[1]/z];}
+
+const spriteGeometryCache=new Map();
+function spriteGeometry(tile){
+ if(spriteGeometryCache.has(tile))return spriteGeometryCache.get(tile);
+ const solid=handPixelColors(tile,1).map(q=>!!q),out=[],d=1/32;
+ // Each exposed edge is one texel thick. Transparent pixels never create geometry.
+ const at=(x,y,z)=>[x/16-.5,.5-y/16,z],has=(x,y)=>x>=0&&x<16&&y>=0&&y<16&&solid[y*16+x];
+ out.push({v:[at(0,0,-d),at(16,0,-d),at(16,16,-d),at(0,16,-d)],shade:.95,n:[0,0,-1]});
+ out.push({v:[at(0,0,d),at(16,0,d),at(16,16,d),at(0,16,d)],shade:.85,n:[0,0,1]});
+ for(let y=0;y<16;y++)for(let x=0;x<16;x++)if(has(x,y)){
+  const pixel=y*16+x;
+  if(!has(x-1,y))out.push({v:[at(x,y,-d),at(x,y,d),at(x,y+1,d),at(x,y+1,-d)],shade:.72,n:[-1,0,0],pixel});
+  if(!has(x+1,y))out.push({v:[at(x+1,y,d),at(x+1,y,-d),at(x+1,y+1,-d),at(x+1,y+1,d)],shade:.72,n:[1,0,0],pixel});
+  if(!has(x,y-1))out.push({v:[at(x,y,d),at(x+1,y,d),at(x+1,y,-d),at(x,y,-d)],shade:.9,n:[0,1,0],pixel});
+  if(!has(x,y+1))out.push({v:[at(x,y+1,-d),at(x+1,y+1,-d),at(x+1,y+1,d),at(x,y+1,d)],shade:.62,n:[0,-1,0],pixel});
+ }
+ spriteGeometryCache.set(tile,out);return out;
+}
+
 function handGeometry(id,pose,w,h){
  const transform=v=>{let a=rotateHand(v.map((x,i)=>x*pose.size[i]),pose.angles);return a.map((x,i)=>x+pose.pos[i]);};
  const out=[];
- if(isPlant(id)||isItem(id)){const v=[[-.5,.5,0],[.5,.5,0],[.5,-.5,0],[-.5,-.5,0]].map(transform);if(v.every(q=>q[2]>.08))out.push({v,depth:v.reduce((a,q)=>a+q[2],0)/4,tile:itemInfo(id).side,shade:.95});return out;}
+ if(isPlant(id)||isItem(id)){const tile=itemInfo(id).side;for(const f of spriteGeometry(tile)){const v=f.v.map(transform),n=rotateHand(f.n,pose.angles),center=v[0].map((_,i)=>v.reduce((a,q)=>a+q[i],0)/4);if(n.reduce((a,x,i)=>a+x*center[i],0)>=0||v.some(q=>q[2]<=.08))continue;out.push({v,depth:center[2],tile,shade:f.shade,pixel:f.pixel});}return out.sort((a,b)=>b.depth-a.depth);}
  for(const f of handFaces){
   let v=f.v.map(transform),n=rotateHand(f.n,pose.angles),center=v[0].map((_,i)=>v.reduce((sum,q)=>sum+q[i],0)/4);
   if(n.reduce((sum,x,i)=>sum+x*center[i],0)>=0||v.some(q=>q[2]<=.08))continue;
@@ -1964,6 +1983,7 @@ function handPixelColors(tile,shade){let key=tile+':'+shade;if(handPixels.has(ke
 }
 function paintHandFace(g,face,w,h){
  const v=face.v,colors=handPixelColors(face.tile,face.shade),grid=[];
+ if(face.pixel!==undefined){const c=colors[face.pixel];if(!c)return;const pts=v.map(q=>projectHand(q,w,h));g.beginPath();g.moveTo(...pts[0]);for(let i=1;i<pts.length;i++)g.lineTo(...pts[i]);g.closePath();g.fillStyle=c.color;g.fill();return;}
  for(let j=0;j<=16;j++)for(let i=0;i<=16;i++){
   let u=i/16,t=j/16,q=v[0].map((a,k)=>a+(v[1][k]-a)*u+(v[3][k]-a)*t);grid.push(projectHand(q,w,h));
  }
@@ -1992,7 +2012,7 @@ function drawSteve(canvas){
  cuboid(-8,12,0,4,12,4,40,16,false);cuboid(-4,12,0,8,12,4,16,16,false);cuboid(4,12,0,4,12,4,40,16,true);
  cuboid(-4,24,-2,8,8,8,0,0,false);
 }
-steveSkin.onload=()=>{paintPlayerSkin();refreshColors();gl.bindTexture(gl.TEXTURE_2D,texture);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,texCanvas);for(const c of document.querySelectorAll('.steve-avatar'))drawSteve(c);tileCache.clear();handPixels.clear();drawHeld();};
+steveSkin.onload=()=>{paintPlayerSkin();refreshColors();gl.bindTexture(gl.TEXTURE_2D,texture);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,texCanvas);for(const c of document.querySelectorAll('.steve-avatar'))drawSteve(c);tileCache.clear();handPixels.clear();spriteGeometryCache.clear();drawHeld();};
 steveSkin.src=skinSource;
 function drawHeld(){handStamp='';}
 function swingHand(kind='attack',now=performance.now()){if(eatHeld)return false;swingKind=kind;swingStart=now;return true;}
@@ -2070,7 +2090,7 @@ function destroyTarget(t){
 }
 function action(place,repeat=false){if(!playing||eatHeld)return;const held=heldId(),id=held===SAPLING_ITEM?SAPLING_BLOCK:held===154?21:held===155?22:held;if(!place){const m=aimedMob();if(m){if(!repeat)attackMob(m);return;}if(!repeat)swingHand();if(gameMode==='survival')return;}if(place&&(!id||isItem(id)))return;target=ray();if(!target)return;let v=place?(isPlant(target.b)?target.v:target.prev):target.v;if(!v)return;let [x,y,z]=v;if(!inside(x,y,z))return;if(!place){if(target.b===11){notify('岩盤は破壊できません');return;}destroyTarget(target);}else{if(get(x,y,z)&&get(x,y,z)!==10&&!isPlant(get(x,y,z)))return;if(id===SAPLING_BLOCK&&get(x,y,z)!==0)return;if(isPlant(id)&&(!plantGround(x,y,z)||get(x,y,z)===WATER))return;let r=.29;if(!isPlant(id)&&x+1>p.x-r&&x<p.x+r&&z+1>p.z-r&&z<p.z+r&&y+1>p.y&&y<p.y+bodyHeight())return;if(get(x,y,z)===id||(gameMode==='survival'&&stockCount(held)<=0))return;if(isPlant(get(x,y,z)))spawnBlockLoot(get(x,y,z),x,y,z);change(x,y,z,id);consumePlaced(held);swingHand('use');}target=ray();}
 function drawSlot(i){const b=$('#bar').children[i];if(!b)return;const id=slotItem(i);b.title=id?itemInfo(id).name:'空のスロット';b.setAttribute('aria-label',(i+1)+' '+b.title);const g=b.querySelector('canvas').getContext('2d');if(id)drawModel(g,id);else g.clearRect(0,0,256,256);const count=b.querySelector('.stack-count');if(count)count.textContent=id&&gameMode==='survival'?(inventory[i]?.count>1?String(inventory[i].count):'') : '';}
-function hotbar(){tileCache.clear();handPixels.clear();let bar=$('#bar');bar.innerHTML='';palette.forEach((id,i)=>{let b=document.createElement('button');b.className='slot';let c=document.createElement('canvas');c.width=c.height=256;const count=document.createElement('span');count.className='stack-count';count.setAttribute('aria-hidden','true');b.append(c,count);b.addEventListener('click',()=>choose(i));b.addEventListener('contextmenu',e=>{e.preventDefault();choose(i);toggleEmpty();});bar.append(b);drawSlot(i);});choose(selected);drawHeld();}
+function hotbar(){tileCache.clear();handPixels.clear();spriteGeometryCache.clear();let bar=$('#bar');bar.innerHTML='';palette.forEach((id,i)=>{let b=document.createElement('button');b.className='slot';let c=document.createElement('canvas');c.width=c.height=256;const count=document.createElement('span');count.className='stack-count';count.setAttribute('aria-hidden','true');b.append(c,count);b.addEventListener('click',()=>choose(i));b.addEventListener('contextmenu',e=>{e.preventDefault();choose(i);toggleEmpty();});bar.append(b);drawSlot(i);});choose(selected);drawHeld();}
 function choose(i){const next=((i%9)+9)%9;if(next!==selected){endEating();if(gameMode==='survival')resetMining();}selected=next;[...$('#bar').children].forEach((b,j)=>{b.classList.toggle('active',j===selected);b.setAttribute('aria-pressed',String(j===selected));});const id=heldId(),label=$('#blockName');if(id!==lastHeld||handSelectedSlot!==selected){equipFrom=shownHeld>=0?shownHeld:id;lastHeld=id;handSelectedSlot=selected;equipStart=performance.now();drawHeld();label.textContent=id?itemInfo(id).name:'';label.classList.toggle('visible',!!id);clearTimeout(blockLabelTimer);blockLabelTimer=setTimeout(()=>label.classList.remove('visible'),1400);}}
 function toggleEmpty(){if(gameMode==='survival'){const i=inventory.findIndex((q,i)=>i<9&&!q);if(i>=0)choose(i);return;}const slot=selected+itemPage*9;if(emptySlots.has(slot))emptySlots.delete(slot);else emptySlots.add(slot);drawSlot(selected);choose(selected);}
 function notify(s){$('#toast').textContent=s;$('#toast').classList.add('on');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('on'),1600);}
