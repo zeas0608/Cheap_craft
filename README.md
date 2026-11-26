@@ -45,3 +45,6 @@
 - 参照: [日本語Minecraft Wiki](https://ja.minecraft.wiki/)、[アイテムテクスチャ一覧](https://minecraft.wiki/w/List_of_item_textures)
 - ファイル対応: [Mojang Bedrock Samples](https://github.com/Mojang/bedrock-samples/tree/15701fa9c13923f12662984c32c124327e40e3d3/resource_pack/textures)（固定コミットのファイル一覧で79枠すべて確認済み）
 - 日本語Wikiの画像本体はアクセス制限のため直接取得できませんでした。公式素材はMinecraft EULAの対象です。階段・フェンス等のアイコンは素材面から簡易形状を描画しており、本家モデルそのものではありません。
+
+## チェスト公式テクスチャ（v1.59）
+Mojang Bedrock Samples の固定コミット `15701fa9c13923f12662984c32c124327e40e3d3` の `resource_pack/textures/entity/chest/normal.png` と `double_normal.png` を起動時に取得し、モデルの面ごとに元のピクセルを切り出して端末内に保存します。大チェストでは幅30pxの面を15pxずつ使用し、単体画像の中央境界を繰り返さない方式です。標準テクスチャに戻すと自動取得を無効にできます。設定から公式パックを再取得すると有効になります。オフライン・取得失敗時は中央の境界を除いた暫定素材にフォールバックします。公式画像そのものは公開リポジトリには同梱していません。
