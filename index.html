@@ -1986,6 +1986,15 @@ function handPose(id,t,bob,phase,yawLag,pitchLag,equip,kind='attack',lift=0,food
  const itemMove=rotateHand(item.move.map(x=>x*unit*fade),ar);
  const pos=rest.map((v,i)=>v+(arm.move[i]+walk[i])*unit+itemMove[i]+before[i]-after[i]);pos[1]+=(-10*(1-height)+breath)*unit;
  if(sprite&&lift>0){const f=lift*lift*(3-2*lift),wave=sinD(foodPhase*1800);pos[0]+=(.23-pos[0])*f;pos[1]+=(-.67-pos[1]+.055*Math.abs(wave))*f;pos[2]+=(1.65-pos[2])*f;angles[0]+=(.10+5*HAND_DEG*wave-angles[0])*f;angles[1]+=(.12-angles[1])*f;angles[2]+=(.25-angles[2])*f;}
+ // Projection adapter: keep the striking hand visible on the calibrated camera.
+ // This does not alter raw RP bone curves; equip swaps may still leave the frame.
+ if(active&&equip<.02){
+  const corners=[];for(const x of [-.5,.5])for(const y of [-.5,.5])for(const z of (sprite?[-1/32,1/32]:[-.5,.5]))corners.push(rotateHand([x*size[0],y*size[1],z*size[2]],angles).map((v,i)=>v+pos[i]));
+  const top=Math.max(...corners.map(v=>v[1]+.35*v[2]));if(top<0)pos[1]-=top;
+  const bottom=Math.min(...corners.map(v=>v[1]-.40*v[2]));if(bottom>0)pos[1]-=bottom;
+  const left=Math.min(...corners.map(v=>v[0]-.72*v[2]));if(left>0)pos[0]-=left;
+  const right=Math.max(...corners.map(v=>v[0]+.72*v[2]));if(right<0)pos[0]-=right;
+ }
  return {pos,angles,size};
 }
 function projectHand(v,w,h){const z=Math.max(.08,v[2]);return [w/2+h*Math.min(0,(w/h-1.65)*.32)+h*.95*v[0]/z,h/2-h*.95*v[1]/z];}
