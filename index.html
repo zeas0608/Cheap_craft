@@ -644,6 +644,8 @@ function paintCraftArt(){
  draw(90,r=>{wood(r);r(0,0,16,1,'#4c3421');r(0,15,16,1,'#4c3421');r(0,0,1,16,'#4c3421');r(15,0,1,16,'#4c3421');});
  draw(147,r=>{wood(r);r(0,0,16,2,'#583b25');r(0,5,16,1,'#483121');r(0,15,16,1,'#483121');});
  draw(123,r=>{wood(r);r(0,0,16,2,'#583b25');r(0,5,16,1,'#483121');r(0,15,16,1,'#483121');r(7,4,2,4,'#d6c297');});
+ draw(148,r=>{r(0,0,16,16,'#a9a8a5');r(0,0,3,16,'#d1d2cf');r(12,0,4,16,'#737571');r(3,14,9,2,'#878987');});
+ draw(149,r=>{r(0,0,16,16,'#986838');r(1,1,14,14,'#53351c');r(2,2,12,12,'#302015');r(3,3,10,10,'#21170e');});
  const stick=r=>{for(let i=2;i<12;i++){r(i,15-i,2,2,'#644324');r(i,15-i,1,1,'#bc9457');}};
  const metal='#ab814d',dark='#624221',light='#d0aa73';
  draw(91,r=>{stick(r);r(4,2,9,2,dark);r(5,1,9,2,light);r(12,3,2,6,metal);r(3,3,2,2,metal);});
@@ -744,7 +746,7 @@ function textureFileCandidates(row){const [,type,java,bedrock,aliases=[]]=row,fo
 function findTextureEntry(index,row){for(const path of textureFileCandidates(row)){if(index.has(path))return index.get(path);for(const [k,v] of index)if(k.endsWith('/'+path))return v;}return null;}
 
 function applyAtlas(raw){let bytes=Uint8ClampedArray.from(atob(raw),c=>c.charCodeAt(0));if(bytes.length!==64*64*4)throw Error('Invalid atlas');tx.putImageData(new ImageData(bytes,64,64),0,0);paintPlants();paintExtraItems();paintMobArt();paintRevisedArt();paintDeathSmoke();paintCraftArt();applyTexturePatches();refreshColors();}
-function refreshColors(){for(let t=0;t<148;t++){let d=tx.getImageData((t%4)*16,(t>>2)*16,16,16).data,sum=[0,0,0],weight=0;for(let i=0;i<d.length;i+=4){let a=d[i+3]/255;weight+=a;for(let j=0;j<3;j++)sum[j]+=d[i+j]*a;}colors[t]=sum.map(v=>Math.round(v/Math.max(1,weight)));}}
+function refreshColors(){for(let t=0;t<150;t++){let d=tx.getImageData((t%4)*16,(t>>2)*16,16,16).data,sum=[0,0,0],weight=0;for(let i=0;i<d.length;i+=4){let a=d[i+3]/255;weight+=a;for(let j=0;j<3;j++)sum[j]+=d[i+j]*a;}colors[t]=sum.map(v=>Math.round(v/Math.max(1,weight)));}}
 try{applyAtlas(localStorage.getItem(TEX_SAVE)||ORIGINAL_ATLAS);}catch(e){applyAtlas(ORIGINAL_ATLAS);}
 const texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,texCanvas);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
 function shader(type,src){let s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}function program(v,f){let a=gl.createProgram();gl.attachShader(a,shader(gl.VERTEX_SHADER,v));gl.attachShader(a,shader(gl.FRAGMENT_SHADER,f));gl.linkProgram(a);if(!gl.getProgramParameter(a,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(a));return a;}
@@ -1019,15 +1021,17 @@ function chestVertices(out,x,y,z,lidProgress=chestLidProgress(ix(x,y,z))){
  const open=lidProgress>1e-5,angle=lidProgress*Math.PI/2;
  const transform=(u,v,w,lid)=>{if(lid&&open){const h=v-.625,d=w-.0625,c=Math.cos(angle),sn=Math.sin(angle);v=.625+h*c+d*sn;w=.0625+d*c-h*sn;}return point(u,v,w);};
  const emit=(a,b,c,d,tile,light,uvTop=0,uvBottom=1)=>{const vertices=[a,b,c,d],uv=[[0,uvBottom],[1,uvBottom],[1,uvTop],[0,uvTop]],u0=tile%4*16,v0=(tile>>2)*16;for(const k of ord)out.push(...vertices[k],(u0+.12+uv[k][0]*15.76)/64,(v0+.12+uv[k][1]*15.76)/64,light);};
- function part(y0,y1,lid){const P=(u,v,w)=>transform(u,v,w,lid),a=.0625,b=.9375,side=147,frontTile=123,t0=lid?0:.30,t1=lid?.30:1;
+ function part(y0,y1,lid){const P=(u,v,w)=>transform(u,v,w,lid),a=.0625,b=.9375,side=147,frontTile=partner===null?123:147,t0=lid?0:.30,t1=lid?.30:1;
  emit(P(lo,y0,b),P(hi,y0,b),P(hi,y1,b),P(lo,y1,b),frontTile,.86,t0,t1);
  emit(P(hi,y0,a),P(lo,y0,a),P(lo,y1,a),P(hi,y1,a),side,.72,t0,t1);
  if(lo>0)emit(P(lo,y0,a),P(lo,y0,b),P(lo,y1,b),P(lo,y1,a),side,.78,t0,t1);
  if(hi<1)emit(P(hi,y0,b),P(hi,y0,a),P(hi,y1,a),P(hi,y1,b),side,.78,t0,t1);
- if(lid||open)emit(P(lo,y1,b),P(hi,y1,b),P(hi,y1,a),P(lo,y1,a),90,1);
- if(lid&&open||!lid)emit(P(lo,y0,a),P(hi,y0,a),P(hi,y0,b),P(lo,y0,b),90,.58);
+ if(lid||open)emit(P(lo,y1,b),P(hi,y1,b),P(hi,y1,a),P(lo,y1,a),lid?90:149,lid?1:.86);
+ if(lid&&open||!lid)emit(P(lo,y0,a),P(hi,y0,a),P(hi,y0,b),P(lo,y0,b),lid?149:90,.58);
  }
  part(0,.625,false);part(.625,.875,true);
+ // The joined pair has one shared latch on its center seam. It follows the lid.
+ if(partner!==null&&hi===1){const P=(u,v,w)=>transform(u,v,w,true),l=.9375,r=1.0625,b=.9375,d=.969,y0=.49,y1=.74;emit(P(l,y0,d),P(r,y0,d),P(r,y1,d),P(l,y1,d),148,.98);emit(P(l,y0,b),P(l,y0,d),P(l,y1,d),P(l,y1,b),148,.73);emit(P(r,y0,d),P(r,y0,b),P(r,y1,b),P(r,y1,d),148,.73);emit(P(l,y1,d),P(r,y1,d),P(r,y1,b),P(l,y1,b),148,1);}
 }
 
 function mesh(a,b){
