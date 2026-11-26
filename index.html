@@ -2099,7 +2099,7 @@ function updateInventoryAvatar(now,force=false){
  if(force||stamp!==invStamp){invStamp=stamp;renderInventoryAvatar(canvas,invPose,id);}
 }
 // One transaction per pointer gesture. Mouse clicks and keyboard activation share stack logic.
-let invDrag=null,invHover=null;
+let invDrag=null,invHover=null,lastInvRight=-Infinity;
 function invSlotAt(x,y){const node=document.elementFromPoint(x,y)?.closest('[data-inv-kind]');if(!node)return null;return {kind:node.dataset.invKind,i:Number(node.dataset.invIndex)};}
 function invOutside(x,y){const el=document.elementFromPoint(x,y);return !!el&&!el.closest('.inv-panel');}
 function containerInventory(){return gameMode==='survival'||openChestIds.length>0||craftGrid.length===9;}
@@ -2119,7 +2119,9 @@ function dropInvStack(q,all,spawn){
 function spawnInventoryThrow(id,n){const e=eye(),d=direction();spawnItem(id,n,e[0]+d[0]*.3,e[1]-.3,e[2]+d[2]*.3,true);}
 function dropInventoryCursor(all=false){if(!cursorStack||!containerInventory())return false;cursorStack=dropInvStack(cursorStack,all,spawnInventoryThrow);drawInventory();save(true);return true;}
 function invDragStart(e){
- if(screen!=='inventory'||!containerInventory()||e.button!==0||!e.isPrimary)return;
+ if(screen!=='inventory'||!containerInventory()||!e.isPrimary)return;
+ if(e.button===2){const slot=invSlotAt(e.clientX,e.clientY);if(slot){lastInvRight=performance.now();e.preventDefault();invActivate(slot,true);}else if(invOutside(e.clientX,e.clientY)&&cursorStack){lastInvRight=performance.now();e.preventDefault();dropInventoryCursor(false);}return;}
+ if(e.button!==0)return;
  const slot=invSlotAt(e.clientX,e.clientY),outside=invOutside(e.clientX,e.clientY);if(!slot&&!(outside&&cursorStack))return;
  invDrag={pointer:e.pointerId,x:e.clientX,y:e.clientY,source:slot,hadCarry:!!cursorStack,shift:e.shiftKey,moved:false};invPointer={x:e.clientX,y:e.clientY};const c=$('#invCursor');c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';e.preventDefault();
 }
@@ -2410,6 +2412,7 @@ document.addEventListener('selectionchange',clearGameSelection);
 document.addEventListener('contextmenu',e=>{
  if(!nativeGuardScope(e.target))return;
  preventGameDefault(e);
+ if(screen==='inventory'&&performance.now()-lastInvRight<1000){e.stopImmediatePropagation();return;}
  if(e.pointerType==='touch'||e.sourceCapabilities?.firesTouchEvents||performance.now()-lastHudTouch<1000){e.stopImmediatePropagation();clearGameSelection();}
 },true);
 function resetHudTouches(){hudTaps.clear();clearGameSelection();}
