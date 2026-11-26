@@ -2143,7 +2143,8 @@ document.addEventListener('pointerup',invDragEnd,true);
 document.addEventListener('pointercancel',()=>{invDrag=null;});
 window.addEventListener('blur',()=>{invDrag=null;});
 document.addEventListener('contextmenu',e=>{if(screen==='inventory'&&containerInventory()&&invOutside(e.clientX,e.clientY)){e.preventDefault();dropInventoryCursor(false);}});
-function invMark(node,kind,i){node.dataset.invKind=kind;node.dataset.invIndex=String(i);return node;}
+function invMark(node,kind,i){node.dataset.invKind=kind;node.dataset.invIndex=String(i);node.onclick=e=>{e.preventDefault();};return node;}
+document.addEventListener('keydown',e=>{if(screen!=='inventory'||!containerInventory()||pendingGameDialog||!['Enter','Space'].includes(e.code))return;const node=document.activeElement?.closest('[data-inv-kind]');if(!node)return;e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;const slot={kind:node.dataset.invKind,i:Number(node.dataset.invIndex)};invActivate(slot,false,e.shiftKey);document.querySelector('[data-inv-kind="'+slot.kind+'"][data-inv-index="'+slot.i+'"]')?.focus({preventScroll:true});},true);
 function drawInventory(){
  const survival=containerInventory(),chest=openChestIds.length>0,creativeList=survival&&gameMode==='creative'&&creativeContainerCatalog,storage=$('#invStorage'),bar=$('#invHotbar'),catalog=$('#invCatalog'),craft=$('#craftSlots'),chestGrid=$('#chestSlots');storage.hidden=!survival||creativeList;bar.hidden=!survival||creativeList;catalog.hidden=survival&&!creativeList;$('#invTop').style.display=survival&&!chest&&!creativeList?'flex':'none';$('#chestArea').hidden=!chest||creativeList;storage.replaceChildren();bar.replaceChildren();catalog.replaceChildren();craft.replaceChildren();chestGrid.replaceChildren();$('#invRecipe').style.display=chest?'none':'';$('#invBag').title=gameMode==='creative'&&survival?'素材一覧 / 所持品':'インベントリ';
  if(survival&&!creativeList){
