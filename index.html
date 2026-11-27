@@ -335,7 +335,7 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 .recipe-grid{display:grid;grid-template-columns:repeat(4,var(--is));gap:2px;margin-top:5px}.recipe-grid button:disabled{opacity:.35}
 @media(max-width:900px){#inventoryScreen #invHint.recipe-list{right:0;left:auto;top:0;width:min(100%,calc(var(--is)*4.6));max-height:80%;box-shadow:0 0 0 2px #555}}
 
-#inventoryScreen.furnace{--is:min(8.9dvh,9.5vw);--is:min(8.9vh,9.5vw)}
+#inventoryScreen.furnace{--is:min(8.9vh,9.5vw);--is:min(8.9dvh,9.5vw)}
 #inventoryScreen.furnace .inv-panel{transform:none;width:calc(var(--is)*9.65);padding:calc(var(--is)*.27);max-height:98vh}
 #inventoryScreen.furnace #chestTitle{text-align:center;padding:0;min-height:calc(var(--is)*.48);font-size:calc(var(--is)*.43)}
 #inventoryScreen.furnace #chestSlots{display:block;position:relative;height:calc(var(--is)*3.08);width:calc(var(--is)*9);margin:0;grid-template-columns:none}
@@ -345,7 +345,7 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 #inventoryScreen.furnace #furnaceFlame{position:absolute;left:calc(var(--is)*2.72);top:calc(var(--is)*1.08);width:calc(var(--is)*.89);height:calc(var(--is)*.84);pointer-events:none}
 #inventoryScreen.furnace #furnaceArrow{position:absolute;left:calc(var(--is)*4.02);top:calc(var(--is)*1.04);width:calc(var(--is)*1.28);height:calc(var(--is)*.92);pointer-events:none}
 #inventoryScreen.furnace #furnaceRecipe{position:absolute;left:calc(var(--is)*.72);top:calc(var(--is)*1.05);width:calc(var(--is)*1.04);height:calc(var(--is)*1.04);padding:calc(var(--is)*.1);display:grid;place-items:center;background:#8d8d8d;border:2px solid #333;box-shadow:inset 2px 2px #eee,inset -2px -2px #555;border-radius:calc(var(--is)*.12);cursor:pointer}
-#furnaceRecipe svg{width:100%;height:100%;image-rendering:pixelated}
+#furnaceRecipe svg,#furnaceFlame svg,#furnaceArrow svg{display:block;width:100%;height:100%;image-rendering:pixelated}
 #inventoryScreen.furnace #chestPlayerTitle{font-size:calc(var(--is)*.43);padding:0 0 calc(var(--is)*.1);line-height:1.2}
 #inventoryScreen.furnace #invHotbar{margin-top:calc(var(--is)*.23)}
 #inventoryScreen.furnace #invHint.recipe-list{max-height:80%;top:calc(var(--is)*.7)}
