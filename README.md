@@ -68,3 +68,21 @@ Mojang Bedrock Samples の固定コミット `15701fa9c13923f12662984c32c124327e
 | 鍾乳石 | 上向き・下向きの支持条件、崩壊、落下ダメージ |
 
 特殊ブロックは形状・状態・固有挙動を実装してから落下判定に登録する。現時点では砂のみ。落下速度や部分形状の支持、落下ブロックとエンティティの相互作用について本家との実機比較は今後行う。
+
+## v1.69 Bedrockスポーン・公式テクスチャ再監査・GUIの運動量
+### 自然スポーン
+Microsoft Learnの [cow](https://learn.microsoft.com/en-us/minecraft/creator/reference/source/vanillabehaviorpack_snippets/spawn_rules/cow)、[pig](https://learn.microsoft.com/en-us/minecraft/creator/reference/source/vanillabehaviorpack_snippets/spawn_rules/pig)、[chicken](https://learn.microsoft.com/en-us/minecraft/creator/reference/source/vanillabehaviorpack_snippets/spawn_rules/chicken) を参照。地表の草ブロック、明るさ7–15、牛2–3・重み8、豚1–3・重み10、ニワトリ2–4・重み10。新規ワールド生成時の42体前後の強制配置は廃止。
+シミュレーション距離4相当を想定し、24–44ブロックの3D距離、チャンクごとの20TPS抽選(11/2000)、動物の地表人口枠4（候補チャンク周辺9×9、永続個体を除外）、群れの各個体にも距離・衝突・人口枠を適用。非永続モブの距離によるデスポーンを維持し、32ブロック超での確率消滅も追加。
+現状の有限ワールド・昼夜2状態・簡易光判定・単一地形のため、バイオームタグ、正確な局所光、バイオームごとの派生種、チャンク境界の厳密な処理、ネイティブの湧きアルゴリズム全体は未再現。既存モブをロード時に一括削除しない。
+
+### テクスチャ
+固定コミットの公式 terrain_texture.json / item_texture.json と登録84件を照合し、84件すべてに同じパス名が掲載されていることを確認。ただし個別の全84ファイルのバイト取得・描画比較は未完了。
+- オーク葉: leaves_oak.tga（透明84/256px）を使用、世界の葉は単一の平原相当着色、葉の透過部分をWebGL/簡易描画で切り抜く。所持品用 leaves_oak_carried.tga を再着色せず使用。旧 leaves_oak_opaque.png の強制不透明・色処理は廃止。
+- 草: grass_top.png の色付けと grass_side.tga のアルファを着色マスクとして使う処理を共通色に。TGAの非着色211ピクセルのRGBを保存し、45ピクセルのみ着色。雑草のグレー素材も同じ色付け。
+- 作業台: crafting_table_front.png / crafting_table_side.png を区別。砂岩: sandstone_normal / sandstone_top / sandstone_bottom を区別。
+- 公式素材の取得に失敗した場合は未取得のファイル名を表示。旧キャッシュとユーザー独自パックの上書きを避けるため、設定から公式素材を再取得する。モブの独自モデル・テクスチャ、水のシェーダー、部分形状などは引き続き近似であり、公式ゲームの完全なレンダラーではない。
+
+### GUI運動量
+clearInput(true) で入力だけを解除し、vx/vy/vz・ノックバック速度を維持する。インベントリ・作業台・チェストの開閉時、および一時停止・再開時に適用。ジャンプ途中にGUIを開いても上昇を途切れさせず、通常の重力計算を続ける。
+
+検証: JavaScript構文、スポーン条件/速度保持の14件の抽出ロジックテスト、公式TGAの透過/着色マスクの6件を確認。ブラウザ実機での総合描画・操作テストは未実施。
