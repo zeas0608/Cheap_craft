@@ -1096,7 +1096,7 @@ const plantPlanes=[[[.05,0,.05],[.95,0,.95],[.95,1,.95],[.05,1,.05]],[[.95,0,.05
 function plantOffset(x,z,id){return id===14||tallGrass(id)?[(hash(x,z,830)-.5)*.5,(hash(x,z,831)-.5)*.5]:[0,0];}
 function plantVertices(out,x,y,z,id){const [dx,dz]=plantOffset(x,z,id);
  const tile=id===WHEAT_CROP?202+(cropAge.get(ix(x,y,z))||0):blocks[id].side,u0=(tile%4)*16,v0=(tile>>2)*16;
- const h=id===WHEAT_CROP?.25+.1*(cropAge.get(ix(x,y,z))||0):1;for(const [i,plane] of plantPlanes.entries())for(const k of ord){const v=plane[k],uv=uvs[k];out.push(x+v[0]+dx,y+v[1]*h,z+v[2]+dz,(u0+.12+uv[0]*15.76)/64,(v0+.12+uv[1]*15.76)/64,i===0?.94:.83);}
+ const h=id===WHEAT_CROP?.25+.1*(cropAge.get(ix(x,y,z))||0):1;for(const [i,plane] of plantPlanes.entries())for(const k of ord){const v=plane[k],uv=uvs[k];out.push(x+v[0]+dx,y+v[1]*h-(id===WHEAT_CROP?1/16:0),z+v[2]+dz,(u0+.12+uv[0]*15.76)/64,(v0+.12+uv[1]*15.76)/64,i===0?.94:.83);}
 }
 
 function chestVertices(out,x,y,z,lidProgress=chestLidProgress(ix(x,y,z))){
@@ -1227,7 +1227,7 @@ drawMiningCracks(vp,e);
 if(playing&&target&&!aimedMob()){let v=outlineVertices(target,.002),edges=[0,1,1,2,2,3,3,0,4,5,5,6,6,7,7,4,0,4,1,5,2,6,3,7];gl.useProgram(linePr);gl.disableVertexAttribArray(loc.uv);gl.disableVertexAttribArray(loc.light);gl.bindBuffer(gl.ARRAY_BUFFER,lineBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(edges.flatMap(i=>v[i])),gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,3,gl.FLOAT,false,0,0);gl.uniformMatrix4fv(lv,false,vp);gl.uniform4f(lc,.06,.07,.05,1);gl.drawArrays(gl.LINES,0,24);}}
 function bodyHeight(){return p.swimPose?.6:p.crouch?CROUCH_HEIGHT:STAND_HEIGHT;}
 function chestBounds(x,y,z){const i=ix(x,y,z),j=chestPair(i),b=[x+.0625,y,z+.0625,x+.9375,y+.875,z+.9375];if(j!==null){const a=coords(j);if(a[0]<x)b[0]=x;if(a[0]>x)b[3]=x+1;if(a[2]<z)b[2]=z;if(a[2]>z)b[5]=z+1;}return b;}
-function selectionBounds(t){const [x,y,z]=t.v;if(t.b===14||tallGrass(t.b)||t.b===WHEAT_CROP||t.b===ROOTS){const [dx,dz]=plantOffset(x,z,t.b);return [x+.05+dx,y,z+.05+dz,x+.95+dx,y+(t.b===WHEAT_CROP?.25+.1*(cropAge.get(ix(x,y,z))||0):1),z+.95+dz];}if(t.b!==20)return [x,y,z,x+1,y+(lowBlock(t.b)?.9375:1),z+1];const a=chestBounds(x,y,z),j=chestPair(ix(x,y,z));if(j===null)return a;const b=chestBounds(...coords(j));return a.map((v,k)=>k<3?Math.min(v,b[k]):Math.max(v,b[k]));}
+function selectionBounds(t){const [x,y,z]=t.v;if(t.b===14||tallGrass(t.b)||t.b===WHEAT_CROP||t.b===ROOTS){const [dx,dz]=plantOffset(x,z,t.b);const base=y-(t.b===WHEAT_CROP?1/16:0);return [x+.05+dx,base,z+.05+dz,x+.95+dx,base+(t.b===WHEAT_CROP?.25+.1*(cropAge.get(ix(x,y,z))||0):1),z+.95+dz];}if(t.b!==20)return [x,y,z,x+1,y+(lowBlock(t.b)?.9375:1),z+1];const a=chestBounds(x,y,z),j=chestPair(ix(x,y,z));if(j===null)return a;const b=chestBounds(...coords(j));return a.map((v,k)=>k<3?Math.min(v,b[k]):Math.max(v,b[k]));}
 function outlineVertices(t,q=0){const [a,b,c,d,e,f]=selectionBounds(t).map((v,k)=>v+(k<3?-q:q));return [[a,b,c],[d,b,c],[d,b,f],[a,b,f],[a,e,c],[d,e,c],[d,e,f],[a,e,f]];}
 function rayBoxDistance(o,d,box){let near=0,far=Infinity;for(let k=0;k<3;k++){if(Math.abs(d[k])<1e-12){if(o[k]<box[k]||o[k]>box[k+3])return Infinity;continue;}const a=(box[k]-o[k])/d[k],b=(box[k+3]-o[k])/d[k];near=Math.max(near,Math.min(a,b));far=Math.min(far,Math.max(a,b));if(near>far)return Infinity;}return near;}
 function collisionBlock(a,b,c,x,y,z,r,h){if(!solid(a,b,c))return false;const id=get(a,b,c);if(id!==20&&!lowBlock(id))return true;const q=id===20?chestBounds(a,b,c):[a,b,c,a+1,b+.9375,c+1];return x+r>q[0]+1e-5&&x-r<q[3]-1e-5&&y+h>q[1]+1e-5&&y<q[4]-1e-5&&z+r>q[2]+1e-5&&z-r<q[5]-1e-5;}
@@ -1290,7 +1290,7 @@ function updateSwimPose(surface){
 }
 function updateSprintFov(dt){const target=playing&&sprinting()?72*1.1:72;sprintFov+=(target-sprintFov)*(1-Math.exp(-Math.max(0,dt)*12));}
 
-function axis(k,v){if(v===0)return false;let rem=v;while(Math.abs(rem)>1e-6){let step=Math.sign(rem)*Math.min(Math.abs(rem),.12),x=p.x,y=p.y,z=p.z;if(k==='x')x+=step;if(k==='y')y+=step;if(k==='z')z+=step;if(collision(x,y,z)){let lo=0,hi=1;for(let i=0;i<8;i++){let m=(lo+hi)/2;let nx=p.x,ny=p.y,nz=p.z;if(k==='x')nx+=step*m;if(k==='y')ny+=step*m;if(k==='z')nz+=step*m;if(collision(nx,ny,nz))hi=m;else lo=m;}p[k]+=step*lo;return true;}p[k]+=step;rem-=step;}return false;}
+function axis(k,v){if(v===0)return false;let rem=v;while(Math.abs(rem)>1e-6){let step=Math.sign(rem)*Math.min(Math.abs(rem),.12),x=p.x,y=p.y,z=p.z;if(k==='x')x+=step;if(k==='y')y+=step;if(k==='z')z+=step;if(collision(x,y,z)){if(k!=='y'&&p.ground&&!flying&&!p.crouch&&lowBlock(get(Math.floor(p.x),Math.floor(p.y-.03),Math.floor(p.z)))&&!collision(x,y+.064,z)&&supported(x,y+.064,z)){p.y+=.064;p[k]+=step;rem-=step;continue;}let lo=0,hi=1;for(let i=0;i<8;i++){let m=(lo+hi)/2;let nx=p.x,ny=p.y,nz=p.z;if(k==='x')nx+=step*m;if(k==='y')ny+=step*m;if(k==='z')nz+=step*m;if(collision(nx,ny,nz))hi=m;else lo=m;}p[k]+=step*lo;return true;}p[k]+=step;rem-=step;}return false;}
 // Fluid contact uses the bottom of the player's collision box, not a point
 // 0.25 blocks above it. Sample the actual sloping surface under the footprint.
 function swimSurface(){
