@@ -1,0 +1,1229 @@
+{
+  "version": "1.72",
+  "notes": "User-provided specification numbers are not save IDs. Partial includes existing approximate behavior, not full specification compliance. Full user rules are in the original 200-item specification and exported JSON. Source numbering and Bedrock differences must be reviewed at implementation.",
+  "entries": [
+    {
+      "specNumber": 1,
+      "name": "空気",
+      "gameId": 0,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 2,
+      "name": "草ブロック",
+      "gameId": 1,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 3,
+      "name": "土",
+      "gameId": 2,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 4,
+      "name": "粗い土",
+      "gameId": 27,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 5,
+      "name": "根付き土",
+      "gameId": 28,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 6,
+      "name": "ポドゾル",
+      "gameId": 41,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 7,
+      "name": "菌糸",
+      "gameId": 42,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 8,
+      "name": "土の道",
+      "gameId": 26,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 9,
+      "name": "耕地",
+      "gameId": 25,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 10,
+      "name": "泥",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 11,
+      "name": "石",
+      "gameId": 3,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 12,
+      "name": "丸石",
+      "gameId": 37,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 13,
+      "name": "苔むした丸石",
+      "gameId": 51,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 14,
+      "name": "花崗岩",
+      "gameId": 43,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 15,
+      "name": "閃緑岩",
+      "gameId": 44,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 16,
+      "name": "安山岩",
+      "gameId": 45,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 17,
+      "name": "深層岩",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 18,
+      "name": "凝灰岩",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 19,
+      "name": "砂",
+      "gameId": 4,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 20,
+      "name": "赤い砂",
+      "gameId": 38,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 21,
+      "name": "砂利",
+      "gameId": 39,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 22,
+      "name": "粘土",
+      "gameId": 40,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 23,
+      "name": "氷",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 24,
+      "name": "氷塊",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 25,
+      "name": "青氷",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 26,
+      "name": "雪ブロック",
+      "gameId": 13,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 27,
+      "name": "雪の層",
+      "gameId": 166,
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 28,
+      "name": "黒曜石",
+      "gameId": 47,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 29,
+      "name": "泣く黒曜石",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 30,
+      "name": "岩盤",
+      "gameId": 11,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 31,
+      "name": "石炭鉱石",
+      "gameId": 12,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 32,
+      "name": "鉄鉱石",
+      "gameId": 33,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 33,
+      "name": "銅鉱石",
+      "gameId": 46,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 34,
+      "name": "金鉱石",
+      "gameId": 34,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 35,
+      "name": "ダイヤモンド鉱石",
+      "gameId": 36,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 36,
+      "name": "オークの原木",
+      "gameId": 5,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 37,
+      "name": "樹皮を剥いだ原木",
+      "gameId": 48,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 38,
+      "name": "オークの木材",
+      "gameId": 7,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 39,
+      "name": "階段",
+      "gameId": [
+        137,
+        156,
+        160,
+        163,
+        169
+      ],
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 40,
+      "name": "ハーフブロック",
+      "gameId": [
+        138,
+        157,
+        161,
+        164,
+        170
+      ],
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 41,
+      "name": "フェンス",
+      "gameId": 132,
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 42,
+      "name": "フェンスゲート",
+      "gameId": 133,
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 43,
+      "name": "丸石の壁",
+      "gameId": [
+        162,
+        165,
+        171
+      ],
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 44,
+      "name": "ドア",
+      "gameId": 134,
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 45,
+      "name": "トラップドア",
+      "gameId": 135,
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 46,
+      "name": "ガラス",
+      "gameId": 9,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 47,
+      "name": "色付きガラス",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 48,
+      "name": "板ガラス",
+      "gameId": 153,
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 49,
+      "name": "遮光ガラス",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 50,
+      "name": "羊毛",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 51,
+      "name": "カーペット",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 52,
+      "name": "テラコッタ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 53,
+      "name": "彩釉テラコッタ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 54,
+      "name": "コンクリートパウダー",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 55,
+      "name": "コンクリート",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 56,
+      "name": "レンガブロック",
+      "gameId": 8,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 57,
+      "name": "石レンガ",
+      "gameId": 23,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 58,
+      "name": "本棚",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 59,
+      "name": "銅ブロック",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 60,
+      "name": "避雷針",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 61,
+      "name": "鉄格子",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 62,
+      "name": "鎖",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 63,
+      "name": "ハシゴ",
+      "gameId": 131,
+      "status": "catalog_only_or_unverified"
+    },
+    {
+      "specNumber": 64,
+      "name": "足場",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 65,
+      "name": "スライムブロック",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 66,
+      "name": "ハチミツブロック",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 67,
+      "name": "干草の俵",
+      "gameId": 21,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 68,
+      "name": "スポンジ",
+      "gameId": 49,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 69,
+      "name": "濡れたスポンジ",
+      "gameId": 50,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 70,
+      "name": "砂岩",
+      "gameId": 24,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 71,
+      "name": "水",
+      "gameId": 10,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 72,
+      "name": "溶岩",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 73,
+      "name": "オークの葉",
+      "gameId": 6,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 74,
+      "name": "オークの苗木",
+      "gameId": 18,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 75,
+      "name": "雑草",
+      "gameId": 14,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 76,
+      "name": "背の高い草",
+      "gameId": [
+        30,
+        31
+      ],
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 77,
+      "name": "花",
+      "gameId": [
+        15,
+        16,
+        17
+      ],
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 78,
+      "name": "キノコ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 79,
+      "name": "ツタ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 80,
+      "name": "スイレンの葉",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 81,
+      "name": "サトウキビ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 82,
+      "name": "サボテン",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 83,
+      "name": "竹",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 84,
+      "name": "カボチャ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 85,
+      "name": "スイカ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 86,
+      "name": "小麦ブロック",
+      "gameId": 32,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 87,
+      "name": "昆布",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 88,
+      "name": "海草",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 89,
+      "name": "ネザーラック",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 90,
+      "name": "ソウルサンド",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 91,
+      "name": "ソウルソイル",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 92,
+      "name": "マグマブロック",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 93,
+      "name": "グロウストーン",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 94,
+      "name": "クォーツブロック",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 95,
+      "name": "古代の残骸",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 96,
+      "name": "ネザーウォート",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 97,
+      "name": "エンドストーン",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 98,
+      "name": "コーラスフラワー",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 99,
+      "name": "クモの巣",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 100,
+      "name": "火",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 101,
+      "name": "氷霜",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 102,
+      "name": "スイートベリーの低木",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 103,
+      "name": "ドリップリーフ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 104,
+      "name": "鍾乳石",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 105,
+      "name": "コケブロック",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 106,
+      "name": "作業台",
+      "gameId": 19,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 107,
+      "name": "かまど",
+      "gameId": 52,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 108,
+      "name": "溶鉱炉",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 109,
+      "name": "燻製器",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 110,
+      "name": "チェスト",
+      "gameId": 20,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 111,
+      "name": "エンダーチェスト",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 112,
+      "name": "樽",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 113,
+      "name": "シュルカーボックス",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 114,
+      "name": "ベッド",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 115,
+      "name": "金床",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 116,
+      "name": "エンチャントテーブル",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 117,
+      "name": "醸造台",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 118,
+      "name": "砥石",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 119,
+      "name": "石切台",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 120,
+      "name": "コンポスター",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 121,
+      "name": "ジュークボックス",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 122,
+      "name": "音符ブロック",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 123,
+      "name": "松明",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 124,
+      "name": "ランタン",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 125,
+      "name": "シーランタン",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 126,
+      "name": "ジャック・オ・ランタン",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 127,
+      "name": "TNT",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 128,
+      "name": "レッドストーンダスト",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 129,
+      "name": "レッドストーントーチ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 130,
+      "name": "レッドストーンリピーター",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 131,
+      "name": "レッドストーンコンパレーター",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 132,
+      "name": "レバー",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 133,
+      "name": "ボタン",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 134,
+      "name": "感圧板",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 135,
+      "name": "ピストン",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 136,
+      "name": "粘着ピストン",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 137,
+      "name": "オブザーバー",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 138,
+      "name": "ディスペンサー",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 139,
+      "name": "ドロッパー",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 140,
+      "name": "ホッパー",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 141,
+      "name": "木のツルハシ",
+      "gameId": 124,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 142,
+      "name": "石のツルハシ",
+      "gameId": 183,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 143,
+      "name": "鉄のツルハシ",
+      "gameId": 184,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 144,
+      "name": "ダイヤモンドのツルハシ",
+      "gameId": 185,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 145,
+      "name": "ネザライトのツルハシ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 146,
+      "name": "鉄の斧",
+      "gameId": 186,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 147,
+      "name": "鉄のシャベル",
+      "gameId": 187,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 148,
+      "name": "鉄のクワ",
+      "gameId": 188,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 149,
+      "name": "鉄の剣",
+      "gameId": 189,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 150,
+      "name": "弓",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 151,
+      "name": "クロスボウ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 152,
+      "name": "トライデント",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 153,
+      "name": "盾",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 154,
+      "name": "火打石と打ち金",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 155,
+      "name": "ハサミ",
+      "gameId": 190,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 156,
+      "name": "釣り竿",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 157,
+      "name": "バケツ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 158,
+      "name": "水入りバケツ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 159,
+      "name": "溶岩入りバケツ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 160,
+      "name": "牛乳入りバケツ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 161,
+      "name": "コンパス",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 162,
+      "name": "時計",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 163,
+      "name": "望遠鏡",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 164,
+      "name": "白紙の地図",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 165,
+      "name": "鉄のヘルメット",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 166,
+      "name": "鉄のチェストプレート",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 167,
+      "name": "鉄のレギンス",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 168,
+      "name": "鉄のブーツ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 169,
+      "name": "エリトラ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 170,
+      "name": "不死のトーテム",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 171,
+      "name": "リンゴ",
+      "gameId": 103,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 172,
+      "name": "金リンゴ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 173,
+      "name": "パン",
+      "gameId": 130,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 174,
+      "name": "生の牛肉",
+      "gameId": 110,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 175,
+      "name": "ステーキ",
+      "gameId": 105,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 176,
+      "name": "焼き鳥",
+      "gameId": 109,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 177,
+      "name": "ベイクドポテト",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 178,
+      "name": "腐った肉",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 179,
+      "name": "乾燥した昆布",
+      "gameId": 174,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 180,
+      "name": "小麦の種",
+      "gameId": 104,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 181,
+      "name": "棒",
+      "gameId": 102,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 182,
+      "name": "石炭",
+      "gameId": 175,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 183,
+      "name": "木炭",
+      "gameId": 193,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 184,
+      "name": "鉄インゴット",
+      "gameId": 191,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 185,
+      "name": "金インゴット",
+      "gameId": 192,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 186,
+      "name": "ダイヤモンド",
+      "gameId": 179,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 187,
+      "name": "エメラルド",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 188,
+      "name": "ラピスラズリ",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 189,
+      "name": "レッドストーン",
+      "gameId": 180,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 190,
+      "name": "ネザライトインゴット",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 191,
+      "name": "火打石",
+      "gameId": 181,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 192,
+      "name": "糸",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 193,
+      "name": "火薬",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 194,
+      "name": "骨",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 195,
+      "name": "骨粉",
+      "gameId": 123,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 196,
+      "name": "革",
+      "gameId": 112,
+      "status": "implemented_or_partial"
+    },
+    {
+      "specNumber": 197,
+      "name": "紙",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 198,
+      "name": "本",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 199,
+      "name": "エンダーパール",
+      "gameId": null,
+      "status": "deferred"
+    },
+    {
+      "specNumber": 200,
+      "name": "ボート",
+      "gameId": null,
+      "status": "deferred"
+    }
+  ]
+}
